@@ -27,6 +27,7 @@ Escena::Escena()
     // .....
 
     cubo = new Cubo( 100 );
+    tetraedro = new Tetraedro( 100 );
 
 }
 
@@ -41,6 +42,7 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 	glClearColor( 1.0, 1.0, 1.0, 1.0 );// se indica cual sera el color para limpiar la ventana	(r,v,a,al)
 
 	glEnable( GL_DEPTH_TEST );	// se habilita el z-bufer
+  glEnable( GL_CULL_FACE );   // se habilita el cull-face
 
 	Width  = UI_window_width/10;
 	Height = UI_window_height/10;
@@ -77,7 +79,8 @@ void Escena::dibujar()
       case TETRAEDRO:
         break;
     }*/
-    cubo->draw();
+    //cubo->draw();
+    tetraedro->draw();
 
 }
 
