@@ -43,5 +43,6 @@ void Ejes::draw()
 	glVertexPointer(3, GL_FLOAT, 0, vertexArray );   // Decir dónde están los vértices almacenados
 	glEnableClientState(GL_COLOR_ARRAY);             // Habilitar colores
 	glColorPointer(3, GL_FLOAT, 0, colorArray );     // Decir dónde están almacenados los colores
+  glEnable( GL_CULL_FACE );
 	glDrawArrays( GL_LINES, 0, 6 ) ;                 // Pintar los vértices como líneas, uniendo 0-1, 2-3 y 4-5 (se indica que son 6)
 }

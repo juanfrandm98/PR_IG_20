@@ -12,9 +12,10 @@
 void Malla3D::draw_ModoInmediato()
 {
   glEnableClientState( GL_VERTEX_ARRAY );
-  glVertexPointer( 3, GL_FLOAT, 0, &v );
-  //glDrawElements( GL_TRIANGLES, f.size(), GL_INT, &f );
-  glDrawArrays( GL_LINES, 0, v.size() ) ;
+  glVertexPointer( 3, GL_FLOAT, 0, v.data() );
+  glEnableClientState(GL_COLOR_ARRAY);
+	glColorPointer(3, GL_FLOAT, 0, c.data() );
+  glDrawElements( GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, f.data() );
 }
 // -----------------------------------------------------------------------------
 // Visualización en modo diferido con 'glDrawElements' (usando VBOs)
