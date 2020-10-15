@@ -6,16 +6,18 @@
 #include "cubo.h"
 #include "tetraedro.h"
 
-typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO} menu;
+typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,SELCULL} menu;
+typedef enum {NINGUNO, CUBO, TETRAEDRO} objetoVisible;
+
 class Escena
 {
 
    private:
 
-   
+
 
  // ** PARÁMETROS DE LA CÁMARA (PROVISIONAL)
-       
+
        // variables que definen la posicion de la camara en coordenadas polares
    GLfloat Observer_distance;
    GLfloat Observer_angle_x;
@@ -27,18 +29,25 @@ class Escena
     // Transformación de cámara
 	void change_projection( const float ratio_xy );
 	void change_observer();
-    
+
 
 
    void clear_window();
 
    menu modoMenu=NADA;
+   objetoVisible objeto = NINGUNO;
    // Objetos de la escena
    Ejes ejes;
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
    Tetraedro * tetraedro= nullptr ; // es importante inicializarlo a 'nullptr'
 
-   
+   // FLAGS para el dibujado
+   bool puntos;
+   bool lineas;
+   bool solido;
+   bool ajedrez;
+
+
    public:
 
     Escena();

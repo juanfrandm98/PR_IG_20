@@ -30,9 +30,19 @@ Tetraedro::Tetraedro( float lado )
    // (es importante en cada cara ordenar los vértices en sentido contrario
    //  de las agujas del reloj, cuando esa cara se observa desde el exterior del cubo)
 
-   c.push_back( Tupla3f( 1, 0, 0 ) ); // 0 - Base izquierda
-   c.push_back( Tupla3f( 0, 1, 0 ) ); // 1 - Base derecha
-   c.push_back( Tupla3f( 0, 0, 1 ) ); // 2 - Base arriba
-   c.push_back( Tupla3f( 0, 0, 0 ) ); // 3 - Cúspide
+   c_solid.push_back( Tupla3f( 1, 0, 0 ) ); // 0 - Base izquierda
+   c_solid.push_back( Tupla3f( 1, 0, 0 ) ); // 1 - Base derecha
+   c_solid.push_back( Tupla3f( 1, 0, 0 ) ); // 2 - Base arriba
+   c_solid.push_back( Tupla3f( 1, 0, 0 ) ); // 3 - Cúspide
+
+   c_points.push_back( Tupla3f( 255, 0, 255 ) );
+   c_points.push_back( Tupla3f( 255, 0, 255 ) );
+   c_points.push_back( Tupla3f( 255, 0, 255 ) );
+   c_points.push_back( Tupla3f( 255, 0, 255 ) );
+
+   c_lines.push_back( Tupla3f( 0, 0, 0 ) );
+   c_lines.push_back( Tupla3f( 0, 0, 0 ) );
+   c_lines.push_back( Tupla3f( 0, 0, 0 ) );
+   c_lines.push_back( Tupla3f( 0, 0, 0 ) );
 
 }

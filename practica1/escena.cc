@@ -8,8 +8,6 @@
 // constructor de la escena (no puede usar ordenes de OpenGL)
 //**************************************************************************
 
-typedef enum {NINGUNO, CUBO, TETRAEDRO} objetoVisible;
-
 Escena::Escena()
 {
     Front_plane       = 50.0;
@@ -28,6 +26,11 @@ Escena::Escena()
 
     cubo = new Cubo( 100 );
     tetraedro = new Tetraedro( 100 );
+
+    puntos = false;
+    lineas = false;
+    solido = true;
+    ajedrez = false;
 
 }
 
@@ -64,23 +67,16 @@ void Escena::dibujar()
 {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
 	change_observer();
-    ejes.draw();
-    // COMPLETAR
-    //   Dibujar los diferentes elementos de la escena
-    // Habrá que tener en esta primera práctica una variable que indique qué objeto se ha de visualizar
-    // y hacer
-    // cubo.draw()
-    // o
-    // tetraedro.draw()
-    /*
-    switch( objetoVisible ) {
-      case CUBO:
-        break;
-      case TETRAEDRO:
-        break;
-    }*/
-    //cubo->draw();
-    tetraedro->draw();
+  ejes.draw();
+
+  switch( objeto ) {
+    case CUBO:
+      cubo->draw( puntos, lineas, solido, ajedrez );
+      break;
+    case TETRAEDRO:
+      tetraedro->draw( puntos, lineas, solido, ajedrez );
+      break;
+  }
 
 }
 
@@ -94,36 +90,142 @@ void Escena::dibujar()
 
 bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 {
-   using namespace std ;
-   cout << "Tecla pulsada: '" << tecla << "'" << endl;
-   bool salir=false;
-   switch( toupper(tecla) )
-   {
-      case 'Q' :
-         if (modoMenu!=NADA)
-            modoMenu=NADA;
-         else {
-            salir=true ;
-         }
-         break ;
-      case 'O' :
-         // ESTAMOS EN MODO SELECCION DE OBJETO
-         modoMenu=SELOBJETO;
-         cout << "Opciones disponibles:\n'C': Cubo\n'T': Tetraedro\n";
-         break ;
-        case 'V' :
-         // ESTAMOS EN MODO SELECCION DE MODO DE VISUALIZACION
-         modoMenu=SELVISUALIZACION;
-         cout << "Opciones disponibles:\n'L': Línea\n'P': Puntos\n'S': Sólido\n";
-         break ;
-       case 'D' :
-         // ESTAMOS EN MODO SELECCION DE DIBUJADO
-         modoMenu=SELDIBUJADO;
-         break ;
-         // COMPLETAR con los diferentes opciones de teclado
+  using namespace std ;
+  cout << "Tecla pulsada: '" << tecla << "'" << endl;
+  bool salir=false;
 
-   }
-   return salir;
+  switch( modoMenu ) {
+
+    case NADA:
+
+      switch( toupper( tecla ) ) {
+        case 'Q':
+          salir = true;
+          break;
+        case 'O' :
+          modoMenu=SELOBJETO;
+          break ;
+        case 'V' :
+          modoMenu=SELVISUALIZACION;
+          break ;
+        case 'D' :
+          modoMenu=SELDIBUJADO;
+          break ;
+        case 'C':
+          modoMenu = SELCULL;
+          break;
+        default:
+          cout << "ERROR - opciones disponibles:\n'Q': Salir\n'O': Cambiar objeto\n"
+               << "'V': Cambiar modo de visualización\n'D': SELDIBUJADO\n"
+               << "'C': Cambiar modo de CULL_FACE\n";
+          break;
+      }
+
+      break;
+
+    case SELOBJETO:
+
+      switch( toupper( tecla ) ) {
+        case 'Q':
+          modoMenu = NADA;
+          break;
+        case 'C':
+          objeto = CUBO;
+          modoMenu = NADA;
+          break;
+        case 'T':
+          objeto = TETRAEDRO;
+          modoMenu = NADA;
+          break;
+        default:
+          cout << "ERROR - opciones disponibles:\n'C': Cubo\n'T': Tetraedro\n";
+          break;
+      }
+
+      break;
+
+    case SELVISUALIZACION:
+
+      switch( toupper( tecla ) ) {
+        case 'Q':
+          modoMenu = NADA;
+          break;
+        case 'P':
+          if( puntos )
+            puntos = false;
+          else
+            puntos = true;
+          break;
+        case 'L':
+          if( lineas )
+            lineas = false;
+          else
+            lineas = true;
+          break;
+        case 'S':
+          if( solido )
+            solido = false;
+          else
+            solido = true;
+          break;
+        default:
+          cout << "ERROR - opciones disponibles:\n'L': Línea\n'P': Puntos\n'S': Sólido\n";
+          break;
+      }
+
+      break;
+
+    case SELDIBUJADO:
+
+      switch( toupper( tecla ) ) {
+        case 'Q':
+          modoMenu = NADA;
+          break;
+        default:
+          cout << "ERROR EN SELDIBUJADO\n";
+          break;
+      }
+
+      break;
+
+    case SELCULL:
+
+      switch( toupper( tecla ) ) {
+        case 'Q':
+          modoMenu = NADA;
+          break;
+        case 'S':
+          glEnable( GL_CULL_FACE );
+          modoMenu = NADA;
+          break;
+        case 'N':
+          glDisable( GL_CULL_FACE );
+          modoMenu = NADA;
+          break;
+        default:
+          cout << "ERROR - opciones disponibles:\n'S': Sí\n'N': No\n'Q': Salir\n";
+          break;
+      }
+
+      break;
+
+    default:
+      cout << "ERROR EN EL MENU\n";
+      modoMenu = NADA;
+      break;
+  }
+
+  if( !salir ) {
+    switch( modoMenu ) {
+      case NADA: cout << "\nMenú Principal.\n"; break;
+      case SELOBJETO: cout << "\nMenú de selección de objeto.\n"; break;
+      case SELVISUALIZACION: cout << "\nMenú de visualización.\n"; break;
+      case SELDIBUJADO: cout << "\nMenú de dibujado.\n"; break;
+      case SELCULL: cout << "\nMenú del CULL_FACE.\n"; break;
+    }
+  }
+
+  return salir;
 }
 //**************************************************************************
 

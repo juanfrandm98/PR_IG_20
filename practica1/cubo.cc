@@ -30,14 +30,38 @@ Cubo::Cubo(float lado)
    f.push_back( Tupla3i( 0, 3, 1 ) ); // 10 - Abajo izquierda
    f.push_back( Tupla3i( 3, 2, 1 ) ); // 11 - Abajo derecha
 
-   c.push_back( Tupla3f( 0, 0, 0 ) );      // 0 - Abajo-Detrás-Izquierda
-   c.push_back( Tupla3f( 1, 0, 0 ) );     // 1 - Abajo-Delante-Izquierda
-   c.push_back( Tupla3f( 0, 1, 0 ) );      // 2 - Abajo-Delante-Derecha
-   c.push_back( Tupla3f( 0, 0, 1 ) );       // 3 - Abajo-Detrás-Derecha
-   c.push_back( Tupla3f( 0, 1, 0 ) );   // 4 - Arriba-Detrás-Izquierda
-   c.push_back( Tupla3f( 0, 0, 1 ) );  // 5 - Arriba-Delante-Izquierda
-   c.push_back( Tupla3f( 0, 0, 0 ) );   // 6 - Arriba-Delante-Derecha
-   c.push_back( Tupla3f( 1, 0, 0 ) );    // 7 - Arriba-Detrás-Derecha
+   c_solid.push_back( Tupla3f( 1, 0, 0 ) );
+   c_solid.push_back( Tupla3f( 1, 0, 0 ) );
+   c_solid.push_back( Tupla3f( 1, 0, 0 ) );
+   c_solid.push_back( Tupla3f( 1, 0, 0 ) );
+   c_solid.push_back( Tupla3f( 1, 0, 0 ) );
+   c_solid.push_back( Tupla3f( 1, 0, 0 ) );
+   c_solid.push_back( Tupla3f( 1, 0, 0 ) );
+   c_solid.push_back( Tupla3f( 1, 0, 0 ) );
+   c_solid.push_back( Tupla3f( 1, 0, 0 ) );
+   c_solid.push_back( Tupla3f( 1, 0, 0 ) );
+
+   c_points.push_back( Tupla3f( 255, 0, 255 ) );
+   c_points.push_back( Tupla3f( 255, 0, 255 ) );
+   c_points.push_back( Tupla3f( 255, 0, 255 ) );
+   c_points.push_back( Tupla3f( 255, 0, 255 ) );
+   c_points.push_back( Tupla3f( 255, 0, 255 ) );
+   c_points.push_back( Tupla3f( 255, 0, 255 ) );
+   c_points.push_back( Tupla3f( 255, 0, 255 ) );
+   c_points.push_back( Tupla3f( 255, 0, 255 ) );
+   c_points.push_back( Tupla3f( 255, 0, 255 ) );
+   c_points.push_back( Tupla3f( 255, 0, 255 ) );
+
+   c_lines.push_back( Tupla3f( 0, 0, 0 ) );
+   c_lines.push_back( Tupla3f( 0, 0, 0 ) );
+   c_lines.push_back( Tupla3f( 0, 0, 0 ) );
+   c_lines.push_back( Tupla3f( 0, 0, 0 ) );
+   c_lines.push_back( Tupla3f( 0, 0, 0 ) );
+   c_lines.push_back( Tupla3f( 0, 0, 0 ) );
+   c_lines.push_back( Tupla3f( 0, 0, 0 ) );
+   c_lines.push_back( Tupla3f( 0, 0, 0 ) );
+   c_lines.push_back( Tupla3f( 0, 0, 0 ) );
+   c_lines.push_back( Tupla3f( 0, 0, 0 ) );
 
    // (es importante en cada cara ordenar los vértices en sentido contrario
    //  de las agujas del reloj, cuando esa cara se observa desde el exterior del cubo)
