@@ -31,6 +31,7 @@ Escena::Escena()
     lineas = false;
     solido = true;
     ajedrez = false;
+    modoInmediato = true;
 
 }
 
@@ -71,10 +72,10 @@ void Escena::dibujar()
 
   switch( objeto ) {
     case CUBO:
-      cubo->draw( puntos, lineas, solido, ajedrez );
+      cubo->draw( modoInmediato, puntos, lineas, solido, ajedrez );
       break;
     case TETRAEDRO:
-      tetraedro->draw( puntos, lineas, solido, ajedrez );
+      tetraedro->draw( modoInmediato, puntos, lineas, solido, ajedrez );
       break;
   }
 
@@ -116,7 +117,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           break;
         default:
           cout << "ERROR - opciones disponibles:\n'Q': Salir\n'O': Cambiar objeto\n"
-               << "'V': Cambiar modo de visualización\n'D': SELDIBUJADO\n"
+               << "'V': Cambiar modo de visualización\n'D': Cambiar modo de dibujado\n"
                << "'C': Cambiar modo de CULL_FACE\n";
           break;
       }
@@ -168,8 +169,14 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           else
             solido = true;
           break;
+        case 'A':
+          if( ajedrez )
+            ajedrez = false;
+          else
+            ajedrez = true;
+          break;
         default:
-          cout << "ERROR - opciones disponibles:\n'L': Línea\n'P': Puntos\n'S': Sólido\n";
+          cout << "ERROR - opciones disponibles:\n'L': Línea\n'P': Puntos\n'S': Sólido\n'A': Ajedrez\n";
           break;
       }
 
@@ -181,8 +188,16 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
         case 'Q':
           modoMenu = NADA;
           break;
+        case 'I':
+          modoMenu = NADA;
+          modoInmediato = true;
+          break;
+        case 'D':
+          modoMenu = NADA;
+          modoInmediato = false;
+          break;
         default:
-          cout << "ERROR EN SELDIBUJADO\n";
+          cout << "ERROR - opciones disponibles:\n'I': Modo Inmediato\n'D': Modo Diferido\n";
           break;
       }
 

@@ -30,19 +30,38 @@ Tetraedro::Tetraedro( float lado )
    // (es importante en cada cara ordenar los vértices en sentido contrario
    //  de las agujas del reloj, cuando esa cara se observa desde el exterior del cubo)
 
+   // Inicializar las tablas de triángulos para el modo ajedrez:
+   f_chess_impar.push_back( Tupla3i( 2, 1, 0 ) ); // 0 - Base
+   f_chess_impar.push_back( Tupla3i( 3, 0, 1 ) ); // 1 - Delante
+   f_chess_par.push_back( Tupla3i( 3, 1, 2 ) ); // 0 - Trasera derecha
+   f_chess_par.push_back( Tupla3i( 3, 2, 0 ) ); // 1 - Trasera izquierda
+
+   // Inicializar colores para el modo sólido
    c_solid.push_back( Tupla3f( 1, 0, 0 ) ); // 0 - Base izquierda
    c_solid.push_back( Tupla3f( 1, 0, 0 ) ); // 1 - Base derecha
    c_solid.push_back( Tupla3f( 1, 0, 0 ) ); // 2 - Base arriba
    c_solid.push_back( Tupla3f( 1, 0, 0 ) ); // 3 - Cúspide
 
+   // Inicializar colores para el modo puntos
    c_points.push_back( Tupla3f( 255, 0, 255 ) );
    c_points.push_back( Tupla3f( 255, 0, 255 ) );
    c_points.push_back( Tupla3f( 255, 0, 255 ) );
    c_points.push_back( Tupla3f( 255, 0, 255 ) );
 
+   // Inicializar colores para el modo líneas
    c_lines.push_back( Tupla3f( 0, 0, 0 ) );
    c_lines.push_back( Tupla3f( 0, 0, 0 ) );
    c_lines.push_back( Tupla3f( 0, 0, 0 ) );
    c_lines.push_back( Tupla3f( 0, 0, 0 ) );
+
+   // Inicializar colores para el modo ajedrez
+   c_chess_impar.push_back( Tupla3f( 1, 0, 0 ) );
+   c_chess_impar.push_back( Tupla3f( 1, 0, 0 ) );
+   c_chess_impar.push_back( Tupla3f( 1, 0, 0 ) );
+   c_chess_impar.push_back( Tupla3f( 1, 0, 0 ) );
+   c_chess_par.push_back( Tupla3f( 0, 1, 0 ) );
+   c_chess_par.push_back( Tupla3f( 0, 1, 0 ) );
+   c_chess_par.push_back( Tupla3f( 0, 1, 0 ) );
+   c_chess_par.push_back( Tupla3f( 0, 1, 0 ) );
 
 }

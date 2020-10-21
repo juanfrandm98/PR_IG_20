@@ -46,7 +46,7 @@ class Escena
    bool lineas;
    bool solido;
    bool ajedrez;
-
+   bool modoInmediato;
 
    public:
 
