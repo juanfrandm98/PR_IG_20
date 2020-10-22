@@ -9,43 +9,43 @@
 
 // Visualización en modo inmediato con 'glDrawElements'
 
-void Malla3D::draw_ModoInmediato( bool puntos, bool lineas, bool solido, bool ajedrez )
+void Malla3D::draw_ModoInmediato( visualizacion tipoVisualizacion )
 {
+
   glEnableClientState( GL_VERTEX_ARRAY );
   glVertexPointer( 3, GL_FLOAT, 0, v.data() );
   glEnableClientState( GL_COLOR_ARRAY );
 
-  if( !ajedrez ) {
-    // PUNTOS
-    if( puntos ) {
-    	glColorPointer( 3, GL_FLOAT, 0, c_points.data() );
+  switch( tipoVisualizacion ) {
+
+    case POINTS:
+      glColorPointer( 3, GL_FLOAT, 0, c_points.data() );
       glPointSize( 7.5 );
       glPolygonMode( GL_FRONT_AND_BACK, GL_POINT );
       glDrawElements( GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, f.data() );
-    }
+      break;
 
-    // LINEAS
-    if( lineas ) {
-    	glColorPointer( 3, GL_FLOAT, 0, c_lines.data() );
+    case LINES:
+      glColorPointer( 3, GL_FLOAT, 0, c_lines.data() );
       glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
       glDrawElements( GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, f.data() );
-    }
+      break;
 
-    // SOLIDO
-    if( solido ) {
+    case SOLID:
       glColorPointer( 3, GL_FLOAT, 0, c_solid.data() );
       glPolygonMode( GL_FRONT, GL_FILL );
       glDrawElements( GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, f.data() );
-    }
-  } else {
+      break;
 
-    glColorPointer( 3, GL_FLOAT, 0, c_chess_impar.data() );
-    glPolygonMode( GL_FRONT, GL_FILL );
-    glDrawElements( GL_TRIANGLES, 3 * f_chess_impar.size(), GL_UNSIGNED_INT, f_chess_impar.data() );
+    case CHESS:
+      glColorPointer( 3, GL_FLOAT, 0, c_chess_impar.data() );
+      glPolygonMode( GL_FRONT, GL_FILL );
+      glDrawElements( GL_TRIANGLES, 3 * f_chess_impar.size(), GL_UNSIGNED_INT, f_chess_impar.data() );
 
-    glColorPointer( 3, GL_FLOAT, 0, c_chess_par.data() );
-    glPolygonMode( GL_FRONT, GL_FILL );
-    glDrawElements( GL_TRIANGLES, 3 * f_chess_par.size(), GL_UNSIGNED_INT, f_chess_par.data() );
+      glColorPointer( 3, GL_FLOAT, 0, c_chess_par.data() );
+      glPolygonMode( GL_FRONT, GL_FILL );
+      glDrawElements( GL_TRIANGLES, 3 * f_chess_par.size(), GL_UNSIGNED_INT, f_chess_par.data() );
+      break;
 
   }
 
@@ -53,11 +53,12 @@ void Malla3D::draw_ModoInmediato( bool puntos, bool lineas, bool solido, bool aj
 // -----------------------------------------------------------------------------
 // Visualización en modo diferido con 'glDrawElements' (usando VBOs)
 
-void Malla3D::draw_ModoDiferido( bool puntos, bool lineas, bool solido, bool ajedrez )
+void Malla3D::draw_ModoDiferido( visualizacion tipoVisualizacion )
 {
   // (la primera vez, se deben crear los VBOs y guardar sus identificadores en el objeto)
   // completar (práctica 1)
-  /*
+
+  // Creación de los VBOs (primera vez que se llama a draw_ModoDiferido)
   if( id_vbo_v == 0 )
     id_vbo_v = CrearVBO( GL_ARRAY_BUFFER, 3 * v.size() * sizeof(float), v.data() );
 
@@ -69,34 +70,128 @@ void Malla3D::draw_ModoDiferido( bool puntos, bool lineas, bool solido, bool aje
 
   if( id_vbo_f_pares == 0 )
     id_vbo_f_pares = CrearVBO( GL_ELEMENT_ARRAY_BUFFER, 3 * f_chess_par.size() * sizeof(int), f_chess_par.data() );
-    */
+
+  if( id_vbo_c_puntos == 0 )
+    id_vbo_c_puntos = CrearVBO( GL_ARRAY_BUFFER, 3 * c_points.size() * sizeof(float), c_points.data() );
+
+  if( id_vbo_c_lineas == 0 )
+    id_vbo_c_lineas = CrearVBO( GL_ARRAY_BUFFER, 3 * c_lines.size() * sizeof(float), c_lines.data() );
+
+  if( id_vbo_c_solido == 0 )
+    id_vbo_c_solido = CrearVBO( GL_ARRAY_BUFFER, 3 * c_solid.size() * sizeof(float), c_solid.data() );
+
+  if( id_vbo_c_chess_impares == 0 )
+    id_vbo_c_chess_impares = CrearVBO( GL_ARRAY_BUFFER, 3 * c_chess_impar.size() * sizeof(float), c_chess_impar.data() );
+
+  if( id_vbo_c_chess_pares == 0 )
+    id_vbo_c_chess_pares = CrearVBO( GL_ARRAY_BUFFER, 3 * c_chess_par.size() * sizeof(float), c_chess_par.data() );
 
   glBindBuffer( GL_ARRAY_BUFFER, id_vbo_v ); // Activar VBO de vértices
   glVertexPointer( 3, GL_FLOAT, 0, 0 ); // Especificar formato y offset (0)
   glBindBuffer( GL_ARRAY_BUFFER, 0 );   // Desactivar VBO de vértices
   glEnableClientState( GL_VERTEX_ARRAY );  // Habilitar tabla de vértices
+  glEnableClientState( GL_COLOR_ARRAY );   // Habilitar tabla de colores
 
-  glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f );  // Activar VBO de triángulos
-  glDrawElements( GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, 0 );
-  glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );   // Desactivar VBO de triángulos
+  switch( tipoVisualizacion ) {
+
+    case POINTS:
+      // Color
+      glBindBuffer( GL_ARRAY_BUFFER, id_vbo_c_puntos );
+      glColorPointer( 3, GL_FLOAT, 0, 0 );
+      glBindBuffer( GL_ARRAY_BUFFER, 0 );
+
+      // Tamaño y modo
+      glPointSize( 7.5 );
+      glPolygonMode( GL_FRONT_AND_BACK, GL_POINT );
+
+      // Triángulos
+      glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f );  // Activar VBO de triángulos
+      glDrawElements( GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, 0 );
+      glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );   // Desactivar VBO de triángulos
+      break;
+
+    case LINES:
+      // Color
+      glBindBuffer( GL_ARRAY_BUFFER, id_vbo_c_lineas );
+      glColorPointer( 3, GL_FLOAT, 0, 0 );
+      glBindBuffer( GL_ARRAY_BUFFER, 0 );
+
+      // Modo
+      glPolygonMode( GL_FRONT_AND_BACK, GL_LINES );
+
+      // Triángulos
+      glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f );  // Activar VBO de triángulos
+      glDrawElements( GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, 0 );
+      glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );   // Desactivar VBO de triángulos
+      break;
+
+    case SOLID:
+      // Color
+      glBindBuffer( GL_ARRAY_BUFFER, id_vbo_c_solido );
+      glColorPointer( 3, GL_FLOAT, 0, 0 );
+      glBindBuffer( GL_ARRAY_BUFFER, 0 );
+
+      // Modo
+      glPolygonMode( GL_FRONT, GL_TRIANGLES );
+
+      // Triángulos
+      glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f );  // Activar VBO de triángulos
+      glDrawElements( GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, 0 );
+      glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );   // Desactivar VBO de triángulos
+      break;
+
+    case CHESS:
+      // Color caras impares
+      glBindBuffer( GL_ARRAY_BUFFER, id_vbo_c_chess_impares );
+      glColorPointer( 3, GL_FLOAT, 0, 0 );
+      glBindBuffer( GL_ARRAY_BUFFER, 0 );
+
+      // Modo caras impares
+      glPolygonMode( GL_FRONT, GL_TRIANGLES );
+
+      // Triángulos caras impares
+      glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f_impares );  // Activar VBO de triángulos
+      glDrawElements( GL_TRIANGLES, 3 * f_chess_impar.size(), GL_UNSIGNED_INT, 0 );
+      glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );   // Desactivar VBO de triángulos
+
+      // Color caras pares
+      glBindBuffer( GL_ARRAY_BUFFER, id_vbo_c_chess_pares );
+      glColorPointer( 3, GL_FLOAT, 0, 0 );
+      glBindBuffer( GL_ARRAY_BUFFER, 0 );
+
+      // Modo caras pares
+      glPolygonMode( GL_FRONT, GL_TRIANGLES );
+
+      // Triángulos caras pares
+      glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f_pares );  // Activar VBO de triángulos
+      glDrawElements( GL_TRIANGLES, 3 * f_chess_par.size(), GL_UNSIGNED_INT, 0 );
+      glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );   // Desactivar VBO de triángulos
+      break;
+
+  }
 
   glDisableClientState( GL_VERTEX_ARRAY );
+  glDisableClientState( GL_COLOR_ARRAY );
 
 }
 // -----------------------------------------------------------------------------
 // Función de visualización de la malla,
 // puede llamar a  draw_ModoInmediato o bien a draw_ModoDiferido
 
-void Malla3D::draw( bool modoInmediato, bool puntos, bool lineas, bool solido, bool ajedrez )
+void Malla3D::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion )
 {
-  // completar .....(práctica 1)
-  if( modoInmediato )
-    draw_ModoInmediato( puntos, lineas, solido, ajedrez );
-  else
-    draw_ModoDiferido( puntos, lineas, solido, ajedrez );
+
+  switch( tipoDibujado ) {
+    case INMEDIATO:
+      draw_ModoInmediato( tipoVisualizacion );
+      break;
+    case DIFERIDO:
+      draw_ModoDiferido( tipoVisualizacion );
+  }
+
 }
 
-GLuint CrearVBO( GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram ) {
+GLuint Malla3D::CrearVBO( GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram ) {
 
   GLuint id_vbo;    // resultado: identificador del VBO
 

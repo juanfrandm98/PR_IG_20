@@ -6,7 +6,7 @@
 #include "cubo.h"
 #include "tetraedro.h"
 
-typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,SELCULL} menu;
+typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO} menu;
 typedef enum {NINGUNO, CUBO, TETRAEDRO} objetoVisible;
 
 class Escena
@@ -39,14 +39,14 @@ class Escena
    // Objetos de la escena
    Ejes ejes;
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
-   Tetraedro * tetraedro= nullptr ; // es importante inicializarlo a 'nullptr'
+   Tetraedro * tetraedro = nullptr ; // es importante inicializarlo a 'nullptr'
 
    // FLAGS para el dibujado
    bool puntos;
    bool lineas;
    bool solido;
    bool ajedrez;
-   bool modoInmediato;
+   dibujado modoDibujado;
 
    public:
 

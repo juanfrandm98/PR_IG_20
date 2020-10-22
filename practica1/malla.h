@@ -18,20 +18,23 @@
 //
 // *****************************************************************************
 
+typedef enum {POINTS, LINES, SOLID, CHESS} visualizacion;
+typedef enum {DIFERIDO, INMEDIATO} dibujado;
+
 class Malla3D
 {
    public:
 
    // dibuja el objeto en modo inmediato
-   void draw_ModoInmediato( bool puntos, bool lineas, bool solido, bool ajedrez );
+   void draw_ModoInmediato( visualizacion tipoVisualizacion );
 
    // dibuja el objeto en modo diferido (usando VBOs)
-   void draw_ModoDiferido( bool puntos, bool lineas, bool solido, bool ajedrez );
+   void draw_ModoDiferido( visualizacion tipoVisualizacion );
 
    // función que redibuja el objeto
    // está función llama a 'draw_ModoInmediato' (modo inmediato)
    // o bien a 'draw_ModoDiferido' (modo diferido, VBOs)
-   void draw( bool modoInmediato, bool puntos, bool lineas, bool solido, bool ajedrez ) ;
+   void draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) ;
 
    protected:
 
@@ -53,6 +56,11 @@ class Malla3D
    GLuint id_vbo_f = 0;
    GLuint id_vbo_f_impares = 0;
    GLuint id_vbo_f_pares = 0;
+   GLuint id_vbo_c_puntos = 0;
+   GLuint id_vbo_c_lineas = 0;
+   GLuint id_vbo_c_solido = 0;
+   GLuint id_vbo_c_chess_impares = 0;
+   GLuint id_vbo_c_chess_pares = 0;
 
    // completar: tabla de colores, tabla de normales de vértices
 } ;

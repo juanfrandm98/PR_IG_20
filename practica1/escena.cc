@@ -31,7 +31,7 @@ Escena::Escena()
     lineas = false;
     solido = true;
     ajedrez = false;
-    modoInmediato = true;
+    modoDibujado = INMEDIATO;
 
 }
 
@@ -72,10 +72,28 @@ void Escena::dibujar()
 
   switch( objeto ) {
     case CUBO:
-      cubo->draw( modoInmediato, puntos, lineas, solido, ajedrez );
+      if( ajedrez )
+        cubo->draw( modoDibujado, CHESS );
+      else {
+        if( puntos )
+          cubo->draw( modoDibujado, POINTS );
+        if( lineas )
+          cubo->draw( modoDibujado, LINES );
+        if( solido )
+          cubo->draw( modoDibujado, SOLID );
+      }
       break;
     case TETRAEDRO:
-      tetraedro->draw( modoInmediato, puntos, lineas, solido, ajedrez );
+      if( ajedrez )
+        tetraedro->draw( modoDibujado, CHESS );
+      else {
+        if( puntos )
+          tetraedro->draw( modoDibujado, POINTS );
+        if( lineas )
+          tetraedro->draw( modoDibujado, LINES );
+        if( solido )
+          tetraedro->draw( modoDibujado, SOLID );
+      }
       break;
   }
 
@@ -112,13 +130,9 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
         case 'D' :
           modoMenu=SELDIBUJADO;
           break ;
-        case 'C':
-          modoMenu = SELCULL;
-          break;
         default:
           cout << "ERROR - opciones disponibles:\n'Q': Salir\n'O': Cambiar objeto\n"
-               << "'V': Cambiar modo de visualización\n'D': Cambiar modo de dibujado\n"
-               << "'C': Cambiar modo de CULL_FACE\n";
+               << "'V': Cambiar modo de visualización\n'D': Cambiar modo de dibujado\n";
           break;
       }
 
@@ -190,35 +204,14 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           break;
         case 'I':
           modoMenu = NADA;
-          modoInmediato = true;
+          modoDibujado = INMEDIATO;
           break;
         case 'D':
           modoMenu = NADA;
-          modoInmediato = false;
+          modoDibujado = DIFERIDO;
           break;
         default:
           cout << "ERROR - opciones disponibles:\n'I': Modo Inmediato\n'D': Modo Diferido\n";
-          break;
-      }
-
-      break;
-
-    case SELCULL:
-
-      switch( toupper( tecla ) ) {
-        case 'Q':
-          modoMenu = NADA;
-          break;
-        case 'S':
-          glEnable( GL_CULL_FACE );
-          modoMenu = NADA;
-          break;
-        case 'N':
-          glDisable( GL_CULL_FACE );
-          modoMenu = NADA;
-          break;
-        default:
-          cout << "ERROR - opciones disponibles:\n'S': Sí\n'N': No\n'Q': Salir\n";
           break;
       }
 
@@ -236,7 +229,6 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
       case SELOBJETO: cout << "\nMenú de selección de objeto.\n"; break;
       case SELVISUALIZACION: cout << "\nMenú de visualización.\n"; break;
       case SELDIBUJADO: cout << "\nMenú de dibujado.\n"; break;
-      case SELCULL: cout << "\nMenú del CULL_FACE.\n"; break;
     }
   }
 
