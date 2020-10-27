@@ -117,7 +117,7 @@ void Malla3D::draw_ModoDiferido( visualizacion tipoVisualizacion )
       glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
       // Modo
-      glPolygonMode( GL_FRONT_AND_BACK, GL_LINES );
+      glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
       // Triángulos
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f );  // Activar VBO de triángulos
@@ -132,7 +132,7 @@ void Malla3D::draw_ModoDiferido( visualizacion tipoVisualizacion )
       glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
       // Modo
-      glPolygonMode( GL_FRONT, GL_TRIANGLES );
+      glPolygonMode( GL_FRONT, GL_FILL );
 
       // Triángulos
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f );  // Activar VBO de triángulos
@@ -147,7 +147,7 @@ void Malla3D::draw_ModoDiferido( visualizacion tipoVisualizacion )
       glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
       // Modo caras impares
-      glPolygonMode( GL_FRONT, GL_TRIANGLES );
+      glPolygonMode( GL_FRONT, GL_FILL );
 
       // Triángulos caras impares
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f_impares );  // Activar VBO de triángulos
@@ -160,7 +160,7 @@ void Malla3D::draw_ModoDiferido( visualizacion tipoVisualizacion )
       glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
       // Modo caras pares
-      glPolygonMode( GL_FRONT, GL_TRIANGLES );
+      glPolygonMode( GL_FRONT, GL_FILL );
 
       // Triángulos caras pares
       glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f_pares );  // Activar VBO de triángulos
