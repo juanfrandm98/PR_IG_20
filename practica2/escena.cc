@@ -70,6 +70,8 @@ void Escena::dibujar()
 	change_observer();
   ejes.draw();
 
+  /*
+  // VISUALIZACIÓN UNO A UNO P1
   switch( objeto ) {
     case CUBO:
       if( ajedrez )
@@ -107,6 +109,111 @@ void Escena::dibujar()
           objetoPLY->draw( modoDibujado, SOLID );
       }
       break;
+  }*/
+
+  /*
+  // VISUALIZACIÓN TODOS A LA VEZ P1
+  if( ajedrez ) {
+    glPushMatrix();
+      glTranslatef( -200, 0, 0 );
+      cubo->draw( modoDibujado, CHESS );
+    glPopMatrix();
+    glPushMatrix();
+      glTranslatef( 200, 0, 0 );
+      tetraedro->draw( modoDibujado, CHESS );
+    glPopMatrix();
+  } else {
+    if( puntos ) {
+      glPushMatrix();
+        glTranslatef( -200, 0, 0 );
+        cubo->draw( modoDibujado, POINTS );
+      glPopMatrix();
+      glPushMatrix();
+        glTranslatef( 200, 0, 0 );
+        tetraedro->draw( modoDibujado, POINTS );
+      glPopMatrix();
+    }
+
+    if( lineas ) {
+      glPushMatrix();
+        glTranslatef( -200, 0, 0 );
+        cubo->draw( modoDibujado, LINES );
+      glPopMatrix();
+      glPushMatrix();
+        glTranslatef( 200, 0, 0 );
+        tetraedro->draw( modoDibujado, LINES );
+      glPopMatrix();
+    }
+
+    if( solido ) {
+      glPushMatrix();
+        glTranslatef( -200, 0, 0 );
+        cubo->draw( modoDibujado, SOLID );
+      glPopMatrix();
+      glPushMatrix();
+        glTranslatef( 200, 0, 0 );
+        tetraedro->draw( modoDibujado, SOLID );
+      glPopMatrix();
+    }
+  }*/
+  if( objeto == PLY ) {
+    if( ajedrez ) {
+      glPushMatrix();
+        glScalef( 10, 10, 10 );
+        objetoPLY->draw( modoDibujado, CHESS );
+      glPopMatrix();
+    } else {
+      if( puntos ) {
+        glPushMatrix();
+          glScalef( 10, 10, 10 );
+          objetoPLY->draw( modoDibujado, POINTS );
+        glPopMatrix();
+      }
+
+      if( lineas ) {
+        glPushMatrix();
+          glScalef( 10, 10, 10 );
+          objetoPLY->draw( modoDibujado, LINES );
+        glPopMatrix();
+      }
+
+      if( solido ) {
+        glPushMatrix();
+          glScalef( 10, 10, 10 );
+          objetoPLY->draw( modoDibujado, SOLID );
+        glPopMatrix();
+      }
+    }
+  }
+
+  if( objeto == REVOLUCION ) {
+    if( ajedrez ) {
+      glPushMatrix();
+        glScalef( 50, 50, 50 );
+        objetoRevolucion->draw( modoDibujado, CHESS );
+      glPopMatrix();
+    } else {
+      if( puntos ) {
+        glPushMatrix();
+          glScalef( 50, 50, 50 );
+          objetoRevolucion->draw( modoDibujado, POINTS );
+        glPopMatrix();
+      }
+
+      if( lineas ) {
+        glPushMatrix();
+          glScalef( 50, 50, 50 );
+          objetoRevolucion->draw( modoDibujado, LINES );
+        glPopMatrix();
+      }
+
+      if( solido ) {
+        glPushMatrix();
+          glScalef( 50, 50, 50 );
+          objetoRevolucion->draw( modoDibujado, SOLID );
+        glPopMatrix();
+      }
+    }
   }
 
 }
@@ -168,20 +275,38 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 
           cout << "Introduzca la ruta del archivo PLY: ";
 
-          char nombreArchivo[100], basura[100];
+          char nombreArchivoPLY[100];
 
-          scanf( "%[^\n]", nombreArchivo );
+          scanf( "%[^\n]", nombreArchivoPLY );
           while( ( getchar() ) != '\n');
 
-          objetoPLY = new ObjPLY( nombreArchivo );
+          objetoPLY = new ObjPLY( nombreArchivoPLY );
 
           objeto = PLY;
           modoMenu = NADA;
           cout << endl;
           break;
+        case 'R':
+
+          cout << "Introduzca la ruta del archivo PLY: ";
+
+          char nombreArchivoRev[100];
+          scanf( "%[^\n]", nombreArchivoRev );
+          while( ( getchar() ) != '\n');
+
+          int num_instancias;
+          scanf( "%d", &num_instancias );
+          while( ( getchar() ) != '\n');
+
+          objetoRevolucion = new ObjRevolucion( nombreArchivoRev, num_instancias );
+
+          objeto = REVOLUCION;
+          modoMenu = NADA;
+          cout << endl;
+          break;
         default:
           cout << "ERROR - opciones disponibles:\n'C': Cubo\n'T': Tetraedro\n"
-               << "'P': Objeto PLY";
+               << "'P': Objeto PLY\n'R': Objeto Revolución";
           break;
       }
 

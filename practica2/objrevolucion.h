@@ -23,6 +23,8 @@
 // Cubo con centro en el origen y lado unidad por defecto
 // (tiene 9 vertices y 6 caras)
 
+#define M_PI 3.14159265358979323846
+
 class ObjRevolucion : public Malla3D
 {
    public:
@@ -31,7 +33,6 @@ class ObjRevolucion : public Malla3D
    ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapa_sup=true, bool tapa_inf=true) ;
 private:
     void crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias);
-
 } ;
 
 

@@ -6,9 +6,10 @@
 #include "cubo.h"
 #include "tetraedro.h"
 #include "objply.h"
+#include "objrevolucion.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO} menu;
-typedef enum {NINGUNO, CUBO, TETRAEDRO, PLY} objetoVisible;
+typedef enum {NINGUNO, CUBO, TETRAEDRO, PLY, REVOLUCION} objetoVisible;
 
 class Escena
 {
@@ -42,6 +43,7 @@ class Escena
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
    Tetraedro * tetraedro = nullptr ; // es importante inicializarlo a 'nullptr'
    ObjPLY * objetoPLY = nullptr;
+   ObjRevolucion * objetoRevolucion = nullptr;
 
    // FLAGS para el dibujado
    bool puntos;
