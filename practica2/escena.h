@@ -5,9 +5,10 @@
 #include "malla.h"
 #include "cubo.h"
 #include "tetraedro.h"
+#include "objply.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO} menu;
-typedef enum {NINGUNO, CUBO, TETRAEDRO} objetoVisible;
+typedef enum {NINGUNO, CUBO, TETRAEDRO, PLY} objetoVisible;
 
 class Escena
 {
@@ -40,6 +41,7 @@ class Escena
    Ejes ejes;
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
    Tetraedro * tetraedro = nullptr ; // es importante inicializarlo a 'nullptr'
+   ObjPLY * objetoPLY = nullptr;
 
    // FLAGS para el dibujado
    bool puntos;

@@ -95,6 +95,18 @@ void Escena::dibujar()
           tetraedro->draw( modoDibujado, SOLID );
       }
       break;
+    case PLY:
+      if( ajedrez )
+        objetoPLY->draw( modoDibujado, CHESS );
+      else {
+        if( puntos )
+          objetoPLY->draw( modoDibujado, POINTS );
+        if( lineas )
+          objetoPLY->draw( modoDibujado, LINES );
+        if( solido )
+          objetoPLY->draw( modoDibujado, SOLID );
+      }
+      break;
   }
 
 }
@@ -152,8 +164,24 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           objeto = TETRAEDRO;
           modoMenu = NADA;
           break;
+        case 'P':
+
+          cout << "Introduzca la ruta del archivo PLY: ";
+
+          char nombreArchivo[100], basura[100];
+
+          scanf( "%[^\n]", nombreArchivo );
+          while( ( getchar() ) != '\n');
+
+          objetoPLY = new ObjPLY( nombreArchivo );
+
+          objeto = PLY;
+          modoMenu = NADA;
+          cout << endl;
+          break;
         default:
-          cout << "ERROR - opciones disponibles:\n'C': Cubo\n'T': Tetraedro\n";
+          cout << "ERROR - opciones disponibles:\n'C': Cubo\n'T': Tetraedro\n"
+               << "'P': Objeto PLY";
           break;
       }
 

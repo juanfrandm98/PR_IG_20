@@ -20,7 +20,7 @@ void Malla3D::draw_ModoInmediato( visualizacion tipoVisualizacion )
 
     case POINTS:
       glColorPointer( 3, GL_FLOAT, 0, c_points.data() );
-      glPointSize( 7.5 );
+      //glPointSize( 7.5 );
       glPolygonMode( GL_FRONT_AND_BACK, GL_POINT );
       glDrawElements( GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, f.data() );
       break;
