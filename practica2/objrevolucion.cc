@@ -22,8 +22,99 @@ ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bo
    std::vector<Tupla3f> perfilOriginal;
    ply::read_vertices( archivo, perfilOriginal );
 
+   // Almacenamiento (si fuera necesario) de los puntos tapa
+   Tupla3f punto, puntoSup, puntoInf;
+
+   // Si el archivo contiene tapa superior, se quita el último punto y se guarda
+   if( tapa_sup ) {
+     punto = perfilOriginal[ perfilOriginal.size() - 1 ];
+     if( punto(0) != 0 || punto(2) != 0 )
+        puntoSup = Tupla3f( 0, punto(1), 0 );
+      else {
+        perfilOriginal.pop_back();
+        puntoSup = punto;
+      }
+   }
+
+   // Si el archivo contiene tapa inferior, se quita el primer punto y se guarda
+   if( tapa_inf ) {
+     //puntoInf = perfilOriginal[0];
+     //perfilOriginal.erase( perfilOriginal.begin() );
+     punto = perfilOriginal[0];
+     if( punto(0) != 0 || punto(2) != 0 )
+        puntoInf = Tupla3f( 0, punto(1), 0 );
+      else {
+        perfilOriginal.erase( perfilOriginal.begin() );
+        puntoInf = punto;
+      }
+   }
+
    // Ahora creamos las tablas de vértices y triángulos
    crearMalla( perfilOriginal, num_instancias );
+
+   // Una vez creada la malla, si el objeto tenía tapa superior, hay que crearla
+   if( tapa_inf ) {
+
+     v.push_back( Tupla3f( 0, puntoInf(1), 0 ) );
+     int contador = 0;
+
+     for( int i = 0; i < num_instancias; i++ ) {
+        int index0 = v.size() - 1;
+        int index1 = ( i * ( perfilOriginal.size() ) );
+        int index2 = ( index1 + perfilOriginal.size() ) % ( v.size() - 1 );
+        f.push_back( Tupla3i( index0, index2, index1 ) );
+
+        if( ( contador % 2 ) == 0 )
+          f_chess_par.push_back( Tupla3i( index0, index2, index1 ) );
+        else
+          f_chess_impar.push_back( Tupla3i( index0, index2, index1 ) );
+
+        contador++;
+      }
+   }
+
+   // Lo mismo con la tapa superior
+   if( tapa_sup ) {
+
+     int diferencia;
+     if( tapa_inf )
+      diferencia = 2;
+     else
+      diferencia = 1;
+
+     v.push_back( Tupla3f( 0, puntoSup(1), 0 ) );
+     int contador = 0;
+
+     for( int i = 0; i < num_instancias; i++ ) {
+        int index0 = v.size() - 1;
+        int index1 = perfilOriginal.size() - 1 + i * perfilOriginal.size();
+        int index2 = ( index1 + perfilOriginal.size() ) % ( v.size() - diferencia );
+        f.push_back( Tupla3i( index0, index1, index2 ) );
+
+        if( ( contador % 2 ) == 0 )
+          f_chess_par.push_back( Tupla3i( index0, index1, index2 ) );
+        else
+          f_chess_impar.push_back( Tupla3i( index0, index1, index2 ) );
+
+        contador++;
+      }
+   }
+
+   // Finalmente, colocamos los colores para que sean como los de la P1
+   for( int i = 0; i < v.size(); i++ )
+      c_solid.push_back( Tupla3f( 1, 0, 0 ) );
+
+   for( int i = 0; i < v.size(); i++ )
+      c_points.push_back( Tupla3f( 255, 0, 255 ) );
+
+   for( int i = 0; i < v.size(); i++ )
+      c_lines.push_back( Tupla3f( 0, 0, 0 ) );
+
+   for( int i = 0; i < v.size(); i++ )
+      c_chess_impar.push_back( Tupla3f( 1, 0, 0 ) );
+
+   for( int i = 0; i < v.size(); i++ )
+      c_chess_par.push_back( Tupla3f( 0, 1, 0 ) );
 
 }
 
@@ -52,6 +143,8 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
 
     }
 
+  int contador = 0;
+
   // Rellenamos la tabla de triángulos
   for( int i = 0; i < num_instancias; i++ )
     for( int j = 0; j < perfil_original.size() - 1; j++ ) {
@@ -61,6 +154,16 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
 
       f.push_back( Tupla3i( a, b, b + 1 ) );
       f.push_back( Tupla3i( a, b + 1, a + 1 ) );
+
+      if( ( contador % 2 ) == 0 ) {
+        f_chess_par.push_back( Tupla3i( a, b, b + 1 ) );
+        f_chess_par.push_back( Tupla3i( a, b, b + 1 ) );
+      } else {
+        f_chess_impar.push_back( Tupla3i( a, b, b + 1 ) );
+        f_chess_impar.push_back( Tupla3i( a, b, b + 1 ) );
+      }
+
+      contador ++;
 
     }
 

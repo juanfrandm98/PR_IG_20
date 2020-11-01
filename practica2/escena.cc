@@ -294,11 +294,39 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           scanf( "%[^\n]", nombreArchivoRev );
           while( ( getchar() ) != '\n');
 
+          cout << "\nIntroduzca el número de instancias: ";
+
           int num_instancias;
           scanf( "%d", &num_instancias );
           while( ( getchar() ) != '\n');
 
-          objetoRevolucion = new ObjRevolucion( nombreArchivoRev, num_instancias );
+          char eleccion;
+          bool tapa_sup, tapa_inf;
+
+          do {
+            cout << "\n¿Tiene tapa superior (S - Sí, N - No)? ";
+            eleccion = getchar();
+            cout << "Eleccion " << eleccion;
+            while( ( getchar() ) != '\n');
+          } while( toupper( eleccion ) != 'S' && toupper( eleccion ) != 'N' );
+
+          if( toupper( eleccion ) == 'S' )
+            tapa_sup = true;
+          else
+            tapa_sup = false;
+
+          do {
+            cout << "\n¿Y tapa inferior (S - Sí, N - No)? ";
+            eleccion = getchar();
+            while( ( getchar() ) != '\n');
+          } while( toupper( eleccion ) != 'S' && toupper( eleccion ) != 'N' );
+
+          if( toupper( eleccion ) == 'S' )
+            tapa_inf = true;
+          else
+            tapa_inf = false;
+
+          objetoRevolucion = new ObjRevolucion( nombreArchivoRev, num_instancias, tapa_sup, tapa_inf );
 
           objeto = REVOLUCION;
           modoMenu = NADA;
