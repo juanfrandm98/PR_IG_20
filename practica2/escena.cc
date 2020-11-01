@@ -26,7 +26,8 @@ Escena::Escena()
 
     cubo = new Cubo( 100 );
     tetraedro = new Tetraedro( 100 );
-    cilindro = new Cilindro( 4, 10, 100, 25);
+    cilindro = new Cilindro( 1, 10, 100, 25);
+    esfera = new Esfera( 10, 10, 100 );
 
     puntos = false;
     lineas = false;
@@ -227,6 +228,19 @@ void Escena::dibujar()
         cilindro->draw( modoDibujado, LINES );
       if( solido )
         cilindro->draw( modoDibujado, SOLID );
+    }
+  }
+
+  if( objeto == ESFERA ) {
+    if( ajedrez )
+      esfera->draw( modoDibujado, CHESS );
+    else {
+      if( puntos )
+        esfera->draw( modoDibujado, POINTS );
+      if( lineas )
+        esfera->draw( modoDibujado, LINES );
+      if( solido )
+        esfera->draw( modoDibujado, SOLID );
     }
   }
 

@@ -1,5 +1,5 @@
 #ifndef CILINDRO_H_INCLUDED
-#define CUBO_H_INCLUDED
+#define CILINDRO_H_INCLUDED
 
 #include "aux.h"
 
