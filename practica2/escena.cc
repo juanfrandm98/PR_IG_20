@@ -26,6 +26,7 @@ Escena::Escena()
 
     cubo = new Cubo( 100 );
     tetraedro = new Tetraedro( 100 );
+    cilindro = new Cilindro( 4, 10, 100, 25);
 
     puntos = false;
     lineas = false;
@@ -213,6 +214,19 @@ void Escena::dibujar()
           objetoRevolucion->draw( modoDibujado, SOLID );
         glPopMatrix();
       }
+    }
+  }
+
+  if( objeto == CILINDRO ) {
+    if( ajedrez )
+      cilindro->draw( modoDibujado, CHESS );
+    else {
+      if( puntos )
+        cilindro->draw( modoDibujado, POINTS );
+      if( lineas )
+        cilindro->draw( modoDibujado, LINES );
+      if( solido )
+        cilindro->draw( modoDibujado, SOLID );
     }
   }
 

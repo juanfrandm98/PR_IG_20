@@ -7,9 +7,10 @@
 #include "tetraedro.h"
 #include "objply.h"
 #include "objrevolucion.h"
+#include "cilindro.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO} menu;
-typedef enum {NINGUNO, CUBO, TETRAEDRO, PLY, REVOLUCION} objetoVisible;
+typedef enum {NINGUNO, CUBO, TETRAEDRO, PLY, REVOLUCION, CILINDRO, TODASREV} objetoVisible;
 
 class Escena
 {
@@ -37,13 +38,14 @@ class Escena
    void clear_window();
 
    menu modoMenu=NADA;
-   objetoVisible objeto = NINGUNO;
+   objetoVisible objeto = CILINDRO;
    // Objetos de la escena
    Ejes ejes;
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
    Tetraedro * tetraedro = nullptr ; // es importante inicializarlo a 'nullptr'
    ObjPLY * objetoPLY = nullptr;
    ObjRevolucion * objetoRevolucion = nullptr;
+   Cilindro * cilindro = nullptr;
 
    // FLAGS para el dibujado
    bool puntos;

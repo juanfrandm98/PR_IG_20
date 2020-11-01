@@ -15,13 +15,8 @@
 
 ObjRevolucion::ObjRevolucion() {}
 
-ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bool tapa_sup, bool tapa_inf) {
-   // completar ......(práctica 2)
-
-   // En primer lugar, cargamos en perfilOriginal los vértices leídos del archivo argumento
-   std::vector<Tupla3f> perfilOriginal;
-   ply::read_vertices( archivo, perfilOriginal );
-
+void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_instancias,
+                                 bool tapa_sup, bool tapa_inf ) {
    // Almacenamiento (si fuera necesario) de los puntos tapa
    Tupla3f punto, puntoSup, puntoInf;
 
@@ -115,6 +110,16 @@ ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bo
 
    for( int i = 0; i < v.size(); i++ )
       c_chess_par.push_back( Tupla3f( 0, 1, 0 ) );
+}
+
+ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bool tapa_sup, bool tapa_inf) {
+   // completar ......(práctica 2)
+
+   // En primer lugar, cargamos en perfilOriginal los vértices leídos del archivo argumento
+   std::vector<Tupla3f> perfilOriginal;
+   ply::read_vertices( archivo, perfilOriginal );
+
+   CrearObjeto( perfilOriginal, num_instancias, tapa_sup, tapa_inf );
 
 }
 
@@ -123,6 +128,8 @@ ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bo
 
 
 ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapa_sup, bool tapa_inf) {
+
+  CrearObjeto( archivo, num_instancias, tapa_sup, tapa_inf );
 
 }
 
