@@ -47,6 +47,12 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
    // Ahora creamos las tablas de vértices y triángulos
    crearMalla( perfilOriginal, num_instancias );
 
+   for( int i = 0; i < f.size(); i++ )
+    if( i % 2 == 0 )
+      f_chess_par.push_back( f[i] );
+    else
+      f_chess_impar.push_back( f[i] );
+
    // Una vez creada la malla, si el objeto tenía tapa superior, hay que crearla
    if( tapa_inf ) {
 
@@ -162,15 +168,8 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
       f.push_back( Tupla3i( a, b, b + 1 ) );
       f.push_back( Tupla3i( a, b + 1, a + 1 ) );
 
-      if( ( contador % 2 ) == 0 ) {
-        f_chess_par.push_back( Tupla3i( a, b, b + 1 ) );
-        f_chess_par.push_back( Tupla3i( a, b, b + 1 ) );
-      } else {
-        f_chess_impar.push_back( Tupla3i( a, b, b + 1 ) );
-        f_chess_impar.push_back( Tupla3i( a, b, b + 1 ) );
-      }
-
-      contador ++;
+      //f_chess_par.push_back( Tupla3i( a, b, b + 1 ) );
+      //f_chess_impar.push_back( Tupla3i( a, b, b + 1 ) );
 
     }
 
