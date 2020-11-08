@@ -11,8 +11,8 @@
 #include "cono.h"
 #include "esfera.h"
 
-typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO} menu;
-typedef enum {NINGUNO, CUBO, TETRAEDRO, PLY, REVOLUCION, CILINDRO, TODASREV, ESFERA} objetoVisible;
+typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,TAPAS} menu;
+typedef enum {NINGUNO, P1, PLY, REVOLUCION, CILINDRO, TODASREV, ESFERA, CONO} objetoVisible;
 
 class Escena
 {
@@ -40,7 +40,7 @@ class Escena
    void clear_window();
 
    menu modoMenu=NADA;
-   objetoVisible objeto = CILINDRO;
+   objetoVisible objeto = TODASREV;
    // Objetos de la escena
    Ejes ejes;
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
@@ -57,6 +57,8 @@ class Escena
    bool solido;
    bool ajedrez;
    dibujado modoDibujado;
+   bool tapa_superior;
+   bool tapa_inferior;
 
    public:
 

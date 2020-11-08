@@ -28,14 +28,21 @@
 class ObjRevolucion : public Malla3D
 {
    public:
-       ObjRevolucion();
-   ObjRevolucion(const std::string & archivo, int num_instancias, bool tapa_sup=true, bool tapa_inf=true) ;
-   ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapa_sup=true, bool tapa_inf=true) ;
-private:
-    void crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias);
-  protected:
-    void CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_instancias,
-                      bool tapa_sup, bool tapa_inf );
+     ObjRevolucion();
+     ObjRevolucion(const std::string & archivo, int num_instancias, bool tapa_sup=true, bool tapa_inf=true) ;
+     ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapa_sup=true, bool tapa_inf=true) ;
+     void draw_tapas( visualizacion tipoVisualizacion, bool superior, bool inferior );
+   private:
+     void crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias);
+     std::vector<Tupla3i> f_tapa_sup;
+     std::vector<Tupla3i> f_tapa_inf;
+     std::vector<Tupla3i> f_chess_par_tapa_sup;
+     std::vector<Tupla3i> f_chess_impar_tapa_sup;
+     std::vector<Tupla3i> f_chess_par_tapa_inf;
+     std::vector<Tupla3i> f_chess_impar_tapa_inf;
+   protected:
+      void CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_instancias,
+                        bool tapa_sup, bool tapa_inf );
 } ;
 
 

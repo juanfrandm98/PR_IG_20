@@ -19,6 +19,7 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
                                  bool tapa_sup, bool tapa_inf ) {
    // Almacenamiento (si fuera necesario) de los puntos tapa
    Tupla3f punto, puntoSup, puntoInf;
+   int contador;
 
    // Si el archivo contiene tapa superior, se quita el último punto y se guarda
    if( tapa_sup ) {
@@ -47,6 +48,7 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
    // Ahora creamos las tablas de vértices y triángulos
    crearMalla( perfilOriginal, num_instancias );
 
+   // Creamos las tablas de triángulos para el modo ajedrez
    for( int i = 0; i < f.size(); i++ )
     if( i % 2 == 0 )
       f_chess_par.push_back( f[i] );
@@ -57,18 +59,18 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
    if( tapa_inf ) {
 
      v.push_back( Tupla3f( 0, puntoInf(1), 0 ) );
-     int contador = 0;
+     contador = 0;
 
      for( int i = 0; i < num_instancias; i++ ) {
         int index0 = v.size() - 1;
         int index1 = ( i * ( perfilOriginal.size() ) );
         int index2 = ( index1 + perfilOriginal.size() ) % ( v.size() - 1 );
-        f.push_back( Tupla3i( index0, index2, index1 ) );
+        f_tapa_inf.push_back( Tupla3i( index0, index2, index1 ) );
 
         if( ( contador % 2 ) == 0 )
-          f_chess_par.push_back( Tupla3i( index0, index2, index1 ) );
+          f_chess_par_tapa_inf.push_back( Tupla3i( index0, index2, index1 ) );
         else
-          f_chess_impar.push_back( Tupla3i( index0, index2, index1 ) );
+          f_chess_impar_tapa_inf.push_back( Tupla3i( index0, index2, index1 ) );
 
         contador++;
       }
@@ -84,18 +86,18 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
       diferencia = 1;
 
      v.push_back( Tupla3f( 0, puntoSup(1), 0 ) );
-     int contador = 0;
+     contador = 0;
 
      for( int i = 0; i < num_instancias; i++ ) {
         int index0 = v.size() - 1;
         int index1 = perfilOriginal.size() - 1 + i * perfilOriginal.size();
         int index2 = ( index1 + perfilOriginal.size() ) % ( v.size() - diferencia );
-        f.push_back( Tupla3i( index0, index1, index2 ) );
+        f_tapa_sup.push_back( Tupla3i( index0, index1, index2 ) );
 
         if( ( contador % 2 ) == 0 )
-          f_chess_par.push_back( Tupla3i( index0, index1, index2 ) );
+          f_chess_par_tapa_sup.push_back( Tupla3i( index0, index1, index2 ) );
         else
-          f_chess_impar.push_back( Tupla3i( index0, index1, index2 ) );
+          f_chess_impar_tapa_sup.push_back( Tupla3i( index0, index1, index2 ) );
 
         contador++;
       }
@@ -168,9 +170,66 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
       f.push_back( Tupla3i( a, b, b + 1 ) );
       f.push_back( Tupla3i( a, b + 1, a + 1 ) );
 
-      //f_chess_par.push_back( Tupla3i( a, b, b + 1 ) );
-      //f_chess_impar.push_back( Tupla3i( a, b, b + 1 ) );
-
     }
+
+}
+
+void ObjRevolucion::draw_tapas( visualizacion tipoVisualizacion, bool superior, bool inferior )
+{
+
+  glEnableClientState( GL_VERTEX_ARRAY );
+  glVertexPointer( 3, GL_FLOAT, 0, v.data() );
+  glEnableClientState( GL_COLOR_ARRAY );
+
+  bool tengosup = !f_tapa_sup.empty();
+  bool tengoinf = !f_tapa_inf.empty();
+
+  switch( tipoVisualizacion ) {
+
+    case POINTS:
+      glColorPointer( 3, GL_FLOAT, 0, c_points.data() );
+      glPointSize( 7.5 );
+      glPolygonMode( GL_FRONT_AND_BACK, GL_POINT );
+      if( superior and tengosup )
+        glDrawElements( GL_TRIANGLES, 3 * f_tapa_sup.size(), GL_UNSIGNED_INT, f_tapa_sup.data() );
+      if( inferior and tengoinf )
+        glDrawElements( GL_TRIANGLES, 3 * f_tapa_inf.size(), GL_UNSIGNED_INT, f_tapa_inf.data() );
+      break;
+
+    case LINES:
+      glColorPointer( 3, GL_FLOAT, 0, c_lines.data() );
+      glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+      if( superior and tengosup )
+        glDrawElements( GL_TRIANGLES, 3 * f_tapa_sup.size(), GL_UNSIGNED_INT, f_tapa_sup.data() );
+      if( inferior and tengoinf )
+        glDrawElements( GL_TRIANGLES, 3 * f_tapa_inf.size(), GL_UNSIGNED_INT, f_tapa_inf.data() );
+      break;
+
+    case SOLID:
+      glColorPointer( 3, GL_FLOAT, 0, c_solid.data() );
+      glPolygonMode( GL_FRONT, GL_FILL );
+      if( superior and tengosup )
+        glDrawElements( GL_TRIANGLES, 3 * f_tapa_sup.size(), GL_UNSIGNED_INT, f_tapa_sup.data() );
+      if( inferior and tengoinf )
+        glDrawElements( GL_TRIANGLES, 3 * f_tapa_inf.size(), GL_UNSIGNED_INT, f_tapa_inf.data() );
+      break;
+
+    case CHESS:
+      glColorPointer( 3, GL_FLOAT, 0, c_chess_impar.data() );
+      glPolygonMode( GL_FRONT, GL_FILL );
+      if( superior and tengosup )
+        glDrawElements( GL_TRIANGLES, 3 * f_chess_impar_tapa_sup.size(), GL_UNSIGNED_INT, f_chess_impar_tapa_sup.data() );
+      if( inferior and tengoinf )
+        glDrawElements( GL_TRIANGLES, 3 * f_chess_impar_tapa_inf.size(), GL_UNSIGNED_INT, f_chess_impar_tapa_inf.data() );
+
+      glColorPointer( 3, GL_FLOAT, 0, c_chess_par.data() );
+      glPolygonMode( GL_FRONT, GL_FILL );
+      if( superior and tengosup )
+        glDrawElements( GL_TRIANGLES, 3 * f_chess_par_tapa_sup.size(), GL_UNSIGNED_INT, f_chess_par_tapa_sup.data() );
+      if( inferior and tengoinf )
+        glDrawElements( GL_TRIANGLES, 3 * f_chess_par_tapa_inf.size(), GL_UNSIGNED_INT, f_chess_par_tapa_inf.data() );
+      break;
+
+  }
 
 }
