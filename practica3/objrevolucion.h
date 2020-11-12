@@ -1,0 +1,58 @@
+// #############################################################################
+//
+// Informática Gráfica (Grado Informática)
+//
+// Archivo: Cubo.h
+
+//
+// #############################################################################
+
+#ifndef OBJREVOLUCION_H_INCLUDED
+#define OBJREVOLUCION_H_INCLUDED
+
+#include "aux.h"
+#include "malla.h"
+
+// *****************************************************************************
+//
+// clases derivadas de Malla3D (definen constructores específicos)
+//
+// *****************************************************************************
+
+// *****************************************************************************
+// Cubo con centro en el origen y lado unidad por defecto
+// (tiene 9 vertices y 6 caras)
+
+#define M_PI 3.14159265358979323846
+
+class ObjRevolucion : public Malla3D
+{
+   public:
+     ObjRevolucion();
+     ObjRevolucion(const std::string & archivo, int num_instancias, bool tapa_sup=true, bool tapa_inf=true) ;
+     ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapa_sup=true, bool tapa_inf=true) ;
+     void draw_tapas( visualizacion tipoVisualizacion, bool superior, bool inferior );
+   private:
+     void crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias);
+     std::vector<Tupla3i> f_tapa_sup;
+     std::vector<Tupla3i> f_tapa_inf;
+     std::vector<Tupla3i> f_chess_par_tapa_sup;
+     std::vector<Tupla3i> f_chess_impar_tapa_sup;
+     std::vector<Tupla3i> f_chess_par_tapa_inf;
+     std::vector<Tupla3i> f_chess_impar_tapa_inf;
+
+     // Como he separado las caras de las tapas del resto de caras, necesito
+     // añadir a la función general las normales de las tapas
+     void CalcularNormalesRev();
+
+     // Función que calcula las normales de las tapas
+     std::vector<Tupla3f> CalcularNormalesTapas();
+   protected:
+      void CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_instancias,
+                        bool tapa_sup, bool tapa_inf );
+} ;
+
+
+
+
+#endif
