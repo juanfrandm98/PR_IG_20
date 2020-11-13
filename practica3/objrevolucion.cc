@@ -20,7 +20,7 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
    // Almacenamiento (si fuera necesario) de los puntos tapa
    Tupla3f punto, puntoSup, puntoInf;
    int contador;
-   const float EPSILON = 0.0000000000000000001;
+   const float EPSILON = 0.001;
 
    // Si el archivo contiene tapa superior, se quita el último punto y se guarda
    if( tapa_sup ) {
