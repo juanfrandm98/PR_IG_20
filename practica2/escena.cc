@@ -82,7 +82,7 @@ void Escena::dibujar()
       if( ajedrez ) {
         glPushMatrix();
           glScalef( 10, 10, 10 );
-          //objetoPLY->draw( modoDibujado, CHESS );
+          objetoPLY->draw( modoDibujado, CHESS );
         glPopMatrix();
       } else {
         if( puntos ) {
