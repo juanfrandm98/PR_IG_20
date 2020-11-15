@@ -38,6 +38,7 @@ class Malla3D
 
    protected:
 
+   void calcular_normales() ; // calcula tabla de normales de vértices (práctica 3)
    GLuint CrearVBO( GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram );
 
    std::vector<Tupla3f> v ;   // tabla de coordenadas de vértices (una tupla por vértice, con tres floats)
@@ -68,6 +69,8 @@ class Malla3D
 
    // Función que calcula la tabla de normales de vértices
    void Calcular_normales( std::vector<Tupla3f> normalesCaras ) ;
+
+   // completar: tabla de colores, tabla de normales de vértices
 } ;
 
 

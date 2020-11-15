@@ -22,10 +22,13 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
    int contador;
    const float EPSILON = 0.001;
 
+   // Almacenamos si el objeto de revolución tiene las tapas
+   tiene_tapa_sup = tapa_sup;
+   tiene_tapa_inf = tapa_inf;
+
    // Si el archivo contiene tapa superior, se quita el último punto y se guarda
    if( tapa_sup ) {
      punto = perfilOriginal[ perfilOriginal.size() - 1 ];
-     //if( punto(0) != 0 || punto(2) != 0 )
      if( fabs( punto(0) ) > EPSILON || fabs( punto(2) ) > EPSILON )
         puntoSup = Tupla3f( 0, punto(1), 0 );
       else {
@@ -39,7 +42,6 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
      //puntoInf = perfilOriginal[0];
      //perfilOriginal.erase( perfilOriginal.begin() );
      punto = perfilOriginal[0];
-     //if( punto(0) != 0 || punto(2) != 0 )
      if( fabs( punto(0) ) > EPSILON || fabs( punto(2) ) > EPSILON )
         puntoInf = Tupla3f( 0, punto(1), 0 );
       else {
@@ -58,6 +60,12 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
     else
       f_chess_impar.push_back( f[i] );
 
+   // Hasta ahora hemos creado los triángulos del cuerpo, por lo que guardamos
+   // la última posición para los tres vectores
+   final_cuerpo = f.size();
+   final_cuerpo_pares = f_chess_par.size();
+   final_cuerpo_impares = f_chess_impar.size();
+
    // Una vez creada la malla, si el objeto tenía tapa superior, hay que crearla
    if( tapa_inf ) {
 
@@ -68,16 +76,22 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
         int index0 = v.size() - 1;
         int index1 = ( i * ( perfilOriginal.size() ) );
         int index2 = ( index1 + perfilOriginal.size() ) % ( v.size() - 1 );
-        f_tapa_inf.push_back( Tupla3i( index0, index2, index1 ) );
+        f.push_back( Tupla3i( index0, index2, index1 ) );
 
         if( ( contador % 2 ) == 0 )
-          f_chess_par_tapa_inf.push_back( Tupla3i( index0, index2, index1 ) );
+          f_chess_par.push_back( Tupla3i( index0, index2, index1 ) );
         else
-          f_chess_impar_tapa_inf.push_back( Tupla3i( index0, index2, index1 ) );
+          f_chess_impar.push_back( Tupla3i( index0, index2, index1 ) );
 
         contador++;
       }
+
    }
+
+   // Guardamos la última posición de los triángulos de la tapa inferior
+   final_tapa_inf = f.size();
+   final_tapa_inf_pares = f_chess_par.size();
+   final_tapa_inf_impares = f_chess_impar.size();
 
    // Lo mismo con la tapa superior
    if( tapa_sup ) {
@@ -95,16 +109,21 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
         int index0 = v.size() - 1;
         int index1 = perfilOriginal.size() - 1 + i * perfilOriginal.size();
         int index2 = ( index1 + perfilOriginal.size() ) % ( v.size() - diferencia );
-        f_tapa_sup.push_back( Tupla3i( index0, index1, index2 ) );
+        f.push_back( Tupla3i( index0, index1, index2 ) );
 
         if( ( contador % 2 ) == 0 )
-          f_chess_par_tapa_sup.push_back( Tupla3i( index0, index1, index2 ) );
+          f_chess_par.push_back( Tupla3i( index0, index1, index2 ) );
         else
-          f_chess_impar_tapa_sup.push_back( Tupla3i( index0, index1, index2 ) );
+          f_chess_impar.push_back( Tupla3i( index0, index1, index2 ) );
 
         contador++;
       }
    }
+
+   // Guardamos la última posición de los triángulos de la tapa inferior
+   final_tapa_sup = f.size();
+   final_tapa_sup_pares = f_chess_par.size();
+   final_tapa_sup_impares = f_chess_impar.size();
 
    // Finalmente, colocamos los colores para que sean como los de la P1
    for( int i = 0; i < v.size(); i++ )
@@ -122,8 +141,8 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
    for( int i = 0; i < v.size(); i++ )
       c_chess_par.push_back( Tupla3f( 0, 1, 0 ) );
 
-   // Calculamos las normales de los vértices
-   CalcularNormalesRev();
+  // Calculamos las normales de los vértices
+  Calcular_normales( CalcularNormalesCaras() );
 }
 
 ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bool tapa_sup, bool tapa_inf) {
@@ -180,15 +199,12 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
 
 }
 
-void ObjRevolucion::draw_tapas( visualizacion tipoVisualizacion, bool superior, bool inferior )
+void ObjRevolucion::draw_cuerpo( visualizacion tipoVisualizacion )
 {
 
   glEnableClientState( GL_VERTEX_ARRAY );
   glVertexPointer( 3, GL_FLOAT, 0, v.data() );
   glEnableClientState( GL_COLOR_ARRAY );
-
-  bool tengosup = !f_tapa_sup.empty();
-  bool tengoinf = !f_tapa_inf.empty();
 
   switch( tipoVisualizacion ) {
 
@@ -196,109 +212,114 @@ void ObjRevolucion::draw_tapas( visualizacion tipoVisualizacion, bool superior, 
       glColorPointer( 3, GL_FLOAT, 0, c_points.data() );
       glPointSize( 7.5 );
       glPolygonMode( GL_FRONT_AND_BACK, GL_POINT );
-      if( superior and tengosup )
-        glDrawElements( GL_TRIANGLES, 3 * f_tapa_sup.size(), GL_UNSIGNED_INT, f_tapa_sup.data() );
-      if( inferior and tengoinf )
-        glDrawElements( GL_TRIANGLES, 3 * f_tapa_inf.size(), GL_UNSIGNED_INT, f_tapa_inf.data() );
+      glDrawElements( GL_TRIANGLES, 3 * final_cuerpo, GL_UNSIGNED_INT, f.data() );
       break;
 
     case LINES:
       glColorPointer( 3, GL_FLOAT, 0, c_lines.data() );
       glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-      if( superior and tengosup )
-        glDrawElements( GL_TRIANGLES, 3 * f_tapa_sup.size(), GL_UNSIGNED_INT, f_tapa_sup.data() );
-      if( inferior and tengoinf )
-        glDrawElements( GL_TRIANGLES, 3 * f_tapa_inf.size(), GL_UNSIGNED_INT, f_tapa_inf.data() );
+      glDrawElements( GL_TRIANGLES, 3 * final_cuerpo, GL_UNSIGNED_INT, f.data() );
       break;
 
     case SOLID:
       glColorPointer( 3, GL_FLOAT, 0, c_solid.data() );
       glPolygonMode( GL_FRONT, GL_FILL );
-      if( superior and tengosup )
-        glDrawElements( GL_TRIANGLES, 3 * f_tapa_sup.size(), GL_UNSIGNED_INT, f_tapa_sup.data() );
-      if( inferior and tengoinf )
-        glDrawElements( GL_TRIANGLES, 3 * f_tapa_inf.size(), GL_UNSIGNED_INT, f_tapa_inf.data() );
+      glDrawElements( GL_TRIANGLES, 3 * final_cuerpo, GL_UNSIGNED_INT, f.data() );
       break;
 
     case CHESS:
       glColorPointer( 3, GL_FLOAT, 0, c_chess_impar.data() );
       glPolygonMode( GL_FRONT, GL_FILL );
-      if( superior and tengosup )
-        glDrawElements( GL_TRIANGLES, 3 * f_chess_impar_tapa_sup.size(), GL_UNSIGNED_INT, f_chess_impar_tapa_sup.data() );
-      if( inferior and tengoinf )
-        glDrawElements( GL_TRIANGLES, 3 * f_chess_impar_tapa_inf.size(), GL_UNSIGNED_INT, f_chess_impar_tapa_inf.data() );
+      glDrawElements( GL_TRIANGLES, 3 * final_cuerpo_impares, GL_UNSIGNED_INT, f_chess_impar.data() );
 
       glColorPointer( 3, GL_FLOAT, 0, c_chess_par.data() );
       glPolygonMode( GL_FRONT, GL_FILL );
-      if( superior and tengosup )
-        glDrawElements( GL_TRIANGLES, 3 * f_chess_par_tapa_sup.size(), GL_UNSIGNED_INT, f_chess_par_tapa_sup.data() );
-      if( inferior and tengoinf )
-        glDrawElements( GL_TRIANGLES, 3 * f_chess_par_tapa_inf.size(), GL_UNSIGNED_INT, f_chess_par_tapa_inf.data() );
+      glDrawElements( GL_TRIANGLES, 3 * final_cuerpo_pares, GL_UNSIGNED_INT, f_chess_par.data() );
       break;
 
   }
 
 }
 
-void ObjRevolucion::CalcularNormalesRev() {
+void ObjRevolucion::draw_tapas( visualizacion tipoVisualizacion, bool superior, bool inferior )
+{
 
-  // Obtenemos las normales de las caras del perfil
-  std::vector<Tupla3f> normalesCaras = CalcularNormalesCaras();
+  glEnableClientState( GL_VERTEX_ARRAY );
+  glVertexPointer( 3, GL_FLOAT, 0, v.data() );
+  glEnableClientState( GL_COLOR_ARRAY );
 
-  // Obtenemos las normales de las caras de las tapas y las añadimos:
-  std::vector<Tupla3f> normalesTapas = CalcularNormalesTapas();
-  for( int i = 0; i < normalesTapas.size(); i++ )
-    normalesCaras.push_back( normalesTapas[i] );
+  std::vector<Tupla3i> tapasup, tapainf;
+  std::vector<Tupla3i> tapasup_pares, tapainf_pares;
+  std::vector<Tupla3i> tapasup_impares, tapainf_impares;
 
-  // Obtenemos las normales de los vértices
-  Calcular_normales( normalesCaras );
-
-}
-
-std::vector<Tupla3f> ObjRevolucion::CalcularNormalesTapas() {
-
-  std::vector<Tupla3f> normalesTapas;
-
-  // Tapa inferior
-  for( int i = 0; i < f_tapa_inf.size(); i++ ) {
-
-    Tupla3f v1, v2, v3;
-
-    // Obtenemos los vértices que forman la cara
-    v1 = v[f_tapa_inf[i][0]]; v2 = v[f_tapa_inf[i][1]]; v3 = v[f_tapa_inf[i][2]];
-
-    // Calculamos dos aristas
-    Tupla3f a = v2 - v1;
-    Tupla3f b = v3 - v1;
-
-    // Calculamos la normal y la normalizamos
-    Tupla3f normal = a.cross(b);
-    Tupla3f normalizada = normal.normalized();
-
-    normalesTapas.push_back( normalizada );
-
+  if( tipoVisualizacion == CHESS ) {
+    if( tiene_tapa_inf ) {
+      for( int i = final_cuerpo_pares; i < final_tapa_inf_pares; i++ )
+        tapainf_pares.push_back( f_chess_par[i] );
+      for( int i = final_cuerpo_impares; i < final_tapa_inf_impares; i++ )
+        tapainf_impares.push_back( f_chess_impar[i] );
+    }
+    if( tiene_tapa_sup ) {
+      for( int i = final_tapa_inf_pares; i < final_tapa_sup_pares; i++ )
+        tapasup_pares.push_back( f_chess_par[i] );
+      for( int i = final_tapa_inf_impares; i < final_tapa_sup_impares; i++ )
+        tapasup_impares.push_back( f_chess_impar[i] );
+    }
+  } else {
+    if( tiene_tapa_inf )
+      for( int i = final_cuerpo; i < final_tapa_inf; i++ )
+        tapainf.push_back( f[i] );
+    if( tiene_tapa_sup )
+      for( int i = final_tapa_inf; i < final_tapa_sup; i++ )
+        tapasup.push_back( f[i] );
   }
 
-  // Tapa superior
-  for( int i = 0; i < f_tapa_sup.size(); i++ ) {
+  switch( tipoVisualizacion ) {
 
-    Tupla3f v1, v2, v3;
+    case POINTS:
+      glColorPointer( 3, GL_FLOAT, 0, c_points.data() );
+      glPointSize( 7.5 );
+      glPolygonMode( GL_FRONT_AND_BACK, GL_POINT );
+      if( superior and tiene_tapa_sup )
+        glDrawElements( GL_TRIANGLES, 3 * tapasup.size(), GL_UNSIGNED_INT, tapasup.data() );
+      if( inferior and tiene_tapa_inf )
+        glDrawElements( GL_TRIANGLES, 3 * tapainf.size(), GL_UNSIGNED_INT, tapainf.data() );
+      break;
 
-    // Obtenemos los vértices que forman la cara
-    v1 = v[f_tapa_sup[i][0]]; v2 = v[f_tapa_sup[i][1]]; v3 = v[f_tapa_sup[i][2]];
+    case LINES:
+      glColorPointer( 3, GL_FLOAT, 0, c_lines.data() );
+      glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+      if( superior and tiene_tapa_sup )
+        glDrawElements( GL_TRIANGLES, 3 * tapasup.size(), GL_UNSIGNED_INT, tapasup.data() );
+      if( inferior and tiene_tapa_inf )
+        glDrawElements( GL_TRIANGLES, 3 * tapainf.size(), GL_UNSIGNED_INT, tapainf.data() );
+      break;
 
-    // Calculamos dos aristas
-    Tupla3f a = v2 - v1;
-    Tupla3f b = v3 - v1;
+    case SOLID:
+      glColorPointer( 3, GL_FLOAT, 0, c_solid.data() );
+      glPolygonMode( GL_FRONT, GL_FILL );
+      if( superior and tiene_tapa_sup )
+        glDrawElements( GL_TRIANGLES, 3 * tapasup.size(), GL_UNSIGNED_INT, tapasup.data() );
+      if( inferior and tiene_tapa_inf )
+        glDrawElements( GL_TRIANGLES, 3 * tapainf.size(), GL_UNSIGNED_INT, tapainf.data() );
+      break;
 
-    // Calculamos la normal y la normalizamos
-    Tupla3f normal = a.cross(b);
-    Tupla3f normalizada = normal.normalized();
+    case CHESS:
+      glColorPointer( 3, GL_FLOAT, 0, c_chess_impar.data() );
+      glPolygonMode( GL_FRONT, GL_FILL );
+      if( superior and tiene_tapa_sup )
+        glDrawElements( GL_TRIANGLES, 3 * tapasup_impares.size(), GL_UNSIGNED_INT, tapasup_impares.data() );
+      if( inferior and tiene_tapa_inf )
+        glDrawElements( GL_TRIANGLES, 3 * tapainf_impares.size(), GL_UNSIGNED_INT, tapainf_impares.data() );
 
-    normalesTapas.push_back( normalizada );
+      glColorPointer( 3, GL_FLOAT, 0, c_chess_par.data() );
+      glPolygonMode( GL_FRONT, GL_FILL );
+      if( superior and tiene_tapa_sup )
+        glDrawElements( GL_TRIANGLES, 3 * tapasup_pares.size(), GL_UNSIGNED_INT, tapasup_pares.data() );
+      if( inferior and tiene_tapa_inf )
+        glDrawElements( GL_TRIANGLES, 3 * tapainf_pares.size(), GL_UNSIGNED_INT, tapainf_pares.data() );
+      break;
 
   }
-
-  return normalesTapas;
 
 }

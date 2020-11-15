@@ -13,7 +13,6 @@
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,TAPAS} menu;
 typedef enum {NINGUNO, P1, PLY, REVOLUCION, CILINDRO, TODASREV, ESFERA, CONO} objetoVisible;
-typedef enum {SINLUZ, SUAVE, PLANO} iluminacion;
 
 class Escena
 {
@@ -41,7 +40,7 @@ class Escena
    void clear_window();
 
    menu modoMenu=NADA;
-   objetoVisible objeto = TODASREV;
+   objetoVisible objeto = CILINDRO;
    // Objetos de la escena
    Ejes ejes;
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
@@ -60,8 +59,6 @@ class Escena
    dibujado modoDibujado;
    bool tapa_superior;
    bool tapa_inferior;
-   iluminacion modoIluminacion;
-
 
    public:
 

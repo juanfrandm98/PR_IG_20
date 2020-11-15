@@ -36,7 +36,7 @@ void Malla3D::draw_ModoInmediato( visualizacion tipoVisualizacion )
       glPolygonMode( GL_FRONT, GL_FILL );
       glDrawElements( GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, f.data() );
       break;
-/*
+
     case CHESS:
       glColorPointer( 3, GL_FLOAT, 0, c_chess_impar.data() );
       glPolygonMode( GL_FRONT, GL_FILL );
@@ -45,7 +45,7 @@ void Malla3D::draw_ModoInmediato( visualizacion tipoVisualizacion )
       glColorPointer( 3, GL_FLOAT, 0, c_chess_par.data() );
       glPolygonMode( GL_FRONT, GL_FILL );
       glDrawElements( GL_TRIANGLES, 3 * f_chess_par.size(), GL_UNSIGNED_INT, f_chess_par.data() );
-      break;*/
+      break;
 
   }
 
