@@ -40,7 +40,7 @@ class Escena
    void clear_window();
 
    menu modoMenu=NADA;
-   objetoVisible objeto = TODASREV;
+   objetoVisible objeto = CILINDRO;
    // Objetos de la escena
    Ejes ejes;
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'

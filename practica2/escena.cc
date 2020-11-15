@@ -82,7 +82,7 @@ void Escena::dibujar()
       if( ajedrez ) {
         glPushMatrix();
           glScalef( 10, 10, 10 );
-          objetoPLY->draw( modoDibujado, CHESS );
+          //objetoPLY->draw( modoDibujado, CHESS );
         glPopMatrix();
       } else {
         if( puntos ) {
@@ -159,71 +159,119 @@ void Escena::dibujar()
       if( ajedrez ) {
         glPushMatrix();
           glTranslatef( -100, 0, 0 );
-          cilindro->draw( modoDibujado, CHESS );
-          if( tapa_superior or tapa_inferior )
-            cilindro->draw_tapas( CHESS, tapa_superior, tapa_inferior );
+          if( tapa_superior and tapa_inferior )
+            cilindro->draw( modoDibujado, CHESS );
+          else {
+            cilindro->draw_cuerpo( CHESS );
+            if( tapa_superior or tapa_inferior )
+              cilindro->draw_tapas( CHESS, tapa_superior, tapa_inferior );
+          }
         glPopMatrix();
-        esfera->draw( modoDibujado, CHESS );
-        if( tapa_superior or tapa_inferior )
-          esfera->draw_tapas( CHESS, tapa_superior, tapa_inferior );
+        if( tapa_superior and tapa_inferior )
+          esfera->draw( modoDibujado, CHESS );
+        else {
+          esfera->draw_cuerpo( CHESS );
+          if( tapa_superior or tapa_inferior )
+            esfera->draw_tapas( CHESS, tapa_superior, tapa_inferior );
+        }
         glPushMatrix();
           glTranslatef( 100, 0, 0 );
-          cono->draw( modoDibujado, CHESS );
-          if( tapa_superior or tapa_inferior )
-            cono->draw_tapas( CHESS, tapa_superior, tapa_inferior );
+          if( tapa_superior and tapa_inferior )
+            cono->draw( modoDibujado, CHESS );
+          else {
+            cono->draw_cuerpo( CHESS );
+            if( tapa_superior or tapa_inferior )
+              cono->draw_tapas( CHESS, tapa_superior, tapa_inferior );
+          }
         glPopMatrix();
       } else {
         if( puntos ) {
           glPushMatrix();
             glTranslatef( -100, 0, 0 );
-            cilindro->draw( modoDibujado, POINTS );
-            if( tapa_superior or tapa_inferior )
-              cilindro->draw_tapas( POINTS, tapa_superior, tapa_inferior );
+            if( tapa_superior and tapa_inferior )
+              cilindro->draw( modoDibujado, POINTS );
+            else {
+              cilindro->draw_cuerpo( POINTS );
+              if( tapa_superior or tapa_inferior )
+                cilindro->draw_tapas( POINTS, tapa_superior, tapa_inferior );
+            }
           glPopMatrix();
-          esfera->draw( modoDibujado, POINTS );
-          if( tapa_superior or tapa_inferior )
-            esfera->draw_tapas( POINTS, tapa_superior, tapa_inferior );
+          if( tapa_superior and tapa_inferior )
+            esfera->draw( modoDibujado, POINTS );
+          else {
+            esfera->draw_cuerpo( POINTS );
+            if( tapa_superior or tapa_inferior )
+              esfera->draw_tapas( POINTS, tapa_superior, tapa_inferior );
+          }
           glPushMatrix();
             glTranslatef( 100, 0, 0 );
-            cono->draw( modoDibujado, POINTS );
-            if( tapa_superior or tapa_inferior )
-              cono->draw_tapas( POINTS, tapa_superior, tapa_inferior );
+            if( tapa_superior and tapa_inferior )
+              cono->draw( modoDibujado, POINTS );
+            else {
+              cono->draw_cuerpo( POINTS );
+              if( tapa_superior or tapa_inferior )
+                cono->draw_tapas( POINTS, tapa_superior, tapa_inferior );
+            }
           glPopMatrix();
         }
 
         if( lineas ) {
           glPushMatrix();
             glTranslatef( -100, 0, 0 );
-            cilindro->draw( modoDibujado, LINES );
-            if( tapa_superior or tapa_inferior )
-              cilindro->draw_tapas( LINES, tapa_superior, tapa_inferior );
+            if( tapa_superior and tapa_inferior )
+              cilindro->draw( modoDibujado, LINES );
+            else {
+              cilindro->draw_cuerpo( LINES );
+              if( tapa_superior or tapa_inferior )
+                cilindro->draw_tapas( LINES, tapa_superior, tapa_inferior );
+            }
           glPopMatrix();
-          esfera->draw( modoDibujado, LINES );
-          if( tapa_superior or tapa_inferior )
-            esfera->draw_tapas( LINES, tapa_superior, tapa_inferior );
+          if( tapa_superior and tapa_inferior )
+            esfera->draw( modoDibujado, LINES );
+          else {
+            esfera->draw_cuerpo( LINES );
+            if( tapa_superior or tapa_inferior )
+              esfera->draw_tapas( LINES, tapa_superior, tapa_inferior );
+          }
           glPushMatrix();
             glTranslatef( 100, 0, 0 );
-            cono->draw( modoDibujado, LINES );
-            if( tapa_superior or tapa_inferior )
-              cono->draw_tapas( LINES, tapa_superior, tapa_inferior );
+            if( tapa_superior and tapa_inferior )
+              cono->draw( modoDibujado, LINES );
+            else {
+              cono->draw_cuerpo( LINES );
+              if( tapa_superior or tapa_inferior )
+                cono->draw_tapas( LINES, tapa_superior, tapa_inferior );
+            }
           glPopMatrix();
         }
 
         if( solido ) {
           glPushMatrix();
             glTranslatef( -100, 0, 0 );
-            cilindro->draw( modoDibujado, SOLID );
-            if( tapa_superior or tapa_inferior )
-              cilindro->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+            if( tapa_superior and tapa_inferior )
+              cilindro->draw( modoDibujado, SOLID );
+            else {
+              cilindro->draw_cuerpo( SOLID );
+              if( tapa_superior or tapa_inferior )
+                cilindro->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+            }
           glPopMatrix();
-          esfera->draw( modoDibujado, SOLID );
-          if( tapa_superior or tapa_inferior )
-            esfera->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+          if( tapa_superior and tapa_inferior )
+            esfera->draw( modoDibujado, SOLID );
+          else {
+            esfera->draw_cuerpo( SOLID );
+            if( tapa_superior or tapa_inferior )
+              esfera->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+          }
           glPushMatrix();
             glTranslatef( 100, 0, 0 );
-            cono->draw( modoDibujado, SOLID );
-            if( tapa_superior or tapa_inferior )
-              cono->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+            if( tapa_superior and tapa_inferior )
+              cono->draw( modoDibujado, SOLID );
+            else {
+              cono->draw_cuerpo( SOLID );
+              if( tapa_superior or tapa_inferior )
+                cono->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+            }
           glPopMatrix();
         }
       }
@@ -234,35 +282,51 @@ void Escena::dibujar()
       if( ajedrez ) {
         glPushMatrix();
           glScalef( 50, 50, 50 );
-          objetoRevolucion->draw( modoDibujado, CHESS );
-          if( tapa_superior or tapa_inferior )
-            objetoRevolucion->draw_tapas( CHESS, tapa_superior, tapa_inferior );
+          if( tapa_superior and tapa_inferior )
+            objetoRevolucion->draw( modoDibujado, CHESS );
+          else {
+            objetoRevolucion->draw_cuerpo( CHESS );
+            if( tapa_superior or tapa_inferior )
+              objetoRevolucion->draw_tapas( CHESS, tapa_superior, tapa_inferior );
+          }
         glPopMatrix();
       } else {
         if( puntos ) {
           glPushMatrix();
             glScalef( 50, 50, 50 );
-            objetoRevolucion->draw( modoDibujado, POINTS );
-            if( tapa_superior or tapa_inferior )
-              objetoRevolucion->draw_tapas( POINTS, tapa_superior, tapa_inferior );
+            if( tapa_superior and tapa_inferior )
+              objetoRevolucion->draw( modoDibujado, POINTS );
+            else {
+              objetoRevolucion->draw_cuerpo( POINTS );
+              if( tapa_superior or tapa_inferior )
+                objetoRevolucion->draw_tapas( POINTS, tapa_superior, tapa_inferior );
+            }
           glPopMatrix();
         }
 
         if( lineas ) {
           glPushMatrix();
             glScalef( 50, 50, 50 );
-            objetoRevolucion->draw( modoDibujado, LINES );
-            if( tapa_superior or tapa_inferior )
-              objetoRevolucion->draw_tapas( LINES, tapa_superior, tapa_inferior );
+            if( tapa_superior and tapa_inferior )
+              objetoRevolucion->draw( modoDibujado, LINES );
+            else {
+              objetoRevolucion->draw_cuerpo( LINES );
+              if( tapa_superior or tapa_inferior )
+                objetoRevolucion->draw_tapas( LINES, tapa_superior, tapa_inferior );
+            }
           glPopMatrix();
         }
 
         if( solido ) {
           glPushMatrix();
             glScalef( 50, 50, 50 );
-            objetoRevolucion->draw( modoDibujado, SOLID );
-            if( tapa_superior or tapa_inferior )
-              objetoRevolucion->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+            if( tapa_superior and tapa_inferior )
+              objetoRevolucion->draw( modoDibujado, SOLID );
+            else {
+              objetoRevolucion->draw_cuerpo( SOLID );
+              if( tapa_superior or tapa_inferior )
+                objetoRevolucion->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+            }
           glPopMatrix();
         }
       }
@@ -271,24 +335,40 @@ void Escena::dibujar()
     // VISUALICACIÓN DEL CILINDRO
     case CILINDRO:
       if( ajedrez ) {
-        cilindro->draw( modoDibujado, CHESS );
-        if( tapa_superior or tapa_inferior )
-          cilindro->draw_tapas( CHESS, tapa_superior, tapa_inferior );
+        if( tapa_superior and tapa_inferior )
+          cilindro->draw( modoDibujado, CHESS );
+        else {
+          cilindro->draw_cuerpo( CHESS );
+          if( tapa_superior or tapa_inferior )
+            cilindro->draw_tapas( CHESS, tapa_superior, tapa_inferior );
+        }
       } else {
         if( puntos ) {
-          cilindro->draw( modoDibujado, POINTS );
-          if( tapa_superior or tapa_inferior )
-            cilindro->draw_tapas( POINTS, tapa_superior, tapa_inferior );
+          if( tapa_superior and tapa_inferior )
+            cilindro->draw( modoDibujado, POINTS );
+          else {
+            cilindro->draw_cuerpo( POINTS );
+            if( tapa_superior or tapa_inferior )
+              cilindro->draw_tapas( POINTS, tapa_superior, tapa_inferior );
+          }
         }
         if( lineas ) {
-          cilindro->draw( modoDibujado, LINES );
-          if( tapa_superior or tapa_inferior )
-            cilindro->draw_tapas( LINES, tapa_superior, tapa_inferior );
+          if( tapa_superior and tapa_inferior )
+            cilindro->draw( modoDibujado, LINES );
+          else {
+            cilindro->draw_cuerpo( LINES );
+            if( tapa_superior or tapa_inferior )
+              cilindro->draw_tapas( LINES, tapa_superior, tapa_inferior );
+          }
         }
         if( solido ) {
-          cilindro->draw( modoDibujado, SOLID );
-          if( tapa_superior or tapa_inferior )
-            cilindro->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+          if( tapa_superior and tapa_inferior )
+            cilindro->draw( modoDibujado, SOLID );
+          else {
+            cilindro->draw_cuerpo( SOLID );
+            if( tapa_superior or tapa_inferior )
+              cilindro->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+          }
         }
       }
       break;
@@ -296,52 +376,84 @@ void Escena::dibujar()
     // VISUALICACIÓN DE LA ESFERA
     case ESFERA:
       if( ajedrez ) {
-        esfera->draw( modoDibujado, CHESS );
-        if( tapa_superior or tapa_inferior )
-          esfera->draw_tapas( CHESS, tapa_superior, tapa_inferior );
+        if( tapa_superior and tapa_inferior )
+          esfera->draw( modoDibujado, CHESS );
+        else {
+          esfera->draw_cuerpo( CHESS );
+          if( tapa_superior or tapa_inferior )
+            esfera->draw_tapas( CHESS, tapa_superior, tapa_inferior );
+        }
       } else {
         if( puntos ) {
-          esfera->draw( modoDibujado, POINTS );
-          if( tapa_superior or tapa_inferior )
-            esfera->draw_tapas( POINTS, tapa_superior, tapa_inferior );
+          if( tapa_superior and tapa_inferior )
+            esfera->draw( modoDibujado, POINTS );
+          else {
+            esfera->draw_cuerpo( POINTS );
+            if( tapa_superior or tapa_inferior )
+              esfera->draw_tapas( POINTS, tapa_superior, tapa_inferior );
+          }
         }
         if( lineas ) {
-          esfera->draw( modoDibujado, LINES );
-          if( tapa_superior or tapa_inferior )
-            esfera->draw_tapas( LINES, tapa_superior, tapa_inferior );
+          if( tapa_superior and tapa_inferior )
+            esfera->draw( modoDibujado, LINES );
+          else {
+            esfera->draw_cuerpo( LINES );
+            if( tapa_superior or tapa_inferior )
+              esfera->draw_tapas( LINES, tapa_superior, tapa_inferior );
+          }
         }
         if( solido ) {
-          esfera->draw( modoDibujado, SOLID );
-          if( tapa_superior or tapa_inferior )
-            esfera->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+          if( tapa_superior and tapa_inferior )
+            esfera->draw( modoDibujado, SOLID );
+          else {
+            esfera->draw_cuerpo( SOLID );
+            if( tapa_superior or tapa_inferior )
+              esfera->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+          }
         }
       }
       break;
 
     // VISUALICACIÓN DEL CONO
     case CONO:
-      if( ajedrez ) {
+    if( ajedrez ) {
+      if( tapa_superior and tapa_inferior )
         cono->draw( modoDibujado, CHESS );
+      else {
+        cono->draw_cuerpo( CHESS );
         if( tapa_superior or tapa_inferior )
           cono->draw_tapas( CHESS, tapa_superior, tapa_inferior );
-      } else {
-        if( puntos ) {
+      }
+    } else {
+      if( puntos ) {
+        if( tapa_superior and tapa_inferior )
           cono->draw( modoDibujado, POINTS );
+        else {
+          cono->draw_cuerpo( POINTS );
           if( tapa_superior or tapa_inferior )
             cono->draw_tapas( POINTS, tapa_superior, tapa_inferior );
         }
-        if( lineas ) {
+      }
+      if( lineas ) {
+        if( tapa_superior and tapa_inferior )
           cono->draw( modoDibujado, LINES );
+        else {
+          cono->draw_cuerpo( LINES );
           if( tapa_superior or tapa_inferior )
             cono->draw_tapas( LINES, tapa_superior, tapa_inferior );
         }
-        if( solido ) {
+      }
+      if( solido ) {
+        if( tapa_superior and tapa_inferior )
           cono->draw( modoDibujado, SOLID );
+        else {
+          cono->draw_cuerpo( SOLID );
           if( tapa_superior or tapa_inferior )
             cono->draw_tapas( SOLID, tapa_superior, tapa_inferior );
         }
       }
-      break;
+    }
+    break;
 
     }
   }
