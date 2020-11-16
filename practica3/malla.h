@@ -11,6 +11,7 @@
 #define MALLA3D_H_INCLUDED
 
 #include "aux.h"
+#include "material.h"
 
 // *****************************************************************************
 //
@@ -35,6 +36,10 @@ class Malla3D
    // está función llama a 'draw_ModoInmediato' (modo inmediato)
    // o bien a 'draw_ModoDiferido' (modo diferido, VBOs)
    void draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) ;
+   void drawLight();
+
+   // Función para asignar un material
+   void setMaterial( Material mat );
 
    protected:
 
@@ -62,6 +67,8 @@ class Malla3D
    GLuint id_vbo_c_solido = 0;
    GLuint id_vbo_c_chess_impares = 0;
    GLuint id_vbo_c_chess_pares = 0;
+
+   Material * m = nullptr;  // Material
 
    // Función que devuelve la tabla de normales de las caras, que se utilizará
    // para el cálculo de las normales de los vértices

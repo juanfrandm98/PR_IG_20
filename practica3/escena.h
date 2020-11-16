@@ -10,9 +10,14 @@
 #include "cilindro.h"
 #include "cono.h"
 #include "esfera.h"
+#include "luz.h"
+#include "luzdireccional.h"
+#include "luzposicional.h"
+#include "material.h"
 
-typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,TAPAS} menu;
+typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,TAPAS,ILUMINACION} menu;
 typedef enum {NINGUNO, P1, PLY, REVOLUCION, CILINDRO, TODASREV, ESFERA, CONO} objetoVisible;
+typedef enum {BASICA, SUAVE, PLANA} iluminacion;
 
 class Escena
 {
@@ -50,6 +55,9 @@ class Escena
    Cilindro * cilindro = nullptr;
    Cono * cono = nullptr;
    Esfera * esfera = nullptr;
+   ObjRevolucion * peonBlanco = nullptr;
+   ObjRevolucion * peonNegro = nullptr;
+   Cubo * lingote = nullptr;
 
    // FLAGS para el dibujado
    bool puntos;
@@ -59,6 +67,12 @@ class Escena
    dibujado modoDibujado;
    bool tapa_superior;
    bool tapa_inferior;
+   iluminacion modoIluminacion;
+
+   // Luces
+   Luz * luzPos1 = nullptr;
+   Luz * luzPos2 = nullptr;
+   Luz * luzDir = nullptr;
 
    public:
 

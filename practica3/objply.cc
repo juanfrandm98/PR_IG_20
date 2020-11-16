@@ -35,4 +35,8 @@ ObjPLY::ObjPLY( const std::string & nombre_archivo )
 
    for( int i = 0; i < v.size(); i++ )
       c_chess_par.push_back( Tupla3f( 0, 1, 0 ) );
+
+   // Calculamos las normales de los vértices
+   Calcular_normales( CalcularNormalesCaras() );
+   
 }

@@ -1,5 +1,6 @@
 #include "aux.h"
 #include "malla.h"
+#include "material.h"
 
 // *****************************************************************************
 //
@@ -223,7 +224,7 @@ void Malla3D::Calcular_normales( std::vector<Tupla3f> normalesCaras ) {
   }
 
   // Se normalizan las normales finales
-  for( int i = 0; i < nv.size() - 2; i++ ) {
+  for( int i = 0; i < nv.size(); i++ ) {
     nv[i] = nv[i].normalized();
   }
 
@@ -253,5 +254,22 @@ std::vector<Tupla3f> Malla3D::CalcularNormalesCaras() {
   }
 
   return normalesCaras;
+
+}
+
+void Malla3D::setMaterial( Material mat ) {
+  m = new Material( mat );
+}
+
+void Malla3D::drawLight() {
+
+  glEnableClientState( GL_VERTEX_ARRAY );
+  glEnableClientState( GL_NORMAL_ARRAY );
+  glVertexPointer( 3, GL_FLOAT, 0, v.data() );
+  glNormalPointer( GL_FLOAT, 0, nv.data() );
+
+  m->aplicar();
+
+  glDrawElements( GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, f.data() );
 
 }
