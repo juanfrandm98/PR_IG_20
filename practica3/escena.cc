@@ -316,6 +316,129 @@ void Escena::dibujar()
         }
         break;
 
+      // VISUALIZACIÓN DE LA ESCENA DE PRUEBA DE LA PRÁCTICA 3
+      case P3:
+        if( ajedrez ) {
+          glPushMatrix();
+            glTranslatef( -100, 0, 0 );
+            glScalef( 50, 50, 50 );
+            if( tapa_superior and tapa_inferior )
+              peonNegro->draw( modoDibujado, CHESS );
+            else {
+              peonNegro->draw_cuerpo( CHESS );
+              if( tapa_superior or tapa_inferior )
+                peonNegro->draw_tapas( CHESS, tapa_superior, tapa_inferior );
+            }
+          glPopMatrix();
+          glPushMatrix();
+            glTranslatef( 0, -75, 0 );
+            glScalef( 1, 1, 2.5 );
+            lingote -> draw( modoDibujado, CHESS );
+          glPopMatrix();
+          glPushMatrix();
+            glTranslatef( 100, 0, 0 );
+            glScalef( 50, 50, 50 );
+            if( tapa_superior and tapa_inferior )
+              peonBlanco->draw( modoDibujado, CHESS );
+            else {
+              peonBlanco->draw_cuerpo( CHESS );
+              if( tapa_superior or tapa_inferior )
+                peonBlanco->draw_tapas( CHESS, tapa_superior, tapa_inferior );
+            }
+          glPopMatrix();
+        } else {
+          if( puntos ) {
+            glPushMatrix();
+              glTranslatef( -100, 0, 0 );
+              glScalef( 50, 50, 50 );
+              if( tapa_superior and tapa_inferior )
+                peonNegro->draw( modoDibujado, POINTS );
+              else {
+                peonNegro->draw_cuerpo( POINTS );
+                if( tapa_superior or tapa_inferior )
+                  peonNegro->draw_tapas( POINTS, tapa_superior, tapa_inferior );
+              }
+            glPopMatrix();
+            glPushMatrix();
+              glTranslatef( 0, -75, 0 );
+              glScalef( 1, 1, 2.5 );
+              lingote -> draw( modoDibujado, POINTS );
+            glPopMatrix();
+            glPushMatrix();
+              glTranslatef( 100, 0, 0 );
+              glScalef( 50, 50, 50 );
+              if( tapa_superior and tapa_inferior )
+                peonBlanco->draw( modoDibujado, POINTS );
+              else {
+                peonBlanco->draw_cuerpo( POINTS );
+                if( tapa_superior or tapa_inferior )
+                  peonBlanco->draw_tapas( POINTS, tapa_superior, tapa_inferior );
+              }
+            glPopMatrix();
+          }
+
+          if( lineas ) {
+            glPushMatrix();
+              glTranslatef( -100, 0, 0 );
+              glScalef( 50, 50, 50 );
+              if( tapa_superior and tapa_inferior )
+                peonNegro->draw( modoDibujado, LINES );
+              else {
+                peonNegro->draw_cuerpo( LINES );
+                if( tapa_superior or tapa_inferior )
+                  peonNegro->draw_tapas( LINES, tapa_superior, tapa_inferior );
+              }
+            glPopMatrix();
+            glPushMatrix();
+              glTranslatef( 0, -75, 0 );
+              glScalef( 1, 1, 2.5 );
+              lingote -> draw( modoDibujado, LINES );
+            glPopMatrix();
+            glPushMatrix();
+              glTranslatef( 100, 0, 0 );
+              glScalef( 50, 50, 50 );
+              if( tapa_superior and tapa_inferior )
+                peonBlanco->draw( modoDibujado, LINES );
+              else {
+                peonBlanco->draw_cuerpo( LINES );
+                if( tapa_superior or tapa_inferior )
+                  peonBlanco->draw_tapas( LINES, tapa_superior, tapa_inferior );
+              }
+            glPopMatrix();
+          }
+
+          if( solido ) {
+            glPushMatrix();
+              glTranslatef( -100, 0, 0 );
+              glScalef( 50, 50, 50 );
+              if( tapa_superior and tapa_inferior )
+                peonNegro->draw( modoDibujado, SOLID );
+              else {
+                peonNegro->draw_cuerpo( SOLID );
+                if( tapa_superior or tapa_inferior )
+                  peonNegro->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+              }
+            glPopMatrix();
+            glPushMatrix();
+              glTranslatef( 0, -75, 0 );
+              glScalef( 1, 1, 2.5 );
+              lingote -> draw( modoDibujado, SOLID );
+            glPopMatrix();
+            glPushMatrix();
+              glTranslatef( 100, 0, 0 );
+              glScalef( 50, 50, 50 );
+              if( tapa_superior and tapa_inferior )
+                peonBlanco->draw( modoDibujado, SOLID );
+              else {
+                peonBlanco->draw_cuerpo( SOLID );
+                if( tapa_superior or tapa_inferior )
+                  peonBlanco->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+              }
+            glPopMatrix();
+          }
+        }
+        break;
+
       // VISUALIZACIÓN DEL OBJETO DE REVOLUCIÓN PLY
       case REVOLUCION:
         if( ajedrez ) {
@@ -517,6 +640,13 @@ void Escena::dibujar()
     else
       glShadeModel( GL_SMOOTH );
 
+    if( glIsEnabled( GL_LIGHT1 ) )
+      luzDir->aplicar();
+    if( glIsEnabled( GL_LIGHT2 ) )
+      luzPos1->aplicar();
+    if( glIsEnabled( GL_LIGHT3 ) )
+      luzPos2->aplicar();
+
     switch( objeto ) {
       case P1:
         glPushMatrix();
@@ -563,7 +693,13 @@ void Escena::dibujar()
         glPushMatrix();
           glTranslatef( -100, 0, 0 );
           glScalef( 50, 50, 50 );
-          peonNegro -> draw( modoDibujado, SOLID );
+          if( tapa_superior and tapa_inferior )
+            peonNegro->draw( modoDibujado, SOLID );
+          else {
+            peonNegro->draw_cuerpo( SOLID );
+            if( tapa_superior or tapa_inferior )
+              peonNegro->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+          }
         glPopMatrix();
         glPushMatrix();
           glTranslatef( 0, -75, 0 );
@@ -573,7 +709,13 @@ void Escena::dibujar()
         glPushMatrix();
           glTranslatef( 100, 0, 0 );
           glScalef( 50, 50, 50 );
-          peonBlanco -> draw( modoDibujado, SOLID );
+          if( tapa_superior and tapa_inferior )
+            peonBlanco->draw( modoDibujado, SOLID );
+          else {
+            peonBlanco->draw_cuerpo( SOLID );
+            if( tapa_superior or tapa_inferior )
+              peonBlanco->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+          }
         glPopMatrix();
         break;
 
@@ -883,7 +1025,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
               glDisable( GL_LIGHT1 );
               cout << "Luz 1 desactivada.\n";
             } else {
-              luzDir->aplicar();
+              glEnable( GL_LIGHT1 );
               cout << "Luz 1 activada.\n";
             }
             break;
@@ -893,7 +1035,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
               glDisable( GL_LIGHT2 );
               cout << "Luz 2 desactivada.\n";
             } else {
-              luzPos1->aplicar();
+              glEnable( GL_LIGHT2 );
               cout << "Luz 2 activada.\n";
             }
             break;
@@ -903,7 +1045,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
               glDisable( GL_LIGHT3 );
               cout << "Luz 3 desactivada.\n";
             } else {
-              luzPos2->aplicar();
+              glEnable( GL_LIGHT3 );
               cout << "Luz 3 activada.\n";
             }
             break;
