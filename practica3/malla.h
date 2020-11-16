@@ -41,6 +41,9 @@ class Malla3D
    // Función para asignar un material
    void setMaterial( Material mat );
 
+   // Función para cambiar el color sólido de un objeto
+   void setColorSolido( Tupla3f nuevoColor );
+
    protected:
 
    void calcular_normales() ; // calcula tabla de normales de vértices (práctica 3)

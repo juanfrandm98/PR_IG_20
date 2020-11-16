@@ -281,3 +281,11 @@ void Malla3D::drawLight() {
   glDrawElements( GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, f.data() );
 
 }
+
+void Malla3D::setColorSolido( Tupla3f nuevoColor ) {
+  while( !c_solid.empty() )
+    c_solid.pop_back();
+
+  for( int i = 0; i < v.size(); i++ )
+    c_solid.push_back( nuevoColor );
+}

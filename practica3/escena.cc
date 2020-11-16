@@ -32,6 +32,7 @@ Escena::Escena()
     esfera = new Esfera( 20, 20, 45 );
     cono = new Cono( 10, 10, 100, 45 );
     luz = new Esfera(20,20,10);
+    luz->setColorSolido( Tupla3f( 1, 1, 0 ) );
 
     puntos = false;
     lineas = false;
@@ -497,22 +498,24 @@ void Escena::dibujar()
     }
   } else {    // Visualización con iluminación
 
+    if( glIsEnabled( GL_LIGHT1 ) ) {
+      Tupla3f luzpos = luzDir->getPosicion();
+      float x = luzpos(0);
+      float y = luzpos(1);
+      float z = luzpos(2);
+
+      glPushMatrix();
+        glTranslatef( x, y, z );
+        luz->draw( modoDibujado, SOLID );
+      glPopMatrix();
+    }
+
     glEnable( GL_LIGHTING );
 
     if( modoIluminacion == PLANA )
       glShadeModel( GL_FLAT );
     else
       glShadeModel( GL_SMOOTH );
-
-    Tupla3f luzpos = luzDir->getPosicion();
-    float x = luzpos(0);
-    float y = luzpos(1);
-    float z = luzpos(2);
-
-    glPushMatrix();
-      glTranslatef( x, y, z );
-      luz->draw( modoDibujado, SOLID );
-    glPopMatrix();
 
     switch( objeto ) {
       case P1:
@@ -910,6 +913,8 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             luzDir->variarAnguloAlpha(-1);
           else
             luzDir->variarAnguloBeta(-1);
+          if( glIsEnabled( GL_LIGHT1 ) )
+            luzDir->aplicar();
           break;
 
         case '>':
@@ -917,6 +922,8 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             luzDir->variarAnguloAlpha(1);
           else
             luzDir->variarAnguloBeta(1);
+          if( glIsEnabled( GL_LIGHT1 ) )
+            luzDir->aplicar();
           break;
 
         case 'A':
