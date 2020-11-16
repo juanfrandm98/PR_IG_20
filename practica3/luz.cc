@@ -12,3 +12,11 @@ void Luz::aplicar() {
   glEnable( id );
 
 }
+
+Tupla3f Luz::getPosicion() {
+  Tupla3f resultado;
+  resultado(0) = posicion(0);
+  resultado(1) = posicion(1);
+  resultado(2) = posicion(2);
+  return resultado;
+}

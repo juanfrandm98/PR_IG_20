@@ -10,6 +10,10 @@ class LuzDireccional : public Luz
     float alpha;
     float beta;
 
+    // Función que actualiza la posición de la luz en función de los ángulos
+    // alpha y beta
+    void actualizarPosicion();
+
   public:
     // Constructor
     LuzDireccional( const Tupla2f & orientacion, const GLenum & ident,

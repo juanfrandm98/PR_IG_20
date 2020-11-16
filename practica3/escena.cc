@@ -31,6 +31,7 @@ Escena::Escena()
     cilindro = new Cilindro( 10, 10, 100, 45);
     esfera = new Esfera( 20, 20, 45 );
     cono = new Cono( 10, 10, 100, 45 );
+    luz = new Esfera(20,20,10);
 
     puntos = false;
     lineas = false;
@@ -40,6 +41,7 @@ Escena::Escena()
     tapa_inferior = true;
     tapa_superior = true;
     modoIluminacion = BASICA;
+    variacionLuz = VARALPHA;
 
     peonBlanco = new ObjRevolucion( "./plys/peon", 20, true, true );
     peonNegro = new ObjRevolucion( "./plys/peon", 20, true, true );
@@ -61,11 +63,14 @@ Escena::Escena()
     tetraedro->setMaterial( predefinido );
     cubo->setMaterial( predefinido );
 
-    luzDir = new LuzDireccional( Tupla2f( 0.0, 0.0 ), GL_LIGHT1, Tupla4f( 1, 1, 1, 1 ),
-                                 Tupla4f( 1, 1, 1, 1 ), Tupla4f( 1, 1, 1, 1 ) );
+    // Luz direccional inicial
+    luzDir = new LuzDireccional( Tupla2f( 0.0, 0.0 ), GL_LIGHT1, Tupla4f( 0.9, 0.9, 0.9, 1 ),
+                                 Tupla4f( 1, 1, 1, 1 ), Tupla4f( 0.9, 0.9, 0.9, 1 ) );
+    // Luz posicional blanca
     luzPos1 = new LuzPosicional( Tupla3f( 0, 200, 0 ), GL_LIGHT2, Tupla4f( 0.9, 0.9, 0.9, 1 ),
                                  Tupla4f( 1, 1, 1, 1 ), Tupla4f( 0.9, 0.9, 0.9, 1 ) );
-    luzPos2 = new LuzPosicional( Tupla3f( 0, 100, 0 ), GL_LIGHT2, Tupla4f( 0.9, 0, 0, 1 ),
+    // Luz posicional roja
+    luzPos2 = new LuzPosicional( Tupla3f( 0, 100, 0 ), GL_LIGHT3, Tupla4f( 0.9, 0, 0, 1 ),
                                  Tupla4f( 1, 0, 0, 1 ), Tupla4f( 0.9, 0, 0, 1 ) );
 
 }
@@ -102,6 +107,7 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 
 void Escena::dibujar()
 {
+  using namespace std;
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
 	change_observer();
   ejes.draw();
@@ -498,7 +504,15 @@ void Escena::dibujar()
     else
       glShadeModel( GL_SMOOTH );
 
-    luzPos1->aplicar();
+    Tupla3f luzpos = luzDir->getPosicion();
+    float x = luzpos(0);
+    float y = luzpos(1);
+    float z = luzpos(2);
+
+    glPushMatrix();
+      glTranslatef( x, y, z );
+      luz->draw( modoDibujado, SOLID );
+    glPopMatrix();
 
     switch( objeto ) {
       case P1:
@@ -851,7 +865,71 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 
       switch( toupper( tecla ) ) {
 
+        case '0':
+          if( glIsEnabled( GL_LIGHT0 ) ) {
+            glDisable( GL_LIGHT0 );
+            cout << "Luz 0 desactivada.\n";
+          } else {
+            glEnable( GL_LIGHT0 );
+            cout << "Luz 0 activada.\n";
+          }
+          break;
+
+          case '1':
+            if( glIsEnabled( GL_LIGHT1 ) ) {
+              glDisable( GL_LIGHT1 );
+              cout << "Luz 1 desactivada.\n";
+            } else {
+              luzDir->aplicar();
+              cout << "Luz 1 activada.\n";
+            }
+            break;
+
+          case '2':
+            if( glIsEnabled( GL_LIGHT2 ) ) {
+              glDisable( GL_LIGHT2 );
+              cout << "Luz 2 desactivada.\n";
+            } else {
+              luzPos1->aplicar();
+              cout << "Luz 2 activada.\n";
+            }
+            break;
+
+          case '3':
+            if( glIsEnabled( GL_LIGHT3 ) ) {
+              glDisable( GL_LIGHT3 );
+              cout << "Luz 3 desactivada.\n";
+            } else {
+              luzPos2->aplicar();
+              cout << "Luz 3 activada.\n";
+            }
+            break;
+
+        case '<':
+          if( variacionLuz == VARALPHA )
+            luzDir->variarAnguloAlpha(-1);
+          else
+            luzDir->variarAnguloBeta(-1);
+          break;
+
+        case '>':
+          if( variacionLuz == VARALPHA )
+            luzDir->variarAnguloAlpha(1);
+          else
+            luzDir->variarAnguloBeta(1);
+          break;
+
+        case 'A':
+          variacionLuz = VARALPHA;
+          cout << "Modo variación del ángulo alpha\n";
+          break;
+
         case 'B':
+          variacionLuz = VARBETA;
+          cout << "Modo variación del ángulo beta\n";
+          break;
+
+        case 'N':
           modoIluminacion = BASICA;
           cout << "Modo de iluminación establecido: básico.\n";
           break;
@@ -871,7 +949,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           break;
 
         default:
-          cout << "ERROR - opciones disponibles:\n'B': Modo básico\n'S': Iluminación suave\n"
+          cout << "ERROR - opciones disponibles:\n'N': Modo básico\n'S': Iluminación suave\n"
                << "'P': Iluminación plana\n'Q': Salir\n";
           break;
 

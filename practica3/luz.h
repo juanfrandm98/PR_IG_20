@@ -9,6 +9,7 @@ class Luz
 {
    public:
      void aplicar();
+     Tupla3f getPosicion();
 
    protected:
      Tupla4f posicion;

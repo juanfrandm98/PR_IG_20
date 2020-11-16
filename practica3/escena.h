@@ -18,6 +18,7 @@
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,TAPAS,ILUMINACION} menu;
 typedef enum {NINGUNO, P1, PLY, REVOLUCION, CILINDRO, TODASREV, ESFERA, CONO, P3} objetoVisible;
 typedef enum {BASICA, SUAVE, PLANA} iluminacion;
+typedef enum {VARALPHA, VARBETA} variacion;
 
 class Escena
 {
@@ -58,6 +59,7 @@ class Escena
    ObjRevolucion * peonBlanco = nullptr;
    ObjRevolucion * peonNegro = nullptr;
    Cubo * lingote = nullptr;
+   Esfera * luz = nullptr;
 
    // FLAGS para el dibujado
    bool puntos;
@@ -68,11 +70,12 @@ class Escena
    bool tapa_superior;
    bool tapa_inferior;
    iluminacion modoIluminacion;
+   variacion variacionLuz;
 
    // Luces
-   Luz * luzPos1 = nullptr;
-   Luz * luzPos2 = nullptr;
-   Luz * luzDir = nullptr;
+   LuzPosicional * luzPos1 = nullptr;
+   LuzPosicional * luzPos2 = nullptr;
+   LuzDireccional * luzDir = nullptr;
 
    public:
 
