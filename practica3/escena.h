@@ -16,7 +16,7 @@
 #include "material.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,TAPAS,ILUMINACION} menu;
-typedef enum {NINGUNO, P1, PLY, REVOLUCION, CILINDRO, TODASREV, ESFERA, CONO} objetoVisible;
+typedef enum {NINGUNO, P1, PLY, REVOLUCION, CILINDRO, TODASREV, ESFERA, CONO, P3} objetoVisible;
 typedef enum {BASICA, SUAVE, PLANA} iluminacion;
 
 class Escena

@@ -54,9 +54,16 @@ Escena::Escena()
     Material oro = Material(Tupla4f(0.75164,0.60648,0.22648,1),Tupla4f(0.628281,0.555802,0.366065,1),Tupla4f(0.24725,0.1995,0.0745,1),0.4);
     lingote->setMaterial( oro );
 
+    Material predefinido = Material(Tupla4f(0.5,0.4,0.4,1),Tupla4f(0.7,0.04,0.04,1),Tupla4f(0.05,0.0,0.0,1),.078125);
+    cono->setMaterial( predefinido );
+    esfera->setMaterial( predefinido );
+    cilindro->setMaterial( predefinido );
+    tetraedro->setMaterial( predefinido );
+    cubo->setMaterial( predefinido );
+
     luzDir = new LuzDireccional( Tupla2f( 0.0, 0.0 ), GL_LIGHT1, Tupla4f( 1, 1, 1, 1 ),
                                  Tupla4f( 1, 1, 1, 1 ), Tupla4f( 1, 1, 1, 1 ) );
-    luzPos1 = new LuzPosicional( Tupla3f( 0, 100, 0 ), GL_LIGHT2, Tupla4f( 0.9, 0.9, 0.9, 1 ),
+    luzPos1 = new LuzPosicional( Tupla3f( 0, 200, 0 ), GL_LIGHT2, Tupla4f( 0.9, 0.9, 0.9, 1 ),
                                  Tupla4f( 1, 1, 1, 1 ), Tupla4f( 0.9, 0.9, 0.9, 1 ) );
     luzPos2 = new LuzPosicional( Tupla3f( 0, 100, 0 ), GL_LIGHT2, Tupla4f( 0.9, 0, 0, 1 ),
                                  Tupla4f( 1, 0, 0, 1 ), Tupla4f( 0.9, 0, 0, 1 ) );
@@ -491,24 +498,119 @@ void Escena::dibujar()
     else
       glShadeModel( GL_SMOOTH );
 
-    //glEnable( GL_LIGHT0 );
     luzPos1->aplicar();
 
-    glPushMatrix();
-      glTranslatef( -100, 0, 0 );
-      glScalef( 50, 50, 50 );
-      peonNegro -> drawLight();
-    glPopMatrix();
-    glPushMatrix();
-      glTranslatef( 0, -75, 0 );
-      glScalef( 1, 1, 2.5 );
-      lingote -> drawLight();
-    glPopMatrix();
-    glPushMatrix();
-      glTranslatef( 100, 0, 0 );
-      glScalef( 50, 50, 50 );
-      peonBlanco -> drawLight();
-    glPopMatrix();
+    switch( objeto ) {
+      case P1:
+        glPushMatrix();
+          glTranslatef( -75, 0, 0 );
+          cubo->draw( modoDibujado, SOLID );
+        glPopMatrix();
+        glPushMatrix();
+          glTranslatef( 50, 0, 0 );
+          tetraedro->draw( modoDibujado, SOLID );
+        glPopMatrix();
+        break;
+
+      case TODASREV:
+        glPushMatrix();
+          glTranslatef( -100, 0, 0 );
+          if( tapa_superior and tapa_inferior )
+            cilindro->draw( modoDibujado, SOLID );
+          else {
+            cilindro->draw_cuerpo( SOLID );
+            if( tapa_superior or tapa_inferior )
+              cilindro->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+          }
+        glPopMatrix();
+        if( tapa_superior and tapa_inferior )
+          esfera->draw( modoDibujado, SOLID );
+        else {
+          esfera->draw_cuerpo( SOLID );
+          if( tapa_superior or tapa_inferior )
+            esfera->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+        }
+        glPushMatrix();
+          glTranslatef( 100, 0, 0 );
+          if( tapa_superior and tapa_inferior )
+            cono->draw( modoDibujado, SOLID );
+          else {
+            cono->draw_cuerpo( SOLID );
+            if( tapa_superior or tapa_inferior )
+              cono->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+          }
+        glPopMatrix();
+        break;
+
+      case P3:
+        glPushMatrix();
+          glTranslatef( -100, 0, 0 );
+          glScalef( 50, 50, 50 );
+          peonNegro -> draw( modoDibujado, SOLID );
+        glPopMatrix();
+        glPushMatrix();
+          glTranslatef( 0, -75, 0 );
+          glScalef( 1, 1, 2.5 );
+          lingote -> draw( modoDibujado, SOLID );
+        glPopMatrix();
+        glPushMatrix();
+          glTranslatef( 100, 0, 0 );
+          glScalef( 50, 50, 50 );
+          peonBlanco -> draw( modoDibujado, SOLID );
+        glPopMatrix();
+        break;
+
+      case PLY:
+        glPushMatrix();
+          glScalef( 10, 10, 10 );
+          objetoPLY->draw( modoDibujado, SOLID );
+        glPopMatrix();
+        break;
+
+      case REVOLUCION:
+        glPushMatrix();
+          glScalef( 50, 50, 50 );
+          if( tapa_superior and tapa_inferior )
+            objetoRevolucion->draw( modoDibujado, SOLID );
+          else {
+            objetoRevolucion->draw_cuerpo( SOLID );
+            if( tapa_superior or tapa_inferior )
+              objetoRevolucion->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+          }
+        glPopMatrix();
+        break;
+
+      case CILINDRO:
+        if( tapa_superior and tapa_inferior )
+          cilindro->draw( modoDibujado, SOLID );
+        else {
+          cilindro->draw_cuerpo( SOLID );
+          if( tapa_superior or tapa_inferior )
+            cilindro->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+        }
+        break;
+
+      case ESFERA:
+        if( tapa_superior and tapa_inferior )
+          esfera->draw( modoDibujado, SOLID );
+        else {
+          esfera->draw_cuerpo( SOLID );
+          if( tapa_superior or tapa_inferior )
+            esfera->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+        }
+        break;
+
+      case CONO:
+        if( tapa_superior and tapa_inferior )
+          cono->draw( modoDibujado, SOLID );
+        else {
+          cono->draw_cuerpo( SOLID );
+          if( tapa_superior or tapa_inferior )
+            cono->draw_tapas( SOLID, tapa_superior, tapa_inferior );
+        }
+        break;
+    }
+
 
     glDisable( GL_LIGHTING );
 
@@ -570,6 +672,10 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           break;
         case '2':
           objeto = TODASREV;
+          modoMenu = NADA;
+          break;
+        case '3':
+          objeto = P3;
           modoMenu = NADA;
           break;
         case 'A':
@@ -647,7 +753,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           break;
         default:
           cout << "ERROR - opciones disponibles:\n'1': Práctica 1\n'2': Práctica 2\n"
-               << "'A': Cilindro\n'B': Esfera\n'C': Cono\n"
+               << "'3': Práctica 3\n'A': Cilindro\n'B': Esfera\n'C': Cono\n"
                << "'P': Objeto PLY\n'R': Objeto Revolución";
           break;
       }

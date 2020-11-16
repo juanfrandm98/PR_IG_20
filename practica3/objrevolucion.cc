@@ -143,6 +143,9 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
 
   // Calculamos las normales de los vértices
   Calcular_normales( CalcularNormalesCaras() );
+
+  Material predefinido = Material(Tupla4f(0.5,0.4,0.4,1),Tupla4f(0.7,0.04,0.04,1),Tupla4f(0.05,0.0,0.0,1),.078125);
+  setMaterial( predefinido );
 }
 
 ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bool tapa_sup, bool tapa_inf) {
@@ -204,7 +207,14 @@ void ObjRevolucion::draw_cuerpo( visualizacion tipoVisualizacion )
 
   glEnableClientState( GL_VERTEX_ARRAY );
   glVertexPointer( 3, GL_FLOAT, 0, v.data() );
-  glEnableClientState( GL_COLOR_ARRAY );
+
+  if( glIsEnabled( GL_LIGHTING ) ) {
+    glEnableClientState( GL_NORMAL_ARRAY );
+    glNormalPointer( GL_FLOAT, 0, nv.data() );
+    m->aplicar();
+  } else {
+    glEnableClientState( GL_COLOR_ARRAY );
+  }
 
   switch( tipoVisualizacion ) {
 
@@ -246,7 +256,14 @@ void ObjRevolucion::draw_tapas( visualizacion tipoVisualizacion, bool superior, 
 
   glEnableClientState( GL_VERTEX_ARRAY );
   glVertexPointer( 3, GL_FLOAT, 0, v.data() );
-  glEnableClientState( GL_COLOR_ARRAY );
+
+  if( glIsEnabled( GL_LIGHTING ) ) {
+    glEnableClientState( GL_NORMAL_ARRAY );
+    glNormalPointer( GL_FLOAT, 0, nv.data() );
+    m->aplicar();
+  } else {
+    glEnableClientState( GL_COLOR_ARRAY );
+  }
 
   std::vector<Tupla3i> tapasup, tapainf;
   std::vector<Tupla3i> tapasup_pares, tapainf_pares;

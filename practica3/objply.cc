@@ -38,5 +38,8 @@ ObjPLY::ObjPLY( const std::string & nombre_archivo )
 
    // Calculamos las normales de los vértices
    Calcular_normales( CalcularNormalesCaras() );
-   
+
+   Material predefinido = Material(Tupla4f(0.5,0.4,0.4,1),Tupla4f(0.7,0.04,0.04,1),Tupla4f(0.05,0.0,0.0,1),.078125);
+   setMaterial( predefinido );
+
 }

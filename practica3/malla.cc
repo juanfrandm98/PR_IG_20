@@ -15,7 +15,15 @@ void Malla3D::draw_ModoInmediato( visualizacion tipoVisualizacion )
 
   glEnableClientState( GL_VERTEX_ARRAY );
   glVertexPointer( 3, GL_FLOAT, 0, v.data() );
-  glEnableClientState( GL_COLOR_ARRAY );
+
+  if( glIsEnabled( GL_LIGHTING ) ) {
+    glEnableClientState( GL_NORMAL_ARRAY );
+    glNormalPointer( GL_FLOAT, 0, nv.data() );
+    m->aplicar();
+  } else {
+    glEnableClientState( GL_COLOR_ARRAY );
+  }
+
 
   switch( tipoVisualizacion ) {
 
