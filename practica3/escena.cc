@@ -26,8 +26,40 @@ Escena::Escena()
     // .......completar: ...
     // .....
 
+    Modelo objeto0;
     cubo = new Cubo( 100 );
+    objeto0.objeto = new Cubo( 100 );
+    objeto0.dibujar = true;
+    objeto0.posicion = Tupla3f( 0.0, 0.0, 0.0 );
+    objeto0.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    objeto0.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    objetosEscena.push_back( objeto0 );
+
+    Modelo objeto1;
     tetraedro = new Tetraedro( 100 );
+    objeto1.objeto = new Tetraedro( 100 );
+    objeto1.dibujar = true;
+    objeto1.posicion = Tupla3f( -120.0, 0.0, 0.0 );
+    objeto1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    objeto1.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    objetosEscena.push_back( objeto1 );
+
+    ModeloTapas mt0;
+    mt0.objeto = new Cilindro( 10, 10, 100, 45);
+    mt0.dibujar = true;
+    mt0.posicion = Tupla3f( 120.0, 0.0, 0.0 );
+    mt0.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt0.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    objetosEscenaConTapas.push_back( mt0 );
+
+    ModeloTapas mt1;
+    mt1.objeto = new ObjRevolucion( "./plys/peon", 20, true, true );;
+    mt1.dibujar = true;
+    mt1.posicion = Tupla3f( 200.0, 0.0, 0.0 );
+    mt1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt1.escalado = Tupla3f( 10.0, 10.0, 10.0 );
+    objetosEscenaConTapas.push_back( mt1 );
+
     cilindro = new Cilindro( 10, 10, 100, 45);
     esfera = new Esfera( 20, 20, 45 );
     cono = new Cono( 10, 10, 100, 45 );
@@ -50,12 +82,16 @@ Escena::Escena()
 
     Material obsidiana = Material(Tupla4f(0.18275,0.17,0.22525,1),Tupla4f(0.332741,0.328634,0.346435,1),Tupla4f(0.05375,0.05,0.06625,1),0.3);
     peonNegro->setMaterial( obsidiana );
+    objetosEscenaConTapas[0].objeto->setMaterial( obsidiana );
 
     Material yeso = Material(Tupla4f( 	1,0.829,0.829,1),Tupla4f(0.296648,0.296648,0.296648,1),Tupla4f(0.25,0.20725,0.20725,1),0.088);
     peonBlanco->setMaterial( yeso );
+    objetosEscena[0].objeto->setMaterial( yeso );
+    objetosEscenaConTapas[1].objeto->setMaterial( yeso );
 
     Material oro = Material(Tupla4f(0.75164,0.60648,0.22648,1),Tupla4f(0.628281,0.555802,0.366065,1),Tupla4f(0.24725,0.1995,0.0745,1),0.4);
     lingote->setMaterial( oro );
+    objetosEscena[1].objeto->setMaterial( oro );
 
     Material predefinido = Material(Tupla4f(0.5,0.4,0.4,1),Tupla4f(0.7,0.04,0.04,1),Tupla4f(0.05,0.0,0.0,1),.078125);
     cono->setMaterial( predefinido );
@@ -97,7 +133,35 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 	glViewport( 0, 0, UI_window_width, UI_window_height );
 }
 
+void Escena::DrawMode( visualizacion tipo ) {
 
+  for( int i = 0; i < objetosEscena.size(); i++ ) {
+    if( objetosEscena[i].dibujar ) {
+      glPushMatrix();
+        glTranslatef( objetosEscena[i].posicion(0), objetosEscena[i].posicion(1), objetosEscena[i].posicion(2) );
+        glRotatef( objetosEscena[i].orientacion(0), 1, 0, 0 );
+        glRotatef( objetosEscena[i].orientacion(1), 0, 1, 0 );
+        glRotatef( objetosEscena[i].orientacion(2), 0, 0, 1 );
+        glScalef( objetosEscena[i].escalado(0), objetosEscena[i].escalado(1), objetosEscena[i].escalado(2) );
+        objetosEscena[i].objeto->draw( modoDibujado, tipo );
+      glPopMatrix();
+    }
+  }
+
+  for( int i = 0; i < objetosEscenaConTapas.size(); i++ ) {
+    if( objetosEscenaConTapas[i].dibujar ) {
+      glPushMatrix();
+        glTranslatef( objetosEscenaConTapas[i].posicion(0), objetosEscenaConTapas[i].posicion(1), objetosEscenaConTapas[i].posicion(2) );
+        glRotatef( objetosEscenaConTapas[i].orientacion(0), 1, 0, 0 );
+        glRotatef( objetosEscenaConTapas[i].orientacion(1), 0, 1, 0 );
+        glRotatef( objetosEscenaConTapas[i].orientacion(2), 0, 0, 1 );
+        glScalef( objetosEscenaConTapas[i].escalado(0), objetosEscenaConTapas[i].escalado(1), objetosEscenaConTapas[i].escalado(2) );
+        objetosEscenaConTapas[i].objeto->draw( modoDibujado, tipo );
+      glPopMatrix();
+    }
+  }
+
+}
 
 // **************************************************************************
 //
@@ -108,11 +172,62 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 
 void Escena::dibujar()
 {
-  using namespace std;
+
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
 	change_observer();
   ejes.draw();
 
+  if( modoIluminacion != BASICA ) {
+    // Activamos la iluminación
+    glEnable( GL_LIGHTING );
+
+    // Seleccionamos el modo de iluminación
+    if( modoIluminacion == PLANA )
+      glShadeModel( GL_FLAT );
+    else
+      glShadeModel( GL_SMOOTH );
+
+    // Si la luz direccional está activada, la aplicamos y dibujamos la esfera
+    // para ayudar a ver la dirección
+    if( glIsEnabled( GL_LIGHT1 ) ) {
+      Tupla3f luzpos = luzDir->getPosicion();
+      float x = luzpos(0);
+      float y = luzpos(1);
+      float z = luzpos(2);
+
+      glPushMatrix();
+        glTranslatef( x, y, z );
+        luz->draw( modoDibujado, SOLID );
+      glPopMatrix();
+
+      luzDir->aplicar();
+    }
+
+    // Comprobamos si necesitamos aplicar el resto de luces
+    if( glIsEnabled( GL_LIGHT2 ) )
+      luzPos1->aplicar();
+    if( glIsEnabled( GL_LIGHT3 ) )
+      luzPos2->aplicar();
+
+    // Dibujamos los objetos
+    DrawMode( SOLID );
+
+  } else {
+
+    if( ajedrez ) {
+      DrawMode( CHESS );
+    } else {
+      if( puntos )
+        DrawMode( POINTS );
+      if( lineas )
+        DrawMode( LINES );
+      if( solido )
+        DrawMode( SOLID );
+    }
+
+  }
+
+  /*
   if( modoIluminacion == BASICA ) {
     switch( objeto ) {
 
@@ -773,7 +888,7 @@ void Escena::dibujar()
 
     glDisable( GL_LIGHTING );
 
-  }
+  }*/
 }
 
 //**************************************************************************

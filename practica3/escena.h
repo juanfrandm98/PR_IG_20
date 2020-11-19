@@ -20,12 +20,30 @@ typedef enum {NINGUNO, P1, PLY, REVOLUCION, CILINDRO, TODASREV, ESFERA, CONO, P3
 typedef enum {BASICA, SUAVE, PLANA} iluminacion;
 typedef enum {VARALPHA, VARBETA} variacion;
 
+struct Modelo {
+  Malla3D * objeto;
+  bool dibujar;
+  Tupla3f posicion;
+  Tupla3f orientacion;
+  Tupla3f escalado;
+};
+
+struct ModeloTapas {
+  ObjRevolucion * objeto;
+  bool dibujar;
+  Tupla3f posicion;
+  Tupla3f orientacion;
+  Tupla3f escalado;
+};
+
 class Escena
 {
 
    private:
 
-
+   // Función que manda dibujar a todos los objetos de la escena de una
+   // determinada manera (ajedrez, sólidos, líneas o puntos)
+   void DrawMode( visualizacion tipo );
 
  // ** PARÁMETROS DE LA CÁMARA (PROVISIONAL)
 
@@ -60,6 +78,9 @@ class Escena
    ObjRevolucion * peonNegro = nullptr;
    Cubo * lingote = nullptr;
    Esfera * luz = nullptr;
+
+   std::vector<Modelo> objetosEscena;
+   std::vector<ModeloTapas> objetosEscenaConTapas;
 
    // FLAGS para el dibujado
    bool puntos;
