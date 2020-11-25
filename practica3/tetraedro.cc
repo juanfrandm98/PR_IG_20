@@ -16,10 +16,10 @@ Tetraedro::Tetraedro( float lado )
   float altura = sqrt( lado * lado - vertice_centro * vertice_centro );
 
    // inicializar la tabla de vértices
-   v.push_back( Tupla3f( -lado / 2, 0, apotema ) ); // 0 - Base izquierda
-   v.push_back( Tupla3f( lado / 2, 0, apotema ) );  // 1 - Base derecha
-   v.push_back( Tupla3f( 0, 0, apotema - profundidad ) );        // 2 - Base arriba
-   v.push_back( Tupla3f( 0, altura, 0 ) );           // 3 - Cúspide
+   v.push_back( Tupla3f( -lado / 2, -altura / 2, apotema ) ); // 0 - Base izquierda
+   v.push_back( Tupla3f( lado / 2, -altura / 2, apotema ) );  // 1 - Base derecha
+   v.push_back( Tupla3f( 0, -altura / 2, apotema - profundidad ) );        // 2 - Base arriba
+   v.push_back( Tupla3f( 0, altura / 2, 0 ) );           // 3 - Cúspide
 
    // inicializar la tabla de caras o triángulos:
    f.push_back( Tupla3i( 2, 1, 0 ) ); // 0 - Base

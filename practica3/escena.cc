@@ -70,7 +70,7 @@ Escena::Escena()
     objeto2.dibujar = true;
     objeto2.posicion = Tupla3f( 0.0, 0.0, 0.0 );
     objeto2.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    objeto2.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    objeto2.escalado = Tupla3f( 1.0, 0.35, 2.0 );
     objeto2.objeto->setMaterial( oro );
     objetosEscena.push_back( objeto2 );
 
@@ -78,9 +78,9 @@ Escena::Escena()
     Modelo objeto3;
     objeto3.objeto = new ObjPLY( "./plys/big_dodge" );
     objeto3.dibujar = true;
-    objeto3.posicion = Tupla3f( -200.0, 0.0, 0.0 );
+    objeto3.posicion = Tupla3f( -250.0, 0.0, 0.0 );
     objeto3.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    objeto3.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    objeto3.escalado = Tupla3f( 10.0, 10.0, 10.0 );
     objeto3.objeto->setMaterial( predefinido );
     objetosEscena.push_back( objeto3 );
 
@@ -120,7 +120,7 @@ Escena::Escena()
     mt3.dibujar = true;
     mt3.posicion = Tupla3f( 100.0, 0.0, 0.0 );
     mt3.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt3.escalado = Tupla3f( 10.0, 10.0, 10.0 );
+    mt3.escalado = Tupla3f( 20.0, 20.0, 20.0 );
     mt3.objeto->setMaterial( yeso );
     objetosEscenaConTapas.push_back( mt3 );
 
@@ -130,7 +130,7 @@ Escena::Escena()
     mt4.dibujar = true;
     mt4.posicion = Tupla3f( -100.0, 0.0, 0.0 );
     mt4.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt4.escalado = Tupla3f( 10.0, 10.0, 10.0 );
+    mt4.escalado = Tupla3f( 20.0, 20.0, 20.0 );
     mt4.objeto->setMaterial( obsidiana );
     objetosEscenaConTapas.push_back( mt4 );
 
@@ -145,13 +145,13 @@ Escena::Escena()
     mt5.objeto->setMaterial( oro );
     objetosEscenaConTapas.push_back( mt5 );
 
-    // ObjetoRevolución=objetosEscenaConTapas(4)
+    // ObjetoRevolución=objetosEscenaConTapas(6)
     ModeloTapas mt6;
     mt6.objeto = new ObjRevolucion( "./plys/lata-pcue", 20, true, true );
     mt6.dibujar = true;
-    mt6.posicion = Tupla3f( 200.0, 0.0, 0.0 );
+    mt6.posicion = Tupla3f( 150.0, 0.0, 0.0 );
     mt6.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt6.escalado = Tupla3f( 10.0, 10.0, 10.0 );
+    mt6.escalado = Tupla3f( 20.0, 20.0, 20.0 );
     mt6.objeto->setMaterial( predefinido );
     objetosEscenaConTapas.push_back( mt6 );
 

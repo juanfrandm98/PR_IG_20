@@ -6,14 +6,14 @@ Cubo::Cubo(float lado)
 {
 
    // inicializar la tabla de vértices
-   v.push_back( Tupla3f( -lado / 2, 0, - lado / 2 ) );      // 0 - Abajo-Detrás-Izquierda
-   v.push_back( Tupla3f( -lado / 2, 0, lado / 2 ) );     // 1 - Abajo-Delante-Izquierda
-   v.push_back( Tupla3f( lado / 2, 0, lado / 2 ) );      // 2 - Abajo-Delante-Derecha
-   v.push_back( Tupla3f( lado / 2, 0, -lado / 2 ) );       // 3 - Abajo-Detrás-Derecha
-   v.push_back( Tupla3f( -lado / 2, lado, -lado / 2 ) );   // 4 - Arriba-Detrás-Izquierda
-   v.push_back( Tupla3f( -lado / 2, lado, lado / 2 ) );  // 5 - Arriba-Delante-Izquierda
-   v.push_back( Tupla3f( lado / 2, lado, lado / 2 ) );   // 6 - Arriba-Delante-Derecha
-   v.push_back( Tupla3f( lado / 2, lado, -lado / 2 ) );    // 7 - Arriba-Detrás-Derecha
+   v.push_back( Tupla3f( -lado / 2, -lado / 2, - lado / 2 ) );      // 0 - Abajo-Detrás-Izquierda
+   v.push_back( Tupla3f( -lado / 2, -lado / 2, lado / 2 ) );     // 1 - Abajo-Delante-Izquierda
+   v.push_back( Tupla3f( lado / 2, -lado / 2, lado / 2 ) );      // 2 - Abajo-Delante-Derecha
+   v.push_back( Tupla3f( lado / 2, -lado / 2, -lado / 2 ) );       // 3 - Abajo-Detrás-Derecha
+   v.push_back( Tupla3f( -lado / 2, lado / 2, -lado / 2 ) );   // 4 - Arriba-Detrás-Izquierda
+   v.push_back( Tupla3f( -lado / 2, lado / 2, lado / 2 ) );  // 5 - Arriba-Delante-Izquierda
+   v.push_back( Tupla3f( lado / 2, lado / 2, lado / 2 ) );   // 6 - Arriba-Delante-Derecha
+   v.push_back( Tupla3f( lado / 2, lado / 2, -lado / 2 ) );    // 7 - Arriba-Detrás-Derecha
 
    // inicializar la tabla de caras o triángulos:
    f.push_back( Tupla3i( 5, 1, 6 ) ); // 0  - Delante izquierda
