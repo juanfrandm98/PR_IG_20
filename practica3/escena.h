@@ -16,7 +16,6 @@
 #include "material.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,TAPAS,ILUMINACION} menu;
-typedef enum {NINGUNO, P1, PLY, REVOLUCION, CILINDRO, TODASREV, ESFERA, CONO, P3} objetoVisible;
 typedef enum {BASICA, SUAVE, PLANA} iluminacion;
 typedef enum {VARALPHA, VARBETA} variacion;
 
@@ -64,21 +63,8 @@ class Escena
    void clear_window();
 
    menu modoMenu=NADA;
-   objetoVisible objeto = CILINDRO;
    // Objetos de la escena
    Ejes ejes;
-   Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
-   Tetraedro * tetraedro = nullptr ; // es importante inicializarlo a 'nullptr'
-   ObjPLY * objetoPLY = nullptr;
-   ObjRevolucion * objetoRevolucion = nullptr;
-   Cilindro * cilindro = nullptr;
-   Cono * cono = nullptr;
-   Esfera * esfera = nullptr;
-   ObjRevolucion * peonBlanco = nullptr;
-   ObjRevolucion * peonNegro = nullptr;
-   Cubo * lingote = nullptr;
-   Esfera * luz = nullptr;
-
    std::vector<Modelo> objetosEscena;
    std::vector<ModeloTapas> objetosEscenaConTapas;
 

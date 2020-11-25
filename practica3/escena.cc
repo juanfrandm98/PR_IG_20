@@ -26,80 +26,13 @@ Escena::Escena()
     // .......completar: ...
     // .....
 
-    Modelo objeto0;
-    cubo = new Cubo( 100 );
-    objeto0.objeto = new Cubo( 100 );
-    objeto0.dibujar = true;
-    objeto0.posicion = Tupla3f( 0.0, 0.0, 0.0 );
-    objeto0.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    objeto0.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    objetosEscena.push_back( objeto0 );
-
-    Modelo objeto1;
-    tetraedro = new Tetraedro( 100 );
-    objeto1.objeto = new Tetraedro( 100 );
-    objeto1.dibujar = true;
-    objeto1.posicion = Tupla3f( -120.0, 0.0, 0.0 );
-    objeto1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    objeto1.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    objetosEscena.push_back( objeto1 );
-
-    ModeloTapas mt0;
-    mt0.objeto = new Cilindro( 10, 10, 100, 45);
-    mt0.dibujar = true;
-    mt0.posicion = Tupla3f( 120.0, 0.0, 0.0 );
-    mt0.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt0.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    objetosEscenaConTapas.push_back( mt0 );
-
-    ModeloTapas mt1;
-    mt1.objeto = new ObjRevolucion( "./plys/peon", 20, true, true );;
-    mt1.dibujar = true;
-    mt1.posicion = Tupla3f( 200.0, 0.0, 0.0 );
-    mt1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt1.escalado = Tupla3f( 10.0, 10.0, 10.0 );
-    objetosEscenaConTapas.push_back( mt1 );
-
-    cilindro = new Cilindro( 10, 10, 100, 45);
-    esfera = new Esfera( 20, 20, 45 );
-    cono = new Cono( 10, 10, 100, 45 );
-    luz = new Esfera(20,20,10);
-    luz->setColorSolido( Tupla3f( 1, 1, 0 ) );
-
-    puntos = false;
-    lineas = false;
-    solido = true;
-    ajedrez = false;
-    modoDibujado = INMEDIATO;
-    tapa_inferior = true;
-    tapa_superior = true;
-    modoIluminacion = BASICA;
-    variacionLuz = VARALPHA;
-
-    peonBlanco = new ObjRevolucion( "./plys/peon", 20, true, true );
-    peonNegro = new ObjRevolucion( "./plys/peon", 20, true, true );
-    lingote = new Cubo( 35 );
-
+    // Creación de los materiales
     Material obsidiana = Material(Tupla4f(0.18275,0.17,0.22525,1),Tupla4f(0.332741,0.328634,0.346435,1),Tupla4f(0.05375,0.05,0.06625,1),0.3);
-    peonNegro->setMaterial( obsidiana );
-    objetosEscenaConTapas[0].objeto->setMaterial( obsidiana );
-
     Material yeso = Material(Tupla4f( 	1,0.829,0.829,1),Tupla4f(0.296648,0.296648,0.296648,1),Tupla4f(0.25,0.20725,0.20725,1),0.088);
-    peonBlanco->setMaterial( yeso );
-    objetosEscena[0].objeto->setMaterial( yeso );
-    objetosEscenaConTapas[1].objeto->setMaterial( yeso );
-
     Material oro = Material(Tupla4f(0.75164,0.60648,0.22648,1),Tupla4f(0.628281,0.555802,0.366065,1),Tupla4f(0.24725,0.1995,0.0745,1),0.4);
-    lingote->setMaterial( oro );
-    objetosEscena[1].objeto->setMaterial( oro );
-
     Material predefinido = Material(Tupla4f(0.5,0.4,0.4,1),Tupla4f(0.7,0.04,0.04,1),Tupla4f(0.05,0.0,0.0,1),.078125);
-    cono->setMaterial( predefinido );
-    esfera->setMaterial( predefinido );
-    cilindro->setMaterial( predefinido );
-    tetraedro->setMaterial( predefinido );
-    cubo->setMaterial( predefinido );
 
+    // Creación de las luces
     // Luz direccional inicial
     luzDir = new LuzDireccional( Tupla2f( 0.0, 0.0 ), GL_LIGHT1, Tupla4f( 0.9, 0.9, 0.9, 1 ),
                                  Tupla4f( 1, 1, 1, 1 ), Tupla4f( 0.9, 0.9, 0.9, 1 ) );
@@ -109,6 +42,129 @@ Escena::Escena()
     // Luz posicional roja
     luzPos2 = new LuzPosicional( Tupla3f( 0, 100, 0 ), GL_LIGHT3, Tupla4f( 0.9, 0, 0, 1 ),
                                  Tupla4f( 1, 0, 0, 1 ), Tupla4f( 0.9, 0, 0, 1 ) );
+
+    // Creación de los objetos de la escena
+    // Cubo=objetosEscena(0)
+    Modelo objeto0;
+    objeto0.objeto = new Cubo( 100 );
+    objeto0.dibujar = true;
+    objeto0.posicion = Tupla3f( -250.0, 0.0, -150.0 );
+    objeto0.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    objeto0.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    objeto0.objeto->setMaterial( predefinido );
+    objetosEscena.push_back( objeto0 );
+
+    // Tetraedro=objetosEscena(1)
+    Modelo objeto1;
+    objeto1.objeto = new Tetraedro( 100 );
+    objeto1.dibujar = true;
+    objeto1.posicion = Tupla3f( -100.0, 0.0, -150.0 );
+    objeto1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    objeto1.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    objeto1.objeto->setMaterial( predefinido );
+    objetosEscena.push_back( objeto1 );
+
+    // Lingote=objetosEscena(2)
+    Modelo objeto2;
+    objeto2.objeto = new Cubo( 35 );
+    objeto2.dibujar = true;
+    objeto2.posicion = Tupla3f( 0.0, 0.0, 0.0 );
+    objeto2.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    objeto2.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    objeto2.objeto->setMaterial( oro );
+    objetosEscena.push_back( objeto2 );
+
+    // ObjetoPLY=objetosEscena(2)
+    Modelo objeto3;
+    objeto3.objeto = new ObjPLY( "./plys/big_dodge" );
+    objeto3.dibujar = true;
+    objeto3.posicion = Tupla3f( -200.0, 0.0, 0.0 );
+    objeto3.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    objeto3.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    objeto3.objeto->setMaterial( predefinido );
+    objetosEscena.push_back( objeto3 );
+
+    // Cilindro=objetosEscenaConTapas(0)
+    ModeloTapas mt0;
+    mt0.objeto = new Cilindro( 10, 10, 100, 45);
+    mt0.dibujar = true;
+    mt0.posicion = Tupla3f( 0.0, 0.0, -150.0 );
+    mt0.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt0.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    mt0.objeto->setMaterial( predefinido );
+    objetosEscenaConTapas.push_back( mt0 );
+
+    // Esfera=objetosEscenaConTapas(1)
+    ModeloTapas mt1;
+    mt1.objeto = new Esfera( 20, 20, 45 );
+    mt1.dibujar = true;
+    mt1.posicion = Tupla3f( 100.0, 0.0, -150.0 );
+    mt1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt1.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    mt1.objeto->setMaterial( predefinido );
+    objetosEscenaConTapas.push_back( mt1 );
+
+    // Cono=objetosEscenaConTapas(2)
+    ModeloTapas mt2;
+    mt2.objeto = new Cono( 10, 10, 100, 45 );
+    mt2.dibujar = true;
+    mt2.posicion = Tupla3f( 200.0, 0.0, -150.0 );
+    mt2.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt2.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    mt2.objeto->setMaterial( predefinido );
+    objetosEscenaConTapas.push_back( mt2 );
+
+    // PeonBlanco=objetosEscenaConTapas(3)
+    ModeloTapas mt3;
+    mt3.objeto = new ObjRevolucion( "./plys/peon", 20, true, true );
+    mt3.dibujar = true;
+    mt3.posicion = Tupla3f( 100.0, 0.0, 0.0 );
+    mt3.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt3.escalado = Tupla3f( 10.0, 10.0, 10.0 );
+    mt3.objeto->setMaterial( yeso );
+    objetosEscenaConTapas.push_back( mt3 );
+
+    // PeonNegro=objetosEscenaConTapas(4)
+    ModeloTapas mt4;
+    mt4.objeto = new ObjRevolucion( "./plys/peon", 20, true, true );
+    mt4.dibujar = true;
+    mt4.posicion = Tupla3f( -100.0, 0.0, 0.0 );
+    mt4.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt4.escalado = Tupla3f( 10.0, 10.0, 10.0 );
+    mt4.objeto->setMaterial( obsidiana );
+    objetosEscenaConTapas.push_back( mt4 );
+
+    // Luz=objetosEscenaConTapas(5)
+    ModeloTapas mt5;
+    mt5.objeto = new Esfera(20,20,10);
+    mt5.dibujar = true;
+    mt5.posicion = luzDir->getPosicion();
+    mt5.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt5.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    mt5.objeto->setColorSolido( Tupla3f( 1, 1, 0 ) );
+    mt5.objeto->setMaterial( oro );
+    objetosEscenaConTapas.push_back( mt5 );
+
+    // ObjetoRevolución=objetosEscenaConTapas(4)
+    ModeloTapas mt6;
+    mt6.objeto = new ObjRevolucion( "./plys/lata-pcue", 20, true, true );
+    mt6.dibujar = true;
+    mt6.posicion = Tupla3f( 200.0, 0.0, 0.0 );
+    mt6.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt6.escalado = Tupla3f( 10.0, 10.0, 10.0 );
+    mt6.objeto->setMaterial( predefinido );
+    objetosEscenaConTapas.push_back( mt6 );
+
+    // Inicialización de los flags
+    puntos = false;
+    lineas = false;
+    solido = true;
+    ajedrez = false;
+    modoDibujado = INMEDIATO;
+    tapa_inferior = true;
+    tapa_superior = true;
+    modoIluminacion = BASICA;
+    variacionLuz = VARALPHA;
 
 }
 
@@ -190,16 +246,7 @@ void Escena::dibujar()
     // Si la luz direccional está activada, la aplicamos y dibujamos la esfera
     // para ayudar a ver la dirección
     if( glIsEnabled( GL_LIGHT1 ) ) {
-      Tupla3f luzpos = luzDir->getPosicion();
-      float x = luzpos(0);
-      float y = luzpos(1);
-      float z = luzpos(2);
-
-      glPushMatrix();
-        glTranslatef( x, y, z );
-        luz->draw( modoDibujado, SOLID );
-      glPopMatrix();
-
+      objetosEscenaConTapas[5].posicion = luzDir->getPosicion();
       luzDir->aplicar();
     }
 
@@ -227,668 +274,6 @@ void Escena::dibujar()
 
   }
 
-  /*
-  if( modoIluminacion == BASICA ) {
-    switch( objeto ) {
-
-      // VISUALICACIÓN DEL OBJETO PLY
-      case PLY:
-        if( ajedrez ) {
-          glPushMatrix();
-            glScalef( 10, 10, 10 );
-            objetoPLY->draw( modoDibujado, CHESS );
-          glPopMatrix();
-        } else {
-          if( puntos ) {
-            glPushMatrix();
-              glScalef( 10, 10, 10 );
-              objetoPLY->draw( modoDibujado, POINTS );
-            glPopMatrix();
-          }
-
-          if( lineas ) {
-            glPushMatrix();
-              glScalef( 10, 10, 10 );
-              objetoPLY->draw( modoDibujado, LINES );
-            glPopMatrix();
-          }
-
-          if( solido ) {
-            glPushMatrix();
-              glScalef( 10, 10, 10 );
-              objetoPLY->draw( modoDibujado, SOLID );
-            glPopMatrix();
-          }
-        }
-        break;
-
-      // VISUALIZACIÓN TODOS A LA VEZ P1
-      case P1:
-        if( ajedrez ) {
-          glPushMatrix();
-            glTranslatef( -75, 0, 0 );
-            cubo->draw( modoDibujado, CHESS );
-          glPopMatrix();
-          glPushMatrix();
-            glTranslatef( 50, 0, 0 );
-            tetraedro->draw( modoDibujado, CHESS );
-          glPopMatrix();
-        } else {
-          if( puntos ) {
-            glPushMatrix();
-              glTranslatef( -75, 0, 0 );
-              cubo->draw( modoDibujado, POINTS );
-            glPopMatrix();
-            glPushMatrix();
-              glTranslatef( 50, 0, 0 );
-              tetraedro->draw( modoDibujado, POINTS );
-            glPopMatrix();
-          }
-
-          if( lineas ) {
-            glPushMatrix();
-              glTranslatef( -75, 0, 0 );
-              cubo->draw( modoDibujado, LINES );
-            glPopMatrix();
-            glPushMatrix();
-              glTranslatef( 50, 0, 0 );
-              tetraedro->draw( modoDibujado, LINES );
-            glPopMatrix();
-          }
-
-          if( solido ) {
-            glPushMatrix();
-              glTranslatef( -75, 0, 0 );
-              cubo->draw( modoDibujado, SOLID );
-            glPopMatrix();
-            glPushMatrix();
-              glTranslatef( 50, 0, 0 );
-              tetraedro->draw( modoDibujado, SOLID );
-            glPopMatrix();
-          }
-        break;
-
-      // VISUALIZACIÓN DEL CILINDRO, LA ESFERA Y EL CONO
-      case TODASREV:
-        if( ajedrez ) {
-          glPushMatrix();
-            glTranslatef( -100, 0, 0 );
-            if( tapa_superior and tapa_inferior )
-              cilindro->draw( modoDibujado, CHESS );
-            else {
-              cilindro->draw_cuerpo( CHESS );
-              if( tapa_superior or tapa_inferior )
-                cilindro->draw_tapas( CHESS, tapa_superior, tapa_inferior );
-            }
-          glPopMatrix();
-          if( tapa_superior and tapa_inferior )
-            esfera->draw( modoDibujado, CHESS );
-          else {
-            esfera->draw_cuerpo( CHESS );
-            if( tapa_superior or tapa_inferior )
-              esfera->draw_tapas( CHESS, tapa_superior, tapa_inferior );
-          }
-          glPushMatrix();
-            glTranslatef( 100, 0, 0 );
-            if( tapa_superior and tapa_inferior )
-              cono->draw( modoDibujado, CHESS );
-            else {
-              cono->draw_cuerpo( CHESS );
-              if( tapa_superior or tapa_inferior )
-                cono->draw_tapas( CHESS, tapa_superior, tapa_inferior );
-            }
-          glPopMatrix();
-        } else {
-          if( puntos ) {
-            glPushMatrix();
-              glTranslatef( -100, 0, 0 );
-              if( tapa_superior and tapa_inferior )
-                cilindro->draw( modoDibujado, POINTS );
-              else {
-                cilindro->draw_cuerpo( POINTS );
-                if( tapa_superior or tapa_inferior )
-                  cilindro->draw_tapas( POINTS, tapa_superior, tapa_inferior );
-              }
-            glPopMatrix();
-            if( tapa_superior and tapa_inferior )
-              esfera->draw( modoDibujado, POINTS );
-            else {
-              esfera->draw_cuerpo( POINTS );
-              if( tapa_superior or tapa_inferior )
-                esfera->draw_tapas( POINTS, tapa_superior, tapa_inferior );
-            }
-            glPushMatrix();
-              glTranslatef( 100, 0, 0 );
-              if( tapa_superior and tapa_inferior )
-                cono->draw( modoDibujado, POINTS );
-              else {
-                cono->draw_cuerpo( POINTS );
-                if( tapa_superior or tapa_inferior )
-                  cono->draw_tapas( POINTS, tapa_superior, tapa_inferior );
-              }
-            glPopMatrix();
-          }
-
-          if( lineas ) {
-            glPushMatrix();
-              glTranslatef( -100, 0, 0 );
-              if( tapa_superior and tapa_inferior )
-                cilindro->draw( modoDibujado, LINES );
-              else {
-                cilindro->draw_cuerpo( LINES );
-                if( tapa_superior or tapa_inferior )
-                  cilindro->draw_tapas( LINES, tapa_superior, tapa_inferior );
-              }
-            glPopMatrix();
-            if( tapa_superior and tapa_inferior )
-              esfera->draw( modoDibujado, LINES );
-            else {
-              esfera->draw_cuerpo( LINES );
-              if( tapa_superior or tapa_inferior )
-                esfera->draw_tapas( LINES, tapa_superior, tapa_inferior );
-            }
-            glPushMatrix();
-              glTranslatef( 100, 0, 0 );
-              if( tapa_superior and tapa_inferior )
-                cono->draw( modoDibujado, LINES );
-              else {
-                cono->draw_cuerpo( LINES );
-                if( tapa_superior or tapa_inferior )
-                  cono->draw_tapas( LINES, tapa_superior, tapa_inferior );
-              }
-            glPopMatrix();
-          }
-
-          if( solido ) {
-            glPushMatrix();
-              glTranslatef( -100, 0, 0 );
-              if( tapa_superior and tapa_inferior )
-                cilindro->draw( modoDibujado, SOLID );
-              else {
-                cilindro->draw_cuerpo( SOLID );
-                if( tapa_superior or tapa_inferior )
-                  cilindro->draw_tapas( SOLID, tapa_superior, tapa_inferior );
-              }
-            glPopMatrix();
-            if( tapa_superior and tapa_inferior )
-              esfera->draw( modoDibujado, SOLID );
-            else {
-              esfera->draw_cuerpo( SOLID );
-              if( tapa_superior or tapa_inferior )
-                esfera->draw_tapas( SOLID, tapa_superior, tapa_inferior );
-            }
-            glPushMatrix();
-              glTranslatef( 100, 0, 0 );
-              if( tapa_superior and tapa_inferior )
-                cono->draw( modoDibujado, SOLID );
-              else {
-                cono->draw_cuerpo( SOLID );
-                if( tapa_superior or tapa_inferior )
-                  cono->draw_tapas( SOLID, tapa_superior, tapa_inferior );
-              }
-            glPopMatrix();
-          }
-        }
-        break;
-
-      // VISUALIZACIÓN DE LA ESCENA DE PRUEBA DE LA PRÁCTICA 3
-      case P3:
-        if( ajedrez ) {
-          glPushMatrix();
-            glTranslatef( -100, 0, 0 );
-            glScalef( 50, 50, 50 );
-            if( tapa_superior and tapa_inferior )
-              peonNegro->draw( modoDibujado, CHESS );
-            else {
-              peonNegro->draw_cuerpo( CHESS );
-              if( tapa_superior or tapa_inferior )
-                peonNegro->draw_tapas( CHESS, tapa_superior, tapa_inferior );
-            }
-          glPopMatrix();
-          glPushMatrix();
-            glTranslatef( 0, -75, 0 );
-            glScalef( 1, 1, 2.5 );
-            lingote -> draw( modoDibujado, CHESS );
-          glPopMatrix();
-          glPushMatrix();
-            glTranslatef( 100, 0, 0 );
-            glScalef( 50, 50, 50 );
-            if( tapa_superior and tapa_inferior )
-              peonBlanco->draw( modoDibujado, CHESS );
-            else {
-              peonBlanco->draw_cuerpo( CHESS );
-              if( tapa_superior or tapa_inferior )
-                peonBlanco->draw_tapas( CHESS, tapa_superior, tapa_inferior );
-            }
-          glPopMatrix();
-        } else {
-          if( puntos ) {
-            glPushMatrix();
-              glTranslatef( -100, 0, 0 );
-              glScalef( 50, 50, 50 );
-              if( tapa_superior and tapa_inferior )
-                peonNegro->draw( modoDibujado, POINTS );
-              else {
-                peonNegro->draw_cuerpo( POINTS );
-                if( tapa_superior or tapa_inferior )
-                  peonNegro->draw_tapas( POINTS, tapa_superior, tapa_inferior );
-              }
-            glPopMatrix();
-            glPushMatrix();
-              glTranslatef( 0, -75, 0 );
-              glScalef( 1, 1, 2.5 );
-              lingote -> draw( modoDibujado, POINTS );
-            glPopMatrix();
-            glPushMatrix();
-              glTranslatef( 100, 0, 0 );
-              glScalef( 50, 50, 50 );
-              if( tapa_superior and tapa_inferior )
-                peonBlanco->draw( modoDibujado, POINTS );
-              else {
-                peonBlanco->draw_cuerpo( POINTS );
-                if( tapa_superior or tapa_inferior )
-                  peonBlanco->draw_tapas( POINTS, tapa_superior, tapa_inferior );
-              }
-            glPopMatrix();
-          }
-
-          if( lineas ) {
-            glPushMatrix();
-              glTranslatef( -100, 0, 0 );
-              glScalef( 50, 50, 50 );
-              if( tapa_superior and tapa_inferior )
-                peonNegro->draw( modoDibujado, LINES );
-              else {
-                peonNegro->draw_cuerpo( LINES );
-                if( tapa_superior or tapa_inferior )
-                  peonNegro->draw_tapas( LINES, tapa_superior, tapa_inferior );
-              }
-            glPopMatrix();
-            glPushMatrix();
-              glTranslatef( 0, -75, 0 );
-              glScalef( 1, 1, 2.5 );
-              lingote -> draw( modoDibujado, LINES );
-            glPopMatrix();
-            glPushMatrix();
-              glTranslatef( 100, 0, 0 );
-              glScalef( 50, 50, 50 );
-              if( tapa_superior and tapa_inferior )
-                peonBlanco->draw( modoDibujado, LINES );
-              else {
-                peonBlanco->draw_cuerpo( LINES );
-                if( tapa_superior or tapa_inferior )
-                  peonBlanco->draw_tapas( LINES, tapa_superior, tapa_inferior );
-              }
-            glPopMatrix();
-          }
-
-          if( solido ) {
-            glPushMatrix();
-              glTranslatef( -100, 0, 0 );
-              glScalef( 50, 50, 50 );
-              if( tapa_superior and tapa_inferior )
-                peonNegro->draw( modoDibujado, SOLID );
-              else {
-                peonNegro->draw_cuerpo( SOLID );
-                if( tapa_superior or tapa_inferior )
-                  peonNegro->draw_tapas( SOLID, tapa_superior, tapa_inferior );
-              }
-            glPopMatrix();
-            glPushMatrix();
-              glTranslatef( 0, -75, 0 );
-              glScalef( 1, 1, 2.5 );
-              lingote -> draw( modoDibujado, SOLID );
-            glPopMatrix();
-            glPushMatrix();
-              glTranslatef( 100, 0, 0 );
-              glScalef( 50, 50, 50 );
-              if( tapa_superior and tapa_inferior )
-                peonBlanco->draw( modoDibujado, SOLID );
-              else {
-                peonBlanco->draw_cuerpo( SOLID );
-                if( tapa_superior or tapa_inferior )
-                  peonBlanco->draw_tapas( SOLID, tapa_superior, tapa_inferior );
-              }
-            glPopMatrix();
-          }
-        }
-        break;
-
-      // VISUALIZACIÓN DEL OBJETO DE REVOLUCIÓN PLY
-      case REVOLUCION:
-        if( ajedrez ) {
-          glPushMatrix();
-            glScalef( 50, 50, 50 );
-            if( tapa_superior and tapa_inferior )
-              objetoRevolucion->draw( modoDibujado, CHESS );
-            else {
-              objetoRevolucion->draw_cuerpo( CHESS );
-              if( tapa_superior or tapa_inferior )
-                objetoRevolucion->draw_tapas( CHESS, tapa_superior, tapa_inferior );
-            }
-          glPopMatrix();
-        } else {
-          if( puntos ) {
-            glPushMatrix();
-              glScalef( 50, 50, 50 );
-              if( tapa_superior and tapa_inferior )
-                objetoRevolucion->draw( modoDibujado, POINTS );
-              else {
-                objetoRevolucion->draw_cuerpo( POINTS );
-                if( tapa_superior or tapa_inferior )
-                  objetoRevolucion->draw_tapas( POINTS, tapa_superior, tapa_inferior );
-              }
-            glPopMatrix();
-          }
-
-          if( lineas ) {
-            glPushMatrix();
-              glScalef( 50, 50, 50 );
-              if( tapa_superior and tapa_inferior )
-                objetoRevolucion->draw( modoDibujado, LINES );
-              else {
-                objetoRevolucion->draw_cuerpo( LINES );
-                if( tapa_superior or tapa_inferior )
-                  objetoRevolucion->draw_tapas( LINES, tapa_superior, tapa_inferior );
-              }
-            glPopMatrix();
-          }
-
-          if( solido ) {
-            glPushMatrix();
-              glScalef( 50, 50, 50 );
-              if( tapa_superior and tapa_inferior )
-                objetoRevolucion->draw( modoDibujado, SOLID );
-              else {
-                objetoRevolucion->draw_cuerpo( SOLID );
-                if( tapa_superior or tapa_inferior )
-                  objetoRevolucion->draw_tapas( SOLID, tapa_superior, tapa_inferior );
-              }
-            glPopMatrix();
-          }
-        }
-        break;
-
-      // VISUALICACIÓN DEL CILINDRO
-      case CILINDRO:
-        if( ajedrez ) {
-          if( tapa_superior and tapa_inferior )
-            cilindro->draw( modoDibujado, CHESS );
-          else {
-            cilindro->draw_cuerpo( CHESS );
-            if( tapa_superior or tapa_inferior )
-              cilindro->draw_tapas( CHESS, tapa_superior, tapa_inferior );
-          }
-        } else {
-          if( puntos ) {
-            if( tapa_superior and tapa_inferior )
-              cilindro->draw( modoDibujado, POINTS );
-            else {
-              cilindro->draw_cuerpo( POINTS );
-              if( tapa_superior or tapa_inferior )
-                cilindro->draw_tapas( POINTS, tapa_superior, tapa_inferior );
-            }
-          }
-          if( lineas ) {
-            if( tapa_superior and tapa_inferior )
-              cilindro->draw( modoDibujado, LINES );
-            else {
-              cilindro->draw_cuerpo( LINES );
-              if( tapa_superior or tapa_inferior )
-                cilindro->draw_tapas( LINES, tapa_superior, tapa_inferior );
-            }
-          }
-          if( solido ) {
-            if( tapa_superior and tapa_inferior )
-              cilindro->draw( modoDibujado, SOLID );
-            else {
-              cilindro->draw_cuerpo( SOLID );
-              if( tapa_superior or tapa_inferior )
-                cilindro->draw_tapas( SOLID, tapa_superior, tapa_inferior );
-            }
-          }
-        }
-        break;
-
-      // VISUALICACIÓN DE LA ESFERA
-      case ESFERA:
-        if( ajedrez ) {
-          if( tapa_superior and tapa_inferior )
-            esfera->draw( modoDibujado, CHESS );
-          else {
-            esfera->draw_cuerpo( CHESS );
-            if( tapa_superior or tapa_inferior )
-              esfera->draw_tapas( CHESS, tapa_superior, tapa_inferior );
-          }
-        } else {
-          if( puntos ) {
-            if( tapa_superior and tapa_inferior )
-              esfera->draw( modoDibujado, POINTS );
-            else {
-              esfera->draw_cuerpo( POINTS );
-              if( tapa_superior or tapa_inferior )
-                esfera->draw_tapas( POINTS, tapa_superior, tapa_inferior );
-            }
-          }
-          if( lineas ) {
-            if( tapa_superior and tapa_inferior )
-              esfera->draw( modoDibujado, LINES );
-            else {
-              esfera->draw_cuerpo( LINES );
-              if( tapa_superior or tapa_inferior )
-                esfera->draw_tapas( LINES, tapa_superior, tapa_inferior );
-            }
-          }
-          if( solido ) {
-            if( tapa_superior and tapa_inferior )
-              esfera->draw( modoDibujado, SOLID );
-            else {
-              esfera->draw_cuerpo( SOLID );
-              if( tapa_superior or tapa_inferior )
-                esfera->draw_tapas( SOLID, tapa_superior, tapa_inferior );
-            }
-          }
-        }
-        break;
-
-      // VISUALICACIÓN DEL CONO
-      case CONO:
-      if( ajedrez ) {
-        if( tapa_superior and tapa_inferior )
-          cono->draw( modoDibujado, CHESS );
-        else {
-          cono->draw_cuerpo( CHESS );
-          if( tapa_superior or tapa_inferior )
-            cono->draw_tapas( CHESS, tapa_superior, tapa_inferior );
-        }
-      } else {
-        if( puntos ) {
-          if( tapa_superior and tapa_inferior )
-            cono->draw( modoDibujado, POINTS );
-          else {
-            cono->draw_cuerpo( POINTS );
-            if( tapa_superior or tapa_inferior )
-              cono->draw_tapas( POINTS, tapa_superior, tapa_inferior );
-          }
-        }
-        if( lineas ) {
-          if( tapa_superior and tapa_inferior )
-            cono->draw( modoDibujado, LINES );
-          else {
-            cono->draw_cuerpo( LINES );
-            if( tapa_superior or tapa_inferior )
-              cono->draw_tapas( LINES, tapa_superior, tapa_inferior );
-          }
-        }
-        if( solido ) {
-          if( tapa_superior and tapa_inferior )
-            cono->draw( modoDibujado, SOLID );
-          else {
-            cono->draw_cuerpo( SOLID );
-            if( tapa_superior or tapa_inferior )
-              cono->draw_tapas( SOLID, tapa_superior, tapa_inferior );
-          }
-        }
-      }
-      break;
-
-      }
-    }
-  } else {    // Visualización con iluminación
-
-    if( glIsEnabled( GL_LIGHT1 ) ) {
-      Tupla3f luzpos = luzDir->getPosicion();
-      float x = luzpos(0);
-      float y = luzpos(1);
-      float z = luzpos(2);
-
-      glPushMatrix();
-        glTranslatef( x, y, z );
-        luz->draw( modoDibujado, SOLID );
-      glPopMatrix();
-    }
-
-    glEnable( GL_LIGHTING );
-
-    if( modoIluminacion == PLANA )
-      glShadeModel( GL_FLAT );
-    else
-      glShadeModel( GL_SMOOTH );
-
-    if( glIsEnabled( GL_LIGHT1 ) )
-      luzDir->aplicar();
-    if( glIsEnabled( GL_LIGHT2 ) )
-      luzPos1->aplicar();
-    if( glIsEnabled( GL_LIGHT3 ) )
-      luzPos2->aplicar();
-
-    switch( objeto ) {
-      case P1:
-        glPushMatrix();
-          glTranslatef( -75, 0, 0 );
-          cubo->draw( modoDibujado, SOLID );
-        glPopMatrix();
-        glPushMatrix();
-          glTranslatef( 50, 0, 0 );
-          tetraedro->draw( modoDibujado, SOLID );
-        glPopMatrix();
-        break;
-
-      case TODASREV:
-        glPushMatrix();
-          glTranslatef( -100, 0, 0 );
-          if( tapa_superior and tapa_inferior )
-            cilindro->draw( modoDibujado, SOLID );
-          else {
-            cilindro->draw_cuerpo( SOLID );
-            if( tapa_superior or tapa_inferior )
-              cilindro->draw_tapas( SOLID, tapa_superior, tapa_inferior );
-          }
-        glPopMatrix();
-        if( tapa_superior and tapa_inferior )
-          esfera->draw( modoDibujado, SOLID );
-        else {
-          esfera->draw_cuerpo( SOLID );
-          if( tapa_superior or tapa_inferior )
-            esfera->draw_tapas( SOLID, tapa_superior, tapa_inferior );
-        }
-        glPushMatrix();
-          glTranslatef( 100, 0, 0 );
-          if( tapa_superior and tapa_inferior )
-            cono->draw( modoDibujado, SOLID );
-          else {
-            cono->draw_cuerpo( SOLID );
-            if( tapa_superior or tapa_inferior )
-              cono->draw_tapas( SOLID, tapa_superior, tapa_inferior );
-          }
-        glPopMatrix();
-        break;
-
-      case P3:
-        glPushMatrix();
-          glTranslatef( -100, 0, 0 );
-          glScalef( 50, 50, 50 );
-          if( tapa_superior and tapa_inferior )
-            peonNegro->draw( modoDibujado, SOLID );
-          else {
-            peonNegro->draw_cuerpo( SOLID );
-            if( tapa_superior or tapa_inferior )
-              peonNegro->draw_tapas( SOLID, tapa_superior, tapa_inferior );
-          }
-        glPopMatrix();
-        glPushMatrix();
-          glTranslatef( 0, -75, 0 );
-          glScalef( 1, 1, 2.5 );
-          lingote -> draw( modoDibujado, SOLID );
-        glPopMatrix();
-        glPushMatrix();
-          glTranslatef( 100, 0, 0 );
-          glScalef( 50, 50, 50 );
-          if( tapa_superior and tapa_inferior )
-            peonBlanco->draw( modoDibujado, SOLID );
-          else {
-            peonBlanco->draw_cuerpo( SOLID );
-            if( tapa_superior or tapa_inferior )
-              peonBlanco->draw_tapas( SOLID, tapa_superior, tapa_inferior );
-          }
-        glPopMatrix();
-        break;
-
-      case PLY:
-        glPushMatrix();
-          glScalef( 10, 10, 10 );
-          objetoPLY->draw( modoDibujado, SOLID );
-        glPopMatrix();
-        break;
-
-      case REVOLUCION:
-        glPushMatrix();
-          glScalef( 50, 50, 50 );
-          if( tapa_superior and tapa_inferior )
-            objetoRevolucion->draw( modoDibujado, SOLID );
-          else {
-            objetoRevolucion->draw_cuerpo( SOLID );
-            if( tapa_superior or tapa_inferior )
-              objetoRevolucion->draw_tapas( SOLID, tapa_superior, tapa_inferior );
-          }
-        glPopMatrix();
-        break;
-
-      case CILINDRO:
-        if( tapa_superior and tapa_inferior )
-          cilindro->draw( modoDibujado, SOLID );
-        else {
-          cilindro->draw_cuerpo( SOLID );
-          if( tapa_superior or tapa_inferior )
-            cilindro->draw_tapas( SOLID, tapa_superior, tapa_inferior );
-        }
-        break;
-
-      case ESFERA:
-        if( tapa_superior and tapa_inferior )
-          esfera->draw( modoDibujado, SOLID );
-        else {
-          esfera->draw_cuerpo( SOLID );
-          if( tapa_superior or tapa_inferior )
-            esfera->draw_tapas( SOLID, tapa_superior, tapa_inferior );
-        }
-        break;
-
-      case CONO:
-        if( tapa_superior and tapa_inferior )
-          cono->draw( modoDibujado, SOLID );
-        else {
-          cono->draw_cuerpo( SOLID );
-          if( tapa_superior or tapa_inferior )
-            cono->draw_tapas( SOLID, tapa_superior, tapa_inferior );
-        }
-        break;
-    }
-
-
-    glDisable( GL_LIGHTING );
-
-  }*/
 }
 
 //**************************************************************************
@@ -937,51 +322,109 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
     case SELOBJETO:
 
       switch( toupper( tecla ) ) {
+
         case 'Q':
           modoMenu = NADA;
           break;
+
+        case '0':
+          cout << "Cambiando la visualización del Cubo.\n";
+          if( objetosEscena[0].dibujar )
+            objetosEscena[0].dibujar = false;
+          else
+            objetosEscena[0].dibujar = true;
+          break;
+
         case '1':
-          objeto = P1;
-          modoMenu = NADA;
+          cout << "Cambiando la visualización del Tetraedro.\n";
+          if( objetosEscena[1].dibujar )
+            objetosEscena[1].dibujar = false;
+          else
+            objetosEscena[1].dibujar = true;
           break;
+
         case '2':
-          objeto = TODASREV;
-          modoMenu = NADA;
+          cout << "Cambiando la visualización del Cilindro.\n";
+          if( objetosEscenaConTapas[0].dibujar )
+            objetosEscenaConTapas[0].dibujar = false;
+          else
+            objetosEscenaConTapas[0].dibujar = true;
           break;
+
         case '3':
-          objeto = P3;
-          modoMenu = NADA;
+          cout << "Cambiando la visualización de la Esfera.\n";
+          if( objetosEscenaConTapas[1].dibujar )
+            objetosEscenaConTapas[1].dibujar = false;
+          else
+            objetosEscenaConTapas[1].dibujar = true;
           break;
-        case 'A':
-          objeto = CILINDRO;
-          modoMenu = NADA;
+
+        case '4':
+          cout << "Cambiando la visualización del Cono.\n";
+          if( objetosEscenaConTapas[2].dibujar )
+            objetosEscenaConTapas[2].dibujar = false;
+          else
+            objetosEscenaConTapas[2].dibujar = true;
           break;
-        case 'B':
-          objeto = ESFERA;
-          modoMenu = NADA;
+
+        case '5':
+          cout << "Cambiando la visualización del Objeto PLY.\n";
+          if( objetosEscena[3].dibujar )
+            objetosEscena[3].dibujar = false;
+          else
+            objetosEscena[3].dibujar = true;
           break;
-        case 'C':
-          objeto = CONO;
-          modoMenu = NADA;
+
+        case '6':
+          cout << "Cambiando la visualización del Objeto de Revolución.\n";
+          if( objetosEscenaConTapas[6].dibujar )
+            objetosEscenaConTapas[6].dibujar = false;
+          else
+            objetosEscenaConTapas[6].dibujar = true;
           break;
+
+        case '7':
+          cout << "Cambiando la visualización del Peón Blanco.\n";
+          if( objetosEscenaConTapas[3].dibujar )
+            objetosEscenaConTapas[3].dibujar = false;
+          else
+            objetosEscenaConTapas[3].dibujar = true;
+          break;
+
+        case '8':
+          cout << "Cambiando la visualización del Peón Negro.\n";
+          if( objetosEscenaConTapas[4].dibujar )
+            objetosEscenaConTapas[4].dibujar = false;
+          else
+            objetosEscenaConTapas[4].dibujar = true;
+          break;
+
+        case '9':
+          cout << "Cambiando la visualización del Lingote.\n";
+          if( objetosEscena[2].dibujar )
+            objetosEscena[2].dibujar = false;
+          else
+            objetosEscena[2].dibujar = true;
+          break;
+
         case 'P':
 
-          cout << "Introduzca la ruta del archivo PLY: ";
+          cout << "Cambiando el Objeto PLY, introduzca la ruta del nuevo: ";
 
           char nombreArchivoPLY[100];
 
           scanf( "%[^\n]", nombreArchivoPLY );
           while( ( getchar() ) != '\n');
 
-          objetoPLY = new ObjPLY( nombreArchivoPLY );
+          objetosEscena[3].objeto = new ObjPLY( nombreArchivoPLY );
+          objetosEscena[3].dibujar = true;
 
-          objeto = PLY;
-          modoMenu = NADA;
           cout << endl;
           break;
+
         case 'R':
 
-          cout << "Introduzca la ruta del archivo PLY: ";
+          cout << "Cambiando el Objeto de Revolución, introduzca la ruta del nuevo: ";
 
           char nombreArchivoRev[100];
           scanf( "%[^\n]", nombreArchivoRev );
@@ -1019,16 +462,19 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           else
             tapa_inf = false;
 
-          objetoRevolucion = new ObjRevolucion( nombreArchivoRev, num_instancias, tapa_sup, tapa_inf );
+          objetosEscenaConTapas[6].objeto = new ObjRevolucion( nombreArchivoRev, num_instancias, tapa_sup, tapa_inf );
+          objetosEscenaConTapas[6].dibujar = true;
 
-          objeto = REVOLUCION;
-          modoMenu = NADA;
           cout << endl;
           break;
+
+
         default:
-          cout << "ERROR - opciones disponibles:\n'1': Práctica 1\n'2': Práctica 2\n"
-               << "'3': Práctica 3\n'A': Cilindro\n'B': Esfera\n'C': Cono\n"
-               << "'P': Objeto PLY\n'R': Objeto Revolución";
+          cout << "ERROR - opciones disponibles:\n'0': Cubo\n'1': Tetraedro\n"
+               << "'2': Cilindro\n'3': Esfera\n'4': Cono\n'5': Objeto PLY\n"
+               << "'6': Objeto de Revolución\n'7': Peón Blanco\n"
+               << "'8': Peón Negro\n'9': Lingote\n'P': Cambiar el Objeto PLY\n"
+               << "'R': Cambiar el Objeto de Revolución\n'Q': Salir\n\n";
           break;
       }
 
