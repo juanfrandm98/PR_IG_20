@@ -155,6 +155,7 @@ Escena::Escena()
     mt6.objeto->setMaterial( predefinido );
     objetosEscenaConTapas.push_back( mt6 );
 
+
     // Inicialización de los flags
     puntos = false;
     lineas = false;
@@ -260,6 +261,8 @@ void Escena::dibujar()
     DrawMode( SOLID );
 
   } else {
+
+    glDisable( GL_LIGHTING );
 
     if( ajedrez ) {
       DrawMode( CHESS );
