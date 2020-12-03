@@ -213,7 +213,12 @@ void Escena::DrawMode( visualizacion tipo ) {
         glRotatef( objetosEscenaConTapas[i].orientacion(1), 0, 1, 0 );
         glRotatef( objetosEscenaConTapas[i].orientacion(2), 0, 0, 1 );
         glScalef( objetosEscenaConTapas[i].escalado(0), objetosEscenaConTapas[i].escalado(1), objetosEscenaConTapas[i].escalado(2) );
-        objetosEscenaConTapas[i].objeto->draw( modoDibujado, tipo );
+        if( tapa_superior and tapa_inferior )
+          objetosEscenaConTapas[i].objeto->draw( modoDibujado, tipo );
+        else {
+          objetosEscenaConTapas[i].objeto->draw_cuerpo( tipo );
+          objetosEscenaConTapas[i].objeto->draw_tapas( tipo, tapa_superior, tapa_inferior );
+        }
       glPopMatrix();
     }
   }
