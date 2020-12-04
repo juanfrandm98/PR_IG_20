@@ -37,7 +37,10 @@ class ObjRevolucion : public Malla3D
      void draw_tapas( visualizacion tipoVisualizacion, bool superior, bool inferior );
 
    private:
-     void crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias);
+     void crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias, bool ordenAscendente);
+     bool detectarOrdenAscendente( std::vector<Tupla3f> perfil_original );
+     void crearTapa( bool superior, bool hayTapaInf, Tupla3f centro, int num_instancias, int perfil_size, bool ordenAscendente );
+     void introducirVertice( int i, Tupla3f punto, int num_instancias );
 
      // Variables para cambiar el dibujado de las tapas en tiempo de ejecución
      bool tiene_tapa_sup;

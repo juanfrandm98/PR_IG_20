@@ -21,6 +21,7 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
    Tupla3f punto, puntoSup, puntoInf;
    int contador;
    const float EPSILON = 0.001;
+   bool ordenAscendente = detectarOrdenAscendente( perfilOriginal );
 
    // Almacenamos si el objeto de revolución tiene las tapas
    tiene_tapa_sup = tapa_sup;
@@ -50,8 +51,16 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
       }
    }
 
+   // Si el orden es descentente, hay que cambiar el orden de los puntos para
+   // colocar cada tapa en su lugar
+   if( !ordenAscendente ) {
+     Tupla3f temp = puntoSup;
+     puntoSup = puntoInf;
+     puntoInf = temp;
+   }
+
    // Ahora creamos las tablas de vértices y triángulos
-   crearMalla( perfilOriginal, num_instancias );
+   crearMalla( perfilOriginal, num_instancias, ordenAscendente );
 
    // Creamos las tablas de triángulos para el modo ajedrez
    for( int i = 0; i < f.size(); i++ )
@@ -66,27 +75,9 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
    final_cuerpo_pares = f_chess_par.size();
    final_cuerpo_impares = f_chess_impar.size();
 
-   // Una vez creada la malla, si el objeto tenía tapa superior, hay que crearla
-   if( tapa_inf ) {
-
-     v.push_back( Tupla3f( 0, puntoInf(1), 0 ) );
-     contador = 0;
-
-     for( int i = 0; i < num_instancias; i++ ) {
-        int index0 = v.size() - 1;
-        int index1 = ( i * ( perfilOriginal.size() ) );
-        int index2 = ( index1 + perfilOriginal.size() ) % ( v.size() - 1 );
-        f.push_back( Tupla3i( index0, index2, index1 ) );
-
-        if( ( contador % 2 ) == 0 )
-          f_chess_par.push_back( Tupla3i( index0, index2, index1 ) );
-        else
-          f_chess_impar.push_back( Tupla3i( index0, index2, index1 ) );
-
-        contador++;
-      }
-
-   }
+   // Una vez creada la malla, si el objeto tenía tapa inferior, hay que crearla
+   if( tapa_inf )
+     crearTapa( false, tapa_inf, puntoInf, num_instancias, perfilOriginal.size(), ordenAscendente );
 
    // Guardamos la última posición de los triángulos de la tapa inferior
    final_tapa_inf = f.size();
@@ -94,31 +85,8 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
    final_tapa_inf_impares = f_chess_impar.size();
 
    // Lo mismo con la tapa superior
-   if( tapa_sup ) {
-
-     int diferencia;
-     if( tapa_inf )
-      diferencia = 2;
-     else
-      diferencia = 1;
-
-     v.push_back( Tupla3f( 0, puntoSup(1), 0 ) );
-     contador = 0;
-
-     for( int i = 0; i < num_instancias; i++ ) {
-        int index0 = v.size() - 1;
-        int index1 = perfilOriginal.size() - 1 + i * perfilOriginal.size();
-        int index2 = ( index1 + perfilOriginal.size() ) % ( v.size() - diferencia );
-        f.push_back( Tupla3i( index0, index1, index2 ) );
-
-        if( ( contador % 2 ) == 0 )
-          f_chess_par.push_back( Tupla3i( index0, index1, index2 ) );
-        else
-          f_chess_impar.push_back( Tupla3i( index0, index1, index2 ) );
-
-        contador++;
-      }
-   }
+   if( tapa_sup )
+    crearTapa( true, tapa_inf, puntoSup, num_instancias, perfilOriginal.size(), ordenAscendente );
 
    // Guardamos la última posición de los triángulos de la tapa inferior
    final_tapa_sup = f.size();
@@ -169,22 +137,17 @@ ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, b
 
 }
 
-void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias) {
+void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias, bool ordenAscendente) {
 
+    using namespace std;
   // Rellenamos la tabla de vértices
   for( int i = 0; i < num_instancias; i++ )
-    for( int j = 0; j < perfil_original.size(); j++ ) {
-
-      float x, y, z;
-      float radio = sqrt( perfil_original[j](0) * perfil_original[j](0) + perfil_original[j](2) * perfil_original[j](2) );
-
-      x = cos( 2 * M_PI * i / num_instancias ) * radio;
-      y = perfil_original[j](1);
-      z = -( sin( 2 * M_PI * i / num_instancias ) * radio );
-
-      v.push_back( Tupla3f( x, y, z ) );
-
-    }
+    if( ordenAscendente )
+      for( int j = 0; j < perfil_original.size(); j++ )
+        introducirVertice( i, perfil_original[j], num_instancias );
+    else
+      for( int j = perfil_original.size() - 1; j >= 0; j-- )
+        introducirVertice( i, perfil_original[j], num_instancias );
 
   int contador = 0;
 
@@ -338,5 +301,64 @@ void ObjRevolucion::draw_tapas( visualizacion tipoVisualizacion, bool superior, 
       break;
 
   }
+
+}
+
+bool ObjRevolucion::detectarOrdenAscendente( std::vector<Tupla3f> perfil_original ) {
+
+  if( perfil_original[0](1) <= perfil_original[perfil_original.size() - 1](1) )
+    return true;
+  else
+    return false;
+
+}
+
+void ObjRevolucion::crearTapa( bool superior, bool hayTapaInf, Tupla3f centro, int num_instancias, int perfil_size, bool ordenAscendente ) {
+
+  v.push_back( Tupla3f( 0, centro(1), 0 ) );
+  int contador = 0;
+  int index0, index1, index2;
+  int diferencia;
+
+  if( superior )
+    if( hayTapaInf )
+     diferencia = 2;
+    else
+     diferencia = 1;
+
+  for( int i = 0; i < num_instancias; i++ ) {
+
+    if( superior ) {
+      index0 = v.size() - 1;
+      index1 = perfil_size - 1 + i * perfil_size;
+      index2 = ( index1 + perfil_size ) % ( v.size() - diferencia );
+    } else {
+      index0 = v.size() - 1;
+      index1 = ( index1 + perfil_size ) % ( v.size() - 1 );
+      index2 = ( i * perfil_size );
+    }
+
+    f.push_back( Tupla3i( index0, index1, index2 ) );
+
+    if( ( contador % 2 ) == 0 )
+    f_chess_par.push_back( Tupla3i( index0, index1, index2 ) );
+    else
+    f_chess_impar.push_back( Tupla3i( index0, index1, index2 ) );
+
+    contador++;
+  }
+
+}
+
+void ObjRevolucion::introducirVertice( int i, Tupla3f punto, int num_instancias ) {
+
+  float x, y, z;
+  float radio = sqrt( punto(0) * punto(0) + punto(2) * punto(2) );
+
+  x = cos( 2 * M_PI * i / num_instancias ) * radio;
+  y = punto(1);
+  z = -( sin( 2 * M_PI * i / num_instancias ) * radio );
+
+  v.push_back( Tupla3f( x, y, z ) );
 
 }

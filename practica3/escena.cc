@@ -126,7 +126,7 @@ Escena::Escena()
 
     // PeonNegro=objetosEscenaConTapas(4)
     ModeloTapas mt4;
-    mt4.objeto = new ObjRevolucion( "./plys/peon", 20, true, true );
+    mt4.objeto = new ObjRevolucion( "./plys/peon_inverso", 20, true, true );
     mt4.dibujar = true;
     mt4.posicion = Tupla3f( -100.0, 0.0, 0.0 );
     mt4.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
