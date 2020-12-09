@@ -5,8 +5,8 @@
 Cilindro::Cilindro( const int numVertPerfil, const int numInstanciasPerf,
                     const float altura, const float radio ) {
 
-  int alturaInicial = - altura / 2;
-  int alturaPorPunto = altura / ( numVertPerfil - 1 );
+  float alturaInicial = - altura / 2;
+  float alturaPorPunto = altura / ( numVertPerfil - 1 );
 
   std::vector<Tupla3f> perfilOriginal;
 

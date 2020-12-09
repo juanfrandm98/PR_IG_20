@@ -47,113 +47,45 @@ Escena::Escena()
     // Cubo=objetosEscena(0)
     Modelo objeto0;
     objeto0.objeto = new Cubo( 100 );
-    objeto0.dibujar = true;
+    objeto0.dibujar = false;
     objeto0.posicion = Tupla3f( -250.0, 0.0, -150.0 );
     objeto0.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
     objeto0.escalado = Tupla3f( 1.0, 1.0, 1.0 );
     objeto0.objeto->setMaterial( predefinido );
     objetosEscena.push_back( objeto0 );
 
-    // Tetraedro=objetosEscena(1)
-    Modelo objeto1;
-    objeto1.objeto = new Tetraedro( 100 );
-    objeto1.dibujar = true;
-    objeto1.posicion = Tupla3f( -100.0, 0.0, -150.0 );
-    objeto1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    objeto1.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    objeto1.objeto->setMaterial( predefinido );
-    objetosEscena.push_back( objeto1 );
+    Jerarquico j0;
+    j0.objeto = new TractorRemolque();
+    j0.dibujar = false;
+    j0.posicion = Tupla3f( -250.0, 0.0, -150.0 );
+    j0.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    j0.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    j0.objeto->setMaterial( predefinido );
+    modelosJerarquicos.push_back( j0 );
 
-    // Lingote=objetosEscena(2)
-    Modelo objeto2;
-    objeto2.objeto = new Cubo( 35 );
-    objeto2.dibujar = true;
-    objeto2.posicion = Tupla3f( 0.0, 0.0, 0.0 );
-    objeto2.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    objeto2.escalado = Tupla3f( 1.0, 0.35, 2.0 );
-    objeto2.objeto->setMaterial( oro );
-    objetosEscena.push_back( objeto2 );
+    Jerarquico j1;
+    j1.objeto = new Pino();
+    j1.dibujar = true;
+    j1.posicion = Tupla3f( 0.0, 0.0, 0.0 );
+    j1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    j1.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    modelosJerarquicos.push_back( j1 );
 
-    // ObjetoPLY=objetosEscena(2)
-    Modelo objeto3;
-    objeto3.objeto = new ObjPLY( "./plys/big_dodge" );
-    objeto3.dibujar = true;
-    objeto3.posicion = Tupla3f( -250.0, 0.0, 0.0 );
-    objeto3.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    objeto3.escalado = Tupla3f( 10.0, 10.0, 10.0 );
-    objeto3.objeto->setMaterial( predefinido );
-    objetosEscena.push_back( objeto3 );
+    Jerarquico j2;
+    j2.objeto = new Pino();
+    j2.dibujar = true;
+    j2.posicion = Tupla3f( 80.0, 0.0, -10.0 );
+    j2.orientacion = Tupla3f( 0.0, 45.0, 0.0 );
+    j2.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    modelosJerarquicos.push_back( j2 );
 
-    // Cilindro=objetosEscenaConTapas(0)
-    ModeloTapas mt0;
-    mt0.objeto = new Cilindro( 10, 10, 100, 45);
-    mt0.dibujar = true;
-    mt0.posicion = Tupla3f( 0.0, 0.0, -150.0 );
-    mt0.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt0.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    mt0.objeto->setMaterial( predefinido );
-    objetosEscenaConTapas.push_back( mt0 );
-
-    // Esfera=objetosEscenaConTapas(1)
-    ModeloTapas mt1;
-    mt1.objeto = new Esfera( 20, 20, 45 );
-    mt1.dibujar = true;
-    mt1.posicion = Tupla3f( 100.0, 0.0, -150.0 );
-    mt1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt1.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    mt1.objeto->setMaterial( predefinido );
-    objetosEscenaConTapas.push_back( mt1 );
-
-    // Cono=objetosEscenaConTapas(2)
-    ModeloTapas mt2;
-    mt2.objeto = new Cono( 10, 10, 100, 45 );
-    mt2.dibujar = true;
-    mt2.posicion = Tupla3f( 200.0, 0.0, -150.0 );
-    mt2.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt2.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    mt2.objeto->setMaterial( predefinido );
-    objetosEscenaConTapas.push_back( mt2 );
-
-    // PeonBlanco=objetosEscenaConTapas(3)
-    ModeloTapas mt3;
-    mt3.objeto = new ObjRevolucion( "./plys/peon", 20, true, true );
-    mt3.dibujar = true;
-    mt3.posicion = Tupla3f( 100.0, 0.0, 0.0 );
-    mt3.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt3.escalado = Tupla3f( 20.0, 20.0, 20.0 );
-    mt3.objeto->setMaterial( yeso );
-    objetosEscenaConTapas.push_back( mt3 );
-
-    // PeonNegro=objetosEscenaConTapas(4)
-    ModeloTapas mt4;
-    mt4.objeto = new ObjRevolucion( "./plys/peon_inverso", 20, true, true );
-    mt4.dibujar = true;
-    mt4.posicion = Tupla3f( -100.0, 0.0, 0.0 );
-    mt4.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt4.escalado = Tupla3f( 20.0, 20.0, 20.0 );
-    mt4.objeto->setMaterial( obsidiana );
-    objetosEscenaConTapas.push_back( mt4 );
-
-    // Luz=objetosEscenaConTapas(5)
-    ModeloTapas mt5;
-    mt5.objeto = new Esfera(20,20,10);
-    mt5.dibujar = true;
-    mt5.posicion = luzDir->getPosicion();
-    mt5.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt5.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    mt5.objeto->setColorSolido( Tupla3f( 1, 1, 0 ) );
-    mt5.objeto->setMaterial( oro );
-    objetosEscenaConTapas.push_back( mt5 );
-
-    // ObjetoRevolución=objetosEscenaConTapas(6)
-    ModeloTapas mt6;
-    mt6.objeto = new ObjRevolucion( "./plys/lata-pcue", 20, true, true );
-    mt6.dibujar = true;
-    mt6.posicion = Tupla3f( 150.0, 0.0, 0.0 );
-    mt6.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt6.escalado = Tupla3f( 20.0, 20.0, 20.0 );
-    mt6.objeto->setMaterial( predefinido );
-    objetosEscenaConTapas.push_back( mt6 );
+    Jerarquico j3;
+    j3.objeto = new Pino();
+    j3.dibujar = true;
+    j3.posicion = Tupla3f( -80.0, 0.0, 20.0 );
+    j3.orientacion = Tupla3f( 0.0, -32.0, 0.0 );
+    j3.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    modelosJerarquicos.push_back( j3 );
 
 
     // Inicialización de los flags
@@ -223,6 +155,19 @@ void Escena::DrawMode( visualizacion tipo ) {
     }
   }
 
+  for( int i = 0; i < modelosJerarquicos.size(); i++ ) {
+    if( modelosJerarquicos[i].dibujar ) {
+      glPushMatrix();
+        glTranslatef( modelosJerarquicos[i].posicion(0), modelosJerarquicos[i].posicion(1), modelosJerarquicos[i].posicion(2) );
+        glRotatef( modelosJerarquicos[i].orientacion(0), 1, 0, 0 );
+        glRotatef( modelosJerarquicos[i].orientacion(1), 0, 1, 0 );
+        glRotatef( modelosJerarquicos[i].orientacion(2), 0, 0, 1 );
+        glScalef( modelosJerarquicos[i].escalado(0), modelosJerarquicos[i].escalado(1), modelosJerarquicos[i].escalado(2) );
+        modelosJerarquicos[i].objeto->draw( modoDibujado, tipo );
+      glPopMatrix();
+    }
+  }
+
 }
 
 // **************************************************************************
@@ -252,7 +197,7 @@ void Escena::dibujar()
     // Si la luz direccional está activada, la aplicamos y dibujamos la esfera
     // para ayudar a ver la dirección
     if( glIsEnabled( GL_LIGHT1 ) ) {
-      objetosEscenaConTapas[5].posicion = luzDir->getPosicion();
+      //objetosEscenaConTapas[5].posicion = luzDir->getPosicion();
       luzDir->aplicar();
     }
 

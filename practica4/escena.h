@@ -14,6 +14,9 @@
 #include "luzdireccional.h"
 #include "luzposicional.h"
 #include "material.h"
+#include "modelojerarquico.h"
+#include "tractorremolque.h"
+#include "pino.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,TAPAS,ILUMINACION} menu;
 typedef enum {BASICA, SUAVE, PLANA} iluminacion;
@@ -29,6 +32,14 @@ struct Modelo {
 
 struct ModeloTapas {
   ObjRevolucion * objeto;
+  bool dibujar;
+  Tupla3f posicion;
+  Tupla3f orientacion;
+  Tupla3f escalado;
+};
+
+struct Jerarquico {
+  ModeloJerarquico * objeto;
   bool dibujar;
   Tupla3f posicion;
   Tupla3f orientacion;
@@ -67,6 +78,7 @@ class Escena
    Ejes ejes;
    std::vector<Modelo> objetosEscena;
    std::vector<ModeloTapas> objetosEscenaConTapas;
+   std::vector<Jerarquico> modelosJerarquicos;
 
    // FLAGS para el dibujado
    bool puntos;
