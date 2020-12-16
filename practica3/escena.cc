@@ -96,7 +96,7 @@ Escena::Escena()
 
     // Esfera=objetosEscenaConTapas(1)
     ModeloTapas mt1;
-    mt1.objeto = new Esfera( 20, 20, 5 );
+    mt1.objeto = new Esfera( 20, 20, 45 );
     mt1.dibujar = true;
     mt1.posicion = Tupla3f( 100.0, 0.0, -150.0 );
     mt1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );

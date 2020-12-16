@@ -54,15 +54,108 @@ Escena::Escena()
     objeto0.objeto->setMaterial( predefinido );
     objetosEscena.push_back( objeto0 );
 
-    Jerarquico j0;
-    j0.objeto = new TractorRemolque();
-    j0.dibujar = false;
-    j0.posicion = Tupla3f( -250.0, 0.0, -150.0 );
-    j0.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    j0.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    j0.objeto->setMaterial( predefinido );
-    modelosJerarquicos.push_back( j0 );
+    // Tetraedro=objetosEscena(1)
+    Modelo objeto1;
+    objeto1.objeto = new Tetraedro( 100 );
+    objeto1.dibujar = false;
+    objeto1.posicion = Tupla3f( -100.0, 0.0, -150.0 );
+    objeto1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    objeto1.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    objeto1.objeto->setMaterial( predefinido );
+    objetosEscena.push_back( objeto1 );
 
+    // Lingote=objetosEscena(2)
+    Modelo objeto2;
+    objeto2.objeto = new Cubo( 35 );
+    objeto2.dibujar = false;
+    objeto2.posicion = Tupla3f( 0.0, 0.0, 0.0 );
+    objeto2.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    objeto2.escalado = Tupla3f( 1.0, 0.35, 2.0 );
+    objeto2.objeto->setMaterial( oro );
+    objetosEscena.push_back( objeto2 );
+
+    // ObjetoPLY=objetosEscena(2)
+    Modelo objeto3;
+    objeto3.objeto = new ObjPLY( "./plys/big_dodge" );
+    objeto3.dibujar = false;
+    objeto3.posicion = Tupla3f( -250.0, 0.0, 0.0 );
+    objeto3.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    objeto3.escalado = Tupla3f( 10.0, 10.0, 10.0 );
+    objeto3.objeto->setMaterial( predefinido );
+    objetosEscena.push_back( objeto3 );
+
+    // Cilindro=objetosEscenaConTapas(0)
+    ModeloTapas mt0;
+    mt0.objeto = new Cilindro( 10, 10, 100, 45);
+    mt0.dibujar = false;
+    mt0.posicion = Tupla3f( 0.0, 0.0, -150.0 );
+    mt0.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt0.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    mt0.objeto->setMaterial( predefinido );
+    objetosEscenaConTapas.push_back( mt0 );
+
+    // Esfera=objetosEscenaConTapas(1)
+    ModeloTapas mt1;
+    mt1.objeto = new Esfera( 20, 20, 45 );
+    mt1.dibujar = false;
+    mt1.posicion = Tupla3f( 100.0, 0.0, -150.0 );
+    mt1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt1.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    mt1.objeto->setMaterial( predefinido );
+    objetosEscenaConTapas.push_back( mt1 );
+
+    // Cono=objetosEscenaConTapas(2)
+    ModeloTapas mt2;
+    mt2.objeto = new Cono( 10, 10, 100, 45 );
+    mt2.dibujar = false;
+    mt2.posicion = Tupla3f( 200.0, 0.0, -150.0 );
+    mt2.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt2.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    mt2.objeto->setMaterial( predefinido );
+    objetosEscenaConTapas.push_back( mt2 );
+
+    // PeonBlanco=objetosEscenaConTapas(3)
+    ModeloTapas mt3;
+    mt3.objeto = new ObjRevolucion( "./plys/peon", 20, true, true );
+    mt3.dibujar = true;
+    mt3.posicion = Tupla3f( 150.0, 0.0, 0.0 );
+    mt3.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt3.escalado = Tupla3f( 20.0, 20.0, 20.0 );
+    mt3.objeto->setMaterial( yeso );
+    objetosEscenaConTapas.push_back( mt3 );
+
+    // PeonNegro=objetosEscenaConTapas(4)
+    ModeloTapas mt4;
+    mt4.objeto = new ObjRevolucion( "./plys/peon_inverso", 20, true, true );
+    mt4.dibujar = true;
+    mt4.posicion = Tupla3f( -150.0, 0.0, 0.0 );
+    mt4.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt4.escalado = Tupla3f( 20.0, 20.0, 20.0 );
+    mt4.objeto->setMaterial( obsidiana );
+    objetosEscenaConTapas.push_back( mt4 );
+
+    // Luz=objetosEscenaConTapas(5)
+    ModeloTapas mt5;
+    mt5.objeto = new Esfera(20,20,10);
+    mt5.dibujar = false;
+    mt5.posicion = luzDir->getPosicion();
+    mt5.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt5.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    mt5.objeto->setColorSolido( Tupla3f( 1, 1, 0 ) );
+    mt5.objeto->setMaterial( oro );
+    objetosEscenaConTapas.push_back( mt5 );
+
+    // ObjetoRevolución=objetosEscenaConTapas(6)
+    ModeloTapas mt6;
+    mt6.objeto = new ObjRevolucion( "./plys/lata-pcue", 20, true, true );
+    mt6.dibujar = false;
+    mt6.posicion = Tupla3f( 150.0, 0.0, 0.0 );
+    mt6.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt6.escalado = Tupla3f( 20.0, 20.0, 20.0 );
+    mt6.objeto->setMaterial( predefinido );
+    objetosEscenaConTapas.push_back( mt6 );
+
+    // Pino1=modelosJerarquicos(0)
     Jerarquico j1;
     j1.objeto = new Pino();
     j1.dibujar = true;
@@ -71,6 +164,7 @@ Escena::Escena()
     j1.escalado = Tupla3f( 1.0, 1.0, 1.0 );
     modelosJerarquicos.push_back( j1 );
 
+    // Pino2=modelosJerarquicos(1)
     Jerarquico j2;
     j2.objeto = new Pino();
     j2.dibujar = true;
@@ -79,6 +173,7 @@ Escena::Escena()
     j2.escalado = Tupla3f( 1.0, 1.0, 1.0 );
     modelosJerarquicos.push_back( j2 );
 
+    // Pino3=modelosJerarquicos(2)
     Jerarquico j3;
     j3.objeto = new Pino();
     j3.dibujar = true;
@@ -360,6 +455,16 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             objetosEscena[2].dibujar = true;
           break;
 
+        case 'J':
+          cout << "Cambiando la visualización de los modelos jerárquicos.\n";
+          if( modelosJerarquicos[0].dibujar )
+            for( int i = 0; i < modelosJerarquicos.size(); i++ )
+              modelosJerarquicos[i].dibujar = false;
+          else
+            for( int i = 0; i < modelosJerarquicos.size(); i++ )
+              modelosJerarquicos[i].dibujar = true;
+          break;
+
         case 'P':
 
           cout << "Cambiando el Objeto PLY, introduzca la ruta del nuevo: ";
@@ -426,8 +531,8 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           cout << "ERROR - opciones disponibles:\n'0': Cubo\n'1': Tetraedro\n"
                << "'2': Cilindro\n'3': Esfera\n'4': Cono\n'5': Objeto PLY\n"
                << "'6': Objeto de Revolución\n'7': Peón Blanco\n"
-               << "'8': Peón Negro\n'9': Lingote\n'P': Cambiar el Objeto PLY\n"
-               << "'R': Cambiar el Objeto de Revolución\n'Q': Salir\n\n";
+               << "'8': Peón Negro (Invertido)\n'9': Lingote\n'P': Cambiar el Objeto PLY\n"
+               << "'R': Cambiar el Objeto de Revolución\n'J': Pinos\n'Q': Salir\n\n";
           break;
       }
 
