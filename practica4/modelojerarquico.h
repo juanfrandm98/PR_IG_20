@@ -7,10 +7,7 @@
 class ModeloJerarquico : public Malla3D {
 
 public:
-  void draw( dibujado tipoDibujado, visualizacion tipoVisualizacion );
-
-protected:
-  std::vector<ParteModeloJerarquico*> componentes;
+  virtual void draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) = 0;
 
 };
 

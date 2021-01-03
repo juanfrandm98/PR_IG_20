@@ -8,8 +8,13 @@
 
 class Tronco : public ParteModeloJerarquico {
 
+private:
+  Malla3D * tronco = nullptr;
+  Malla3D * rama   = nullptr;
+
 public:
   Tronco();
+  void draw( dibujado tipoDibujado, visualizacion tipoVisualizacion );
 
 };
 

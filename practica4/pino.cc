@@ -4,9 +4,19 @@
 Pino::Pino() {
 
   tronco = new Tronco();
-  componentes.push_back( tronco );
-
   copa = new Copa();
-  componentes.push_back( copa );
+
+}
+
+void Pino::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) {
+
+  glPushMatrix();
+    glTranslatef( 0, 25, 0 );
+    tronco->draw( tipoDibujado, tipoVisualizacion );
+  glPopMatrix();
+  glPushMatrix();
+    glTranslatef( 0, 100, 0 );
+    copa->draw( tipoDibujado, tipoVisualizacion );
+  glPopMatrix();
 
 }

@@ -8,9 +8,12 @@
 
 class Copa : public ParteModeloJerarquico {
 
+private :
+  Malla3D * cono = nullptr;
+
 public:
   Copa();
-
+  void draw( dibujado tipoDibujado, visualizacion tipoVisualizacion );
 };
 
 #endif

@@ -9,6 +9,7 @@ class Pino : public ModeloJerarquico {
 
 public:
   Pino();
+  void draw( dibujado tipoDibujado, visualizacion tipoVisualizacion );
 
 private:
   Tronco * tronco = nullptr;
