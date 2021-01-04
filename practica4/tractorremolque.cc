@@ -3,7 +3,15 @@
 
 TractorRemolque::TractorRemolque() {
 
-  //componentes.push_back( new Cubo( 100 ) );
-  //componentes.push_back( new Cilindro( 10, 10, 200, 50 ) );
+  chasis = new Chasis();
+
+}
+
+void TractorRemolque::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) {
+
+  glPushMatrix();
+    glTranslatef( 0, 35, 0);
+    chasis->draw( tipoDibujado, tipoVisualizacion );
+  glPopMatrix();
 
 }

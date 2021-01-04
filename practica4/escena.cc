@@ -155,6 +155,7 @@ Escena::Escena()
     mt6.objeto->setMaterial( predefinido );
     objetosEscenaConTapas.push_back( mt6 );
 
+    /*
     // Pino1=modelosJerarquicos(0)
     Jerarquico j1;
     j1.objeto = new Pino();
@@ -180,7 +181,16 @@ Escena::Escena()
     j3.posicion = Tupla3f( -80.0, 0.0, 20.0 );
     j3.orientacion = Tupla3f( 0.0, -32.0, 0.0 );
     j3.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    modelosJerarquicos.push_back( j3 );
+    modelosJerarquicos.push_back( j3 );*/
+
+    // Tractor = modelosJerarquicos(0)
+    Jerarquico j0;
+    j0.objeto = new TractorRemolque();
+    j0.dibujar = true;
+    j0.posicion = Tupla3f(0,0,0);
+    j0.orientacion = Tupla3f(0,0,0);
+    j0.escalado = Tupla3f(1,1,1);
+    modelosJerarquicos.push_back(j0);
 
 
     // Inicialización de los flags
