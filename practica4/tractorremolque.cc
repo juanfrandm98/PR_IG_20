@@ -3,15 +3,15 @@
 
 TractorRemolque::TractorRemolque() {
 
-  chasis = new Chasis();
+  tractor = new Tractor();
 
 }
 
 void TractorRemolque::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) {
 
   glPushMatrix();
-    glTranslatef( 0, 35, 0);
-    chasis->draw( tipoDibujado, tipoVisualizacion );
+    //glTranslatef( 0, 35, 0);
+    tractor->draw( tipoDibujado, tipoVisualizacion );
   glPopMatrix();
 
 }

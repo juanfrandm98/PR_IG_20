@@ -2,12 +2,12 @@
 #define TRACTORREMOLQUE_H_INCLUDED
 
 #include "modelojerarquico.h"
-#include "chasis.h"
+#include "tractor.h"
 
 class TractorRemolque : public ModeloJerarquico {
 
 private:
-  Chasis * chasis = nullptr;
+  Tractor * tractor = nullptr;
 
 public:
   TractorRemolque();
