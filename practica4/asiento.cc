@@ -26,7 +26,7 @@ void Asiento::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) {
   glPopMatrix();
 
   glPushMatrix();
-  glTranslatef( 10, 12.5, 0 );
+    glTranslatef( 10, 12.5, 0 );
     glScalef( 1, 2.5, 2 );
     espalda->draw( tipoDibujado, tipoVisualizacion );
   glPopMatrix();

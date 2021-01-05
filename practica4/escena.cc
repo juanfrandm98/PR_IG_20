@@ -287,8 +287,8 @@ void Escena::DrawMode( visualizacion tipo ) {
   }
 
   glPushMatrix();
-    glTranslatef( 0, 17.5, 0 );
-    glScalef( 0.5, 0.5, 0.5 );
+    //glTranslatef( 0, 17.5, 0 );
+    //glScalef( 0.5, 0.5, 0.5 );
     tractor->draw( modoDibujado, tipo );
   glPopMatrix();
 
