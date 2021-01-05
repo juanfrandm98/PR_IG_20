@@ -33,3 +33,15 @@ void Tractor::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) {
   glPopMatrix();
 
 }
+
+void Tractor::cambiarAnguloGiro( int angulo ) {
+
+  chasis->cambiarAnguloGiro(angulo);
+
+}
+
+void Tractor::rotarRuedas( int angulo ) {
+
+  chasis->rotarRuedas(angulo);
+
+}

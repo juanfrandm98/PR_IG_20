@@ -55,3 +55,16 @@ void Chasis::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) {
   glPopMatrix();
 
 }
+
+void Chasis::cambiarAnguloGiro( int angulo ) {
+
+  ejeDelantero->cambiarAnguloGiro(angulo);
+
+}
+
+void Chasis::rotarRuedas( int angulo ) {
+
+  ejeDelantero->rotarRuedas(angulo);
+  ejeTrasero->rotarRuedas(angulo);
+
+}

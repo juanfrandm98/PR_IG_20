@@ -18,9 +18,10 @@
 #include "tractorremolque.h"
 #include "pino.h"
 
-typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,TAPAS,ILUMINACION} menu;
+typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,TAPAS,ILUMINACION,ANIMACIONAUTO,ANIMACIONMANUAL} menu;
 typedef enum {BASICA, SUAVE, PLANA} iluminacion;
 typedef enum {VARALPHA, VARBETA} variacion;
+typedef enum {ROTARRUEDAS, GIRARRUEDASDEL} gradosTractor;
 
 struct Modelo {
   Malla3D * objeto;
@@ -55,6 +56,10 @@ class Escena
    // determinada manera (ajedrez, sólidos, líneas o puntos)
    void DrawMode( visualizacion tipo );
 
+   // Función que anima el tractor en función del grado y del sentido
+   // seleccionado
+   void animarTractor( gradosTractor gradoSeleccionado, int sentido );
+
  // ** PARÁMETROS DE LA CÁMARA (PROVISIONAL)
 
        // variables que definen la posicion de la camara en coordenadas polares
@@ -79,6 +84,7 @@ class Escena
    std::vector<Modelo> objetosEscena;
    std::vector<ModeloTapas> objetosEscenaConTapas;
    std::vector<Jerarquico> modelosJerarquicos;
+   TractorRemolque * tractor = nullptr;
 
    // FLAGS para el dibujado
    bool puntos;
@@ -90,6 +96,8 @@ class Escena
    bool tapa_inferior;
    iluminacion modoIluminacion;
    variacion variacionLuz;
+   bool animacionAutomatica;
+   gradosTractor gradoSeleccionado;
 
    // Luces
    LuzPosicional * luzPos1 = nullptr;

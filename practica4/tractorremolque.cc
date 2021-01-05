@@ -15,3 +15,15 @@ void TractorRemolque::draw( dibujado tipoDibujado, visualizacion tipoVisualizaci
   glPopMatrix();
 
 }
+
+void TractorRemolque::cambiarAnguloGiro( int angulo ) {
+
+  tractor->cambiarAnguloGiro(angulo);
+
+}
+
+void TractorRemolque::rotarRuedas( int angulo ) {
+
+  tractor->rotarRuedas(angulo);
+
+}

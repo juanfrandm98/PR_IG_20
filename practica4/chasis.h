@@ -18,6 +18,8 @@ private:
 public:
   Chasis();
   void draw( dibujado tipoDibujado, visualizacion tipoVisualizacion );
+  void cambiarAnguloGiro( int angulo );
+  void rotarRuedas( int angulo );
 
 };
 

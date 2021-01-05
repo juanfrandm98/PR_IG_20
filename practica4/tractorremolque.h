@@ -12,6 +12,9 @@ private:
 public:
   TractorRemolque();
   void draw( dibujado tipoDibujado, visualizacion tipoVisualizacion );
+  // Funciones para la animación
+  void cambiarAnguloGiro( int angulo );
+  void rotarRuedas( int angulo );
 
 };
 

@@ -184,13 +184,7 @@ Escena::Escena()
     modelosJerarquicos.push_back( j3 );*/
 
     // Tractor = modelosJerarquicos(0)
-    Jerarquico j0;
-    j0.objeto = new TractorRemolque();
-    j0.dibujar = true;
-    j0.posicion = Tupla3f(0,0,0);
-    j0.orientacion = Tupla3f(0,0,0);
-    j0.escalado = Tupla3f(1,1,1);
-    modelosJerarquicos.push_back(j0);
+    tractor = new TractorRemolque();
 
 
     // Inicialización de los flags
@@ -203,6 +197,8 @@ Escena::Escena()
     tapa_superior = true;
     modoIluminacion = BASICA;
     variacionLuz = VARALPHA;
+    animacionAutomatica = false;
+    gradoSeleccionado = ROTARRUEDAS;
 
 }
 
@@ -273,6 +269,8 @@ void Escena::DrawMode( visualizacion tipo ) {
     }
   }
 
+  tractor->draw( modoDibujado, tipo );
+
 }
 
 // **************************************************************************
@@ -334,6 +332,26 @@ void Escena::dibujar()
 
 }
 
+void Escena::animarTractor( gradosTractor gradoSeleccionado, int sentido ) {
+
+  switch ( gradoSeleccionado ) {
+
+    case ROTARRUEDAS:
+      tractor->rotarRuedas(sentido);
+      break;
+
+    case GIRARRUEDASDEL:
+      tractor->cambiarAnguloGiro(sentido);
+      break;
+
+    default:
+      std::cout << "Grado seleccionado no manejado\n";
+      break;
+
+  }
+
+}
+
 //**************************************************************************
 //
 // función que se invoca cuando se pulsa una tecla
@@ -368,10 +386,18 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
         case 'T':
           modoMenu = TAPAS;
           break;
+        case 'A':
+          modoMenu = ANIMACIONAUTO;
+          animacionAutomatica = true;
+          break;
+        case 'M':
+          modoMenu = ANIMACIONMANUAL;
+          break;
         default:
           cout << "ERROR - opciones disponibles:\n'O': Cambiar objeto\n"
                << "'V': Cambiar modo de visualización\n'D': Cambiar modo de dibujado\n"
-               << "'T': Cambiar visualización de tapas\n'Q': Salir\n";
+               << "'T': Cambiar visualización de tapas\n'A': Animación Automática\n"
+               << "'M': Animación Manual\nQ': Salir\n";
           break;
       }
 
@@ -730,6 +756,56 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           cout << "ERROR - opciones disponibles:\n'N': Modo básico\n'S': Iluminación suave\n"
                << "'P': Iluminación plana\n'Q': Salir\n";
           break;
+
+      }
+
+      break;
+
+    case ANIMACIONAUTO:
+
+      switch( toupper( tecla ) ) {
+
+        case 'Q':
+          animacionAutomatica = false;
+          modoMenu = NADA;
+          break;
+
+      }
+
+      break;
+
+    case ANIMACIONMANUAL:
+
+      switch( toupper( tecla ) ) {
+
+        case '0':
+          gradoSeleccionado = ROTARRUEDAS;
+          cout << "Se ha seleccionado \"Rotar Ruedas\"\n";
+          break;
+
+        case '1':
+          gradoSeleccionado = GIRARRUEDASDEL;
+          cout << "Se ha seleccionado \"Girar Ruedas Delanteras\"\n";
+          break;
+
+        case '+':
+          animarTractor( gradoSeleccionado, 1 );
+          break;
+
+        case '-':
+          animarTractor( gradoSeleccionado, -1 );
+          break;
+
+        case 'Q':
+          modoMenu = NADA;
+          break;
+
+        default:
+          cout << "ERROR - opciones disponibles:\n'0': Rotar Ruedas\n"
+               << "'1': Girar Ruedas Delanteras\n"
+               << "'+': Aumentar grado seleccionado\n"
+               << "'-': Disminuir grado seleccionado\n"
+               << "'Q': Salir\n";
 
       }
 

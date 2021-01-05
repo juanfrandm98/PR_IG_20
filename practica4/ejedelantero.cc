@@ -20,11 +20,15 @@ void EjeDelantero::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion 
 
   glPushMatrix();
     glTranslatef( 0, 0, -45 );
+    glRotatef( anguloGiro, 0, 1, 0 );
+    glRotatef( anguloRotacion, 0, 0, 1 );
     ruedaDerecha->draw( tipoDibujado, tipoVisualizacion );
   glPopMatrix();
 
   glPushMatrix();
     glTranslatef( 0, 0, 45 );
+    glRotatef( anguloGiro, 0, 1, 0 );
+    glRotatef( anguloRotacion, 0, 0, 1 );
     ruedaIzquierda->draw( tipoDibujado, tipoVisualizacion );
   glPopMatrix();
 
@@ -33,5 +37,23 @@ void EjeDelantero::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion 
     glScalef( 1, 8.5, 1 );
     eje->draw( tipoDibujado, tipoVisualizacion );
   glPopMatrix();
+
+}
+
+void EjeDelantero::cambiarAnguloGiro( int angulo ) {
+
+  anguloGiro += angulo;
+
+  if( anguloGiro < minAngulo )
+    anguloGiro = minAngulo;
+
+  if( anguloGiro > maxAngulo )
+    anguloGiro = maxAngulo;
+
+}
+
+void EjeDelantero::rotarRuedas( int angulo ) {
+
+  anguloRotacion += angulo;
 
 }
