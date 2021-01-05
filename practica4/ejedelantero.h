@@ -14,17 +14,18 @@ private:
   RuedaDelantera * ruedaDerecha   = nullptr;
   Cilindro * eje                  = nullptr;
 
-  int anguloGiro = 0;
-  const int minAngulo  = -25;
-  const int maxAngulo  = 25;
+  float anguloGiro = 0;
+  const float minAngulo  = -25;
+  const float maxAngulo  = 25;
 
-  int anguloRotacion = 0;
+  float anguloRotacion = 0;
 
 public:
   EjeDelantero();
   void draw( dibujado tipoDibujado, visualizacion tipoVisualizacion );
-  void cambiarAnguloGiro( int angulo );
-  void rotarRuedas( int angulo );
+  void cambiarAnguloGiro( float angulo );
+  void rotarRuedas( float angulo );
+  bool ruedasAlTope();
 
 };
 

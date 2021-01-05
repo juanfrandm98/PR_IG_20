@@ -56,15 +56,21 @@ void Chasis::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) {
 
 }
 
-void Chasis::cambiarAnguloGiro( int angulo ) {
+void Chasis::cambiarAnguloGiro( float angulo ) {
 
   ejeDelantero->cambiarAnguloGiro(angulo);
 
 }
 
-void Chasis::rotarRuedas( int angulo ) {
+void Chasis::rotarRuedas( float angulo ) {
 
   ejeDelantero->rotarRuedas(angulo);
   ejeTrasero->rotarRuedas(angulo);
+
+}
+
+bool Chasis::ruedasAlTope() {
+
+  return ejeDelantero->ruedasAlTope();
 
 }

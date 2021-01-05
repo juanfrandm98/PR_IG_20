@@ -58,7 +58,10 @@ class Escena
 
    // Función que anima el tractor en función del grado y del sentido
    // seleccionado
-   void animarTractor( gradosTractor gradoSeleccionado, int sentido );
+   void animarGradoTractor( gradosTractor gradoSeleccionado, float sentido );
+
+   // Función que cambia la velocidad de la animación
+   void cambiarVelocidadAnimacion( bool incrementar );
 
  // ** PARÁMETROS DE LA CÁMARA (PROVISIONAL)
 
@@ -98,6 +101,8 @@ class Escena
    variacion variacionLuz;
    bool animacionAutomatica;
    gradosTractor gradoSeleccionado;
+   float velocidadGeneral;
+   bool sumandoGiro;
 
    // Luces
    LuzPosicional * luzPos1 = nullptr;
@@ -116,6 +121,9 @@ class Escena
 	// Interacción con la escena
 	bool teclaPulsada( unsigned char Tecla1, int x, int y ) ;
 	void teclaEspecial( int Tecla1, int x, int y );
+
+  // Función que anima el tractor de forma automática
+  void animarModeloJerarquico();
 
 };
 #endif

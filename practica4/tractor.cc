@@ -34,14 +34,20 @@ void Tractor::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) {
 
 }
 
-void Tractor::cambiarAnguloGiro( int angulo ) {
+void Tractor::cambiarAnguloGiro( float angulo ) {
 
   chasis->cambiarAnguloGiro(angulo);
 
 }
 
-void Tractor::rotarRuedas( int angulo ) {
+void Tractor::rotarRuedas( float angulo ) {
 
   chasis->rotarRuedas(angulo);
+
+}
+
+bool Tractor::ruedasAlTope() {
+
+  return chasis->ruedasAlTope();
 
 }

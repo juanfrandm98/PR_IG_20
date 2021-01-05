@@ -10,12 +10,12 @@ private:
   RuedaTrasera * ruedaIzquierda = nullptr;
   RuedaTrasera * ruedaDerecha   = nullptr;
 
-  int anguloRotacion = 0;
+  float anguloRotacion = 0;
 
 public:
   EjeTrasero();
   void draw( dibujado tipoDibujado, visualizacion tipoVisualizacion );
-  void rotarRuedas( int angulo );
+  void rotarRuedas( float angulo );
 
 };
 

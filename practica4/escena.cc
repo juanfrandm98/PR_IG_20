@@ -199,6 +199,8 @@ Escena::Escena()
     variacionLuz = VARALPHA;
     animacionAutomatica = false;
     gradoSeleccionado = ROTARRUEDAS;
+    velocidadGeneral = 0.01;
+    sumandoGiro = false;
 
 }
 
@@ -332,7 +334,13 @@ void Escena::dibujar()
 
 }
 
-void Escena::animarTractor( gradosTractor gradoSeleccionado, int sentido ) {
+// **************************************************************************
+//
+// funciones para controlar la animación del modelo jerárquico principal
+//
+// **************************************************************************
+
+void Escena::animarGradoTractor( gradosTractor gradoSeleccionado, float sentido ) {
 
   switch ( gradoSeleccionado ) {
 
@@ -349,6 +357,41 @@ void Escena::animarTractor( gradosTractor gradoSeleccionado, int sentido ) {
       break;
 
   }
+
+}
+
+void Escena::animarModeloJerarquico() {
+
+  if( animacionAutomatica ) {
+
+    animarGradoTractor( ROTARRUEDAS, velocidadGeneral );
+
+    if( sumandoGiro ) {
+      animarGradoTractor( GIRARRUEDASDEL, velocidadGeneral );
+      if( tractor->ruedasAlTope() )
+        sumandoGiro = false;
+    } else {
+      animarGradoTractor( GIRARRUEDASDEL, -velocidadGeneral );
+      if( tractor->ruedasAlTope() )
+        sumandoGiro = true;
+    }
+
+  }
+
+}
+
+void Escena::cambiarVelocidadAnimacion( bool incrementar ) {
+
+  if( incrementar )
+    velocidadGeneral += 0.01;
+  else
+    velocidadGeneral -= 0.01;
+
+  if( velocidadGeneral < 0.01 )
+    velocidadGeneral = 0.01;
+
+  if( velocidadGeneral > 0.1 )
+    velocidadGeneral = 0.1;
 
 }
 
@@ -765,6 +808,14 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 
       switch( toupper( tecla ) ) {
 
+        case '+':
+          cambiarVelocidadAnimacion(true);
+          break;
+
+        case '-':
+          cambiarVelocidadAnimacion(false);
+          break;
+
         case 'Q':
           animacionAutomatica = false;
           modoMenu = NADA;
@@ -789,11 +840,11 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           break;
 
         case '+':
-          animarTractor( gradoSeleccionado, 1 );
+          animarGradoTractor( gradoSeleccionado, 1 );
           break;
 
         case '-':
-          animarTractor( gradoSeleccionado, -1 );
+          animarGradoTractor( gradoSeleccionado, -1 );
           break;
 
         case 'Q':

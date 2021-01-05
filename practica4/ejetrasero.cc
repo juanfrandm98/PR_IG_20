@@ -25,7 +25,7 @@ void EjeTrasero::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) 
 
 }
 
-void EjeTrasero::rotarRuedas( int angulo ) {
+void EjeTrasero::rotarRuedas( float angulo ) {
 
   anguloRotacion += angulo;
 

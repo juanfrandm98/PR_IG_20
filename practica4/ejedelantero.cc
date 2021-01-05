@@ -40,7 +40,7 @@ void EjeDelantero::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion 
 
 }
 
-void EjeDelantero::cambiarAnguloGiro( int angulo ) {
+void EjeDelantero::cambiarAnguloGiro( float angulo ) {
 
   anguloGiro += angulo;
 
@@ -52,8 +52,14 @@ void EjeDelantero::cambiarAnguloGiro( int angulo ) {
 
 }
 
-void EjeDelantero::rotarRuedas( int angulo ) {
+void EjeDelantero::rotarRuedas( float angulo ) {
 
   anguloRotacion += angulo;
+
+}
+
+bool EjeDelantero::ruedasAlTope() {
+
+  return ( ( anguloGiro == minAngulo ) || ( anguloGiro == maxAngulo ) );
 
 }

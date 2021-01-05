@@ -16,14 +16,20 @@ void TractorRemolque::draw( dibujado tipoDibujado, visualizacion tipoVisualizaci
 
 }
 
-void TractorRemolque::cambiarAnguloGiro( int angulo ) {
+void TractorRemolque::cambiarAnguloGiro( float angulo ) {
 
   tractor->cambiarAnguloGiro(angulo);
 
 }
 
-void TractorRemolque::rotarRuedas( int angulo ) {
+void TractorRemolque::rotarRuedas( float angulo ) {
 
   tractor->rotarRuedas(angulo);
+
+}
+
+bool TractorRemolque::ruedasAlTope() {
+
+  return tractor->ruedasAlTope();
 
 }

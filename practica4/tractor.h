@@ -18,8 +18,9 @@ private:
 public:
   Tractor();
   void draw( dibujado tipoDibujado, visualizacion tipoVisualizacion );
-  void cambiarAnguloGiro( int angulo );
-  void rotarRuedas( int angulo );
+  void cambiarAnguloGiro( float angulo );
+  void rotarRuedas( float angulo );
+  bool ruedasAlTope();
 
 };
 
