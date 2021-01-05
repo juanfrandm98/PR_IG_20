@@ -30,6 +30,7 @@ Escena::Escena()
     Material obsidiana = Material(Tupla4f(0.18275,0.17,0.22525,1),Tupla4f(0.332741,0.328634,0.346435,1),Tupla4f(0.05375,0.05,0.06625,1),0.3);
     Material yeso = Material(Tupla4f( 	1,0.829,0.829,1),Tupla4f(0.296648,0.296648,0.296648,1),Tupla4f(0.25,0.20725,0.20725,1),0.088);
     Material oro = Material(Tupla4f(0.75164,0.60648,0.22648,1),Tupla4f(0.628281,0.555802,0.366065,1),Tupla4f(0.24725,0.1995,0.0745,1),0.4);
+    Material hierba = Material(Tupla4f(0.45,0.55,0.45,1),Tupla4f(0.0,0.0,0.0,1),Tupla4f(0.1,0.35,0.1,1),0.25);
     Material predefinido = Material(Tupla4f(0.5,0.4,0.4,1),Tupla4f(0.7,0.04,0.04,1),Tupla4f(0.05,0.0,0.0,1),.078125);
 
     // Creación de las luces
@@ -84,6 +85,17 @@ Escena::Escena()
     objeto3.objeto->setMaterial( predefinido );
     objetosEscena.push_back( objeto3 );
 
+    // Cesped=objetosEscena(3)
+    Modelo objeto4;
+    objeto4.objeto = new Cubo( 10 );
+    objeto4.dibujar = true;
+    objeto4.posicion = Tupla3f( 0.0, -5.0, 0.0 );
+    objeto4.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    objeto4.escalado = Tupla3f( 500.0, 1.0, 500.0 );
+    objeto4.objeto->setMaterial( hierba );
+    objeto4.objeto->setColorSolido( Tupla3f( 0, 1, 0 ) );
+    objetosEscena.push_back( objeto4 );
+
     // Cilindro=objetosEscenaConTapas(0)
     ModeloTapas mt0;
     mt0.objeto = new Cilindro( 10, 10, 100, 45);
@@ -117,7 +129,7 @@ Escena::Escena()
     // PeonBlanco=objetosEscenaConTapas(3)
     ModeloTapas mt3;
     mt3.objeto = new ObjRevolucion( "./plys/peon", 20, true, true );
-    mt3.dibujar = true;
+    mt3.dibujar = false;
     mt3.posicion = Tupla3f( 150.0, 0.0, 0.0 );
     mt3.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
     mt3.escalado = Tupla3f( 20.0, 20.0, 20.0 );
@@ -127,7 +139,7 @@ Escena::Escena()
     // PeonNegro=objetosEscenaConTapas(4)
     ModeloTapas mt4;
     mt4.objeto = new ObjRevolucion( "./plys/peon_inverso", 20, true, true );
-    mt4.dibujar = true;
+    mt4.dibujar = false;
     mt4.posicion = Tupla3f( -150.0, 0.0, 0.0 );
     mt4.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
     mt4.escalado = Tupla3f( 20.0, 20.0, 20.0 );
@@ -155,12 +167,11 @@ Escena::Escena()
     mt6.objeto->setMaterial( predefinido );
     objetosEscenaConTapas.push_back( mt6 );
 
-    /*
     // Pino1=modelosJerarquicos(0)
     Jerarquico j1;
     j1.objeto = new Pino();
     j1.dibujar = true;
-    j1.posicion = Tupla3f( 0.0, 0.0, 0.0 );
+    j1.posicion = Tupla3f( 0.0, 0.0, -150.0 );
     j1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
     j1.escalado = Tupla3f( 1.0, 1.0, 1.0 );
     modelosJerarquicos.push_back( j1 );
@@ -169,7 +180,7 @@ Escena::Escena()
     Jerarquico j2;
     j2.objeto = new Pino();
     j2.dibujar = true;
-    j2.posicion = Tupla3f( 80.0, 0.0, -10.0 );
+    j2.posicion = Tupla3f( 150.0, 0.0, -100.0 );
     j2.orientacion = Tupla3f( 0.0, 45.0, 0.0 );
     j2.escalado = Tupla3f( 1.0, 1.0, 1.0 );
     modelosJerarquicos.push_back( j2 );
@@ -178,10 +189,10 @@ Escena::Escena()
     Jerarquico j3;
     j3.objeto = new Pino();
     j3.dibujar = true;
-    j3.posicion = Tupla3f( -80.0, 0.0, 20.0 );
+    j3.posicion = Tupla3f( -120.0, 0.0, 20.0 );
     j3.orientacion = Tupla3f( 0.0, -32.0, 0.0 );
     j3.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    modelosJerarquicos.push_back( j3 );*/
+    modelosJerarquicos.push_back( j3 );
 
     // Tractor = modelosJerarquicos(0)
     tractor = new TractorRemolque();
@@ -200,7 +211,11 @@ Escena::Escena()
     animacionAutomatica = false;
     gradoSeleccionado = ROTARRUEDAS;
     velocidadGeneral = 0.01;
-    sumandoGiro = false;
+    sumandoGiroRuedas = true;
+    sumandoGiroRemolque = true;
+    sumandoInclinacion = true;
+    timerInclinacionRemolque = -1;
+    sumandoMovimientoRodillo = true;
 
 }
 
@@ -271,7 +286,11 @@ void Escena::DrawMode( visualizacion tipo ) {
     }
   }
 
-  tractor->draw( modoDibujado, tipo );
+  glPushMatrix();
+    glTranslatef( 0, 17.5, 0 );
+    glScalef( 0.5, 0.5, 0.5 );
+    tractor->draw( modoDibujado, tipo );
+  glPopMatrix();
 
 }
 
@@ -345,11 +364,23 @@ void Escena::animarGradoTractor( gradosTractor gradoSeleccionado, float sentido 
   switch ( gradoSeleccionado ) {
 
     case ROTARRUEDAS:
-      tractor->rotarRuedas(sentido);
+      tractor->simularAvance(sentido);
       break;
 
     case GIRARRUEDASDEL:
       tractor->cambiarAnguloGiro(sentido);
+      break;
+
+    case INCLINARREMOLQUE:
+      tractor->inclinarRemolque(sentido);
+      break;
+
+    case GIRARREMOLQUE:
+      tractor->girarRemolque(sentido);
+      break;
+
+    case TRASLADARRODILLO:
+      tractor->trasladarRodillo(sentido);
       break;
 
     default:
@@ -366,14 +397,49 @@ void Escena::animarModeloJerarquico() {
 
     animarGradoTractor( ROTARRUEDAS, velocidadGeneral );
 
-    if( sumandoGiro ) {
+    if( sumandoGiroRuedas ) {
       animarGradoTractor( GIRARRUEDASDEL, velocidadGeneral );
       if( tractor->ruedasAlTope() )
-        sumandoGiro = false;
+        sumandoGiroRuedas = false;
     } else {
       animarGradoTractor( GIRARRUEDASDEL, -velocidadGeneral );
       if( tractor->ruedasAlTope() )
-        sumandoGiro = true;
+        sumandoGiroRuedas = true;
+    }
+
+    if( sumandoInclinacion ) {
+      if( timerInclinacionRemolque < 0 ) {
+        animarGradoTractor( INCLINARREMOLQUE, velocidadGeneral );
+        if( tractor->inclinacionAlTope() )
+          sumandoInclinacion = false;
+      } else
+        timerInclinacionRemolque -= velocidadGeneral;
+    } else {
+      animarGradoTractor( INCLINARREMOLQUE, -velocidadGeneral );
+      if( tractor->inclinacionAlTope() ) {
+        sumandoInclinacion = true;
+        timerInclinacionRemolque = 1000;
+      }
+    }
+
+    if( sumandoGiroRemolque ) {
+      animarGradoTractor( GIRARREMOLQUE, velocidadGeneral );
+      if( tractor->remolqueGiradoAlTope() )
+        sumandoGiroRemolque = false;
+    } else {
+      animarGradoTractor( GIRARREMOLQUE, -velocidadGeneral );
+      if( tractor->remolqueGiradoAlTope() )
+        sumandoGiroRemolque = true;
+    }
+
+    if( sumandoMovimientoRodillo ) {
+      animarGradoTractor( TRASLADARRODILLO, velocidadGeneral );
+      if( tractor->rodilloTrasladadoAlTope() )
+        sumandoMovimientoRodillo = false;
+    } else {
+      animarGradoTractor( TRASLADARRODILLO, -velocidadGeneral );
+      if( tractor->rodilloTrasladadoAlTope() )
+        sumandoMovimientoRodillo = true;
     }
 
   }
@@ -837,6 +903,21 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
         case '1':
           gradoSeleccionado = GIRARRUEDASDEL;
           cout << "Se ha seleccionado \"Girar Ruedas Delanteras\"\n";
+          break;
+
+        case '2':
+          gradoSeleccionado = INCLINARREMOLQUE;
+          cout << "Se ha seleccionado \"Inclinar Remolque\"\n";
+          break;
+
+        case '3':
+          gradoSeleccionado = GIRARREMOLQUE;
+          cout << "Se ha seleccionado \"Girar Remolque\"\n";
+          break;
+
+        case '4':
+          gradoSeleccionado = TRASLADARRODILLO;
+          cout << "Se ha seleccionado \"Trasladar Rodillo\"\n";
           break;
 
         case '+':

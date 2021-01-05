@@ -21,7 +21,7 @@
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,TAPAS,ILUMINACION,ANIMACIONAUTO,ANIMACIONMANUAL} menu;
 typedef enum {BASICA, SUAVE, PLANA} iluminacion;
 typedef enum {VARALPHA, VARBETA} variacion;
-typedef enum {ROTARRUEDAS, GIRARRUEDASDEL} gradosTractor;
+typedef enum {ROTARRUEDAS, GIRARRUEDASDEL, INCLINARREMOLQUE, GIRARREMOLQUE, TRASLADARRODILLO} gradosTractor;
 
 struct Modelo {
   Malla3D * objeto;
@@ -102,7 +102,11 @@ class Escena
    bool animacionAutomatica;
    gradosTractor gradoSeleccionado;
    float velocidadGeneral;
-   bool sumandoGiro;
+   bool sumandoGiroRuedas;
+   bool sumandoGiroRemolque;
+   bool sumandoInclinacion;
+   float timerInclinacionRemolque;
+   bool sumandoMovimientoRodillo;
 
    // Luces
    LuzPosicional * luzPos1 = nullptr;

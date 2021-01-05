@@ -3,15 +3,20 @@
 
 TractorRemolque::TractorRemolque() {
 
-  tractor = new Tractor();
+  tractor  = new Tractor();
+  remolque = new Remolque();
 
 }
 
 void TractorRemolque::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) {
 
   glPushMatrix();
-    //glTranslatef( 0, 35, 0);
     tractor->draw( tipoDibujado, tipoVisualizacion );
+  glPopMatrix();
+
+  glPushMatrix();
+    glTranslatef( 65, 0, 0);
+    remolque->draw( tipoDibujado, tipoVisualizacion );
   glPopMatrix();
 
 }
@@ -22,14 +27,51 @@ void TractorRemolque::cambiarAnguloGiro( float angulo ) {
 
 }
 
-void TractorRemolque::rotarRuedas( float angulo ) {
+void TractorRemolque::simularAvance( float angulo ) {
 
   tractor->rotarRuedas(angulo);
+  remolque->rotarRodillo(angulo);
 
 }
 
 bool TractorRemolque::ruedasAlTope() {
 
   return tractor->ruedasAlTope();
+
+}
+
+void TractorRemolque::inclinarRemolque( float angulo ) {
+
+  remolque->inclinarRemolque(angulo);
+
+}
+
+void TractorRemolque::girarRemolque( float angulo ) {
+
+  remolque->girarRemolque(angulo);
+
+}
+
+bool TractorRemolque::inclinacionAlTope() {
+
+  return remolque->inclinacionAlTope();
+
+}
+
+bool TractorRemolque::remolqueGiradoAlTope() {
+
+  return remolque->remolqueGiradoAlTope();
+
+}
+
+void TractorRemolque::trasladarRodillo( float cantidad ) {
+
+  remolque->trasladarRodillo(cantidad);
+
+}
+
+bool TractorRemolque::rodilloTrasladadoAlTope() {
+
+  return remolque->rodilloTrasladadoAlTope();
 
 }
