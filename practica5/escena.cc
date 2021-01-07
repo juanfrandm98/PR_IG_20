@@ -38,6 +38,9 @@ Escena::Escena()
     Textura grass = Textura( "./images/hierba.jpeg" );
     Textura lata = Textura( "./images/text-lata-1.jpg" );
 
+    // Creación de colores
+    Tupla3f colorBlanco = Tupla3f( 1, 1, 1 );
+
     // Creación de las luces
     // Luz direccional inicial
     luzDir = new LuzDireccional( Tupla2f( 0.0, 0.0 ), GL_LIGHT1, Tupla4f( 0.9, 0.9, 0.9, 1 ),
@@ -62,123 +65,22 @@ Escena::Escena()
     objeto0.objeto->setColorSolido( Tupla3f( 1, 1, 1 ) );
     objetosEscena.push_back( objeto0 );
 
-    // Tetraedro=objetosEscena(1)
-    Modelo objeto1;
-    objeto1.objeto = new Tetraedro( 100 );
-    objeto1.dibujar = false;
-    objeto1.posicion = Tupla3f( -100.0, 0.0, -150.0 );
-    objeto1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    objeto1.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    objeto1.objeto->setMaterial( predefinido );
-    objetosEscena.push_back( objeto1 );
-
-    // Lingote=objetosEscena(2)
-    Modelo objeto2;
-    objeto2.objeto = new Cubo( 35 );
-    objeto2.dibujar = false;
-    objeto2.posicion = Tupla3f( 0.0, 0.0, 0.0 );
-    objeto2.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    objeto2.escalado = Tupla3f( 1.0, 0.35, 2.0 );
-    objeto2.objeto->setMaterial( oro );
-    objetosEscena.push_back( objeto2 );
-
-    // ObjetoPLY=objetosEscena(2)
-    Modelo objeto3;
-    objeto3.objeto = new ObjPLY( "./plys/big_dodge" );
-    objeto3.dibujar = false;
-    objeto3.posicion = Tupla3f( -250.0, 0.0, 0.0 );
-    objeto3.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    objeto3.escalado = Tupla3f( 10.0, 10.0, 10.0 );
-    objeto3.objeto->setMaterial( predefinido );
-    objetosEscena.push_back( objeto3 );
-
-    // Cesped=objetosEscena(3)
-    Modelo objeto4;
-    objeto4.objeto = new Cubo( 10 );
-    objeto4.dibujar = false;
-    objeto4.posicion = Tupla3f( 0.0, -5.0, 0.0 );
-    objeto4.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    objeto4.escalado = Tupla3f( 500.0, 1.0, 500.0 );
-    objeto4.objeto->setMaterial( hierba );
-    objeto4.objeto->setColorSolido( Tupla3f( 0, 1, 0 ) );
-    objeto4.objeto->setTextura( grass );
-    objetosEscena.push_back( objeto4 );
-
     suelo = new Cubo( 500 );
     suelo->setMaterial( hierba );
     suelo->setColorSolido( Tupla3f( 0, 1, 0 ) );
     suelo->setTextura( grass );
     suelo->ubicarTexturaSuperior();
-/*
-    // Cilindro=objetosEscenaConTapas(0)
-    ModeloTapas mt0;
-    mt0.objeto = new Cilindro( 10, 10, 100, 45);
-    mt0.dibujar = false;
-    mt0.posicion = Tupla3f( 0.0, 0.0, -150.0 );
-    mt0.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt0.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    mt0.objeto->setMaterial( predefinido );
-    objetosEscenaConTapas.push_back( mt0 );
-
-    // Esfera=objetosEscenaConTapas(1)
-    ModeloTapas mt1;
-    mt1.objeto = new Esfera( 20, 20, 45 );
-    mt1.dibujar = false;
-    mt1.posicion = Tupla3f( 100.0, 0.0, -150.0 );
-    mt1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt1.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    mt1.objeto->setMaterial( predefinido );
-    objetosEscenaConTapas.push_back( mt1 );
-
-    // Cono=objetosEscenaConTapas(2)
-    ModeloTapas mt2;
-    mt2.objeto = new Cono( 10, 10, 100, 45 );
-    mt2.dibujar = false;
-    mt2.posicion = Tupla3f( 200.0, 0.0, -150.0 );
-    mt2.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt2.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    mt2.objeto->setMaterial( predefinido );
-    objetosEscenaConTapas.push_back( mt2 );
-
-    // PeonBlanco=objetosEscenaConTapas(3)
-    ModeloTapas mt3;
-    mt3.objeto = new ObjRevolucion( "./plys/peon", 20, true, true );
-    mt3.dibujar = false;
-    mt3.posicion = Tupla3f( 150.0, 0.0, 0.0 );
-    mt3.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt3.escalado = Tupla3f( 20.0, 20.0, 20.0 );
-    mt3.objeto->setMaterial( yeso );
-    objetosEscenaConTapas.push_back( mt3 );
-
-    // PeonNegro=objetosEscenaConTapas(4)
-    ModeloTapas mt4;
-    mt4.objeto = new ObjRevolucion( "./plys/peon_inverso", 20, true, true );
-    mt4.dibujar = false;
-    mt4.posicion = Tupla3f( -150.0, 0.0, 0.0 );
-    mt4.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt4.escalado = Tupla3f( 20.0, 20.0, 20.0 );
-    mt4.objeto->setMaterial( obsidiana );
-    objetosEscenaConTapas.push_back( mt4 );
-
-    // Luz=objetosEscenaConTapas(5)
-    ModeloTapas mt5;
-    mt5.objeto = new Esfera(20,20,10);
-    mt5.dibujar = false;
-    mt5.posicion = luzDir->getPosicion();
-    mt5.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt5.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    mt5.objeto->setColorSolido( Tupla3f( 1, 1, 0 ) );
-    mt5.objeto->setMaterial( oro );
-    objetosEscenaConTapas.push_back( mt5 );
 
     // ObjetoRevolución=objetosEscenaConTapas(6)
     ModeloTapas mt6;
     mt6.objeto = new ObjRevolucion( "./plys/lata-pcue", 20, true, true );
-    mt6.dibujar = false;
-    mt6.posicion = Tupla3f( 150.0, 0.0, 0.0 );
+    mt6.dibujar = true;
+    mt6.posicion = Tupla3f( 0.0, 0.0, 80.0 );
     mt6.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt6.escalado = Tupla3f( 20.0, 20.0, 20.0 );
-    mt6.objeto->setMaterial( predefinido );
+    mt6.escalado = Tupla3f( 30.0, 30.0, 30.0 );
+    mt6.objeto->setMaterial( yeso );
+    mt6.objeto->setColorSolido( colorBlanco );
+    mt6.objeto->setTextura( lata );
     objetosEscenaConTapas.push_back( mt6 );
 
     // Pino1=modelosJerarquicos(0)
@@ -198,7 +100,7 @@ Escena::Escena()
     j2.orientacion = Tupla3f( 0.0, 45.0, 0.0 );
     j2.escalado = Tupla3f( 1.0, 1.0, 1.0 );
     modelosJerarquicos.push_back( j2 );
-*/
+
     // Pino3=modelosJerarquicos(2)
     Jerarquico j3;
     j3.objeto = new Pino();
@@ -209,7 +111,7 @@ Escena::Escena()
     modelosJerarquicos.push_back( j3 );
 
     // Tractor = modelosJerarquicos(0)
-    //tractor = new TractorRemolque();
+    tractor = new TractorRemolque();
 
 
     // Inicialización de los flags
@@ -304,13 +206,13 @@ void Escena::DrawMode( visualizacion tipo ) {
   glPushMatrix();
     glTranslatef( 0, 17.5, 0 );
     glScalef( 0.5, 0.5, 0.5 );
-    //tractor->draw( modoDibujado, tipo );
+    tractor->draw( modoDibujado, tipo );
   glPopMatrix();
 
   glPushMatrix();
     glTranslatef( 0.0, 0.5, 0.0 );
     glScalef( 1, 0.002, 1 );
-    //suelo->draw( modoDibujado, tipo );
+    suelo->draw( modoDibujado, tipo );
   glPopMatrix();
 
 }

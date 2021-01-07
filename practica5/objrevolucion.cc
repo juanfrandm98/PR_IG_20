@@ -62,6 +62,10 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
    // Ahora creamos las tablas de vértices y triángulos
    crearMalla( perfilOriginal, num_instancias, ordenAscendente );
 
+   // Como hemos duplicado una instancia para utilizar bien texturas, aumentamos
+   // el contador de las mismas
+   num_instancias++;
+
    // Creamos las tablas de triángulos para el modo ajedrez
    for( int i = 0; i < f.size(); i++ )
     if( i % 2 == 0 )
@@ -148,6 +152,15 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
     else
       for( int j = perfil_original.size() - 1; j >= 0; j-- )
         introducirVertice( i, perfil_original[j], num_instancias );
+
+  // Duplicamos el primer perfil
+  if( ordenAscendente )
+    for( int j = 0; j < perfil_original.size(); j++ )
+      introducirVertice( 0, perfil_original[j], num_instancias );
+  else
+    for( int j = perfil_original.size() - 1; j >= 0; j-- )
+      introducirVertice( 0, perfil_original[j], num_instancias );
+  num_instancias++;
 
   int contador = 0;
 
@@ -371,26 +384,20 @@ void ObjRevolucion::introducirVertice( int i, Tupla3f punto, int num_instancias 
 
 void ObjRevolucion::calcularCoordenadasDeTextura( int num_puntos_perfil, int num_perfiles, std::vector<float> distancias ) {
 
-  std::cout << "\nIMPRIMIENDO Y GENERANDO COORDENADAS DE TEXTURA\n";
-
   while( !ct.empty() )
     ct.pop_back();
 
-  for( int i = 0; i < num_perfiles; i++ ) {
+  for( int i = 0; i < num_perfiles; i++ )
     for( int j = 0; j < distancias.size(); j++ ) {
 
       float s = i / ( (float)num_perfiles - 1 );
       float t = distancias[j] / distancias[num_puntos_perfil - 1];
+      t = 1 - t;
 
       ct.push_back( {s, t} );
 
-      std::cout << "{" << s << ", " << t << "}\t";
 
     }
-    std::cout << std::endl;
-  }
-
-
 
 }
 

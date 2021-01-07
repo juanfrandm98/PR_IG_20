@@ -268,9 +268,8 @@ std::vector<Tupla3f> Malla3D::CalcularNormalesCaras() {
 
     // Calculamos la normal y la normalizamos
     Tupla3f normal = a.cross(b);
-    Tupla3f normalizada = normal.normalized();
 
-    normalesCaras.push_back( normalizada );
+    normalesCaras.push_back( normal );
 
   }
 
