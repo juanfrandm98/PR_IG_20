@@ -143,7 +143,6 @@ ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, b
 
 void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias, bool ordenAscendente) {
 
-    using namespace std;
   // Rellenamos la tabla de vértices
   for( int i = 0; i < num_instancias; i++ )
     if( ordenAscendente )
@@ -392,6 +391,8 @@ void ObjRevolucion::calcularCoordenadasDeTextura( int num_puntos_perfil, int num
 
       float s = i / ( (float)num_perfiles - 1 );
       float t = distancias[j] / distancias[num_puntos_perfil - 1];
+
+      // Como la Y de la textura está al revés de la de la imagen leída,
       t = 1 - t;
 
       ct.push_back( {s, t} );
