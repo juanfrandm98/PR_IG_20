@@ -33,6 +33,11 @@ Escena::Escena()
     Material hierba = Material(Tupla4f(0.45,0.55,0.45,1),Tupla4f(0.0,0.0,0.0,1),Tupla4f(0.1,0.35,0.1,1),0.25);
     Material predefinido = Material(Tupla4f(0.5,0.4,0.4,1),Tupla4f(0.7,0.04,0.04,1),Tupla4f(0.05,0.0,0.0,1),.078125);
 
+    // Creación de las texturas
+    Textura caja = Textura( "./images/text-madera.jpg" );
+    Textura grass = Textura( "./images/hierba.jpeg" );
+    Textura lata = Textura( "./images/text-lata-1.jpg" );
+
     // Creación de las luces
     // Luz direccional inicial
     luzDir = new LuzDireccional( Tupla2f( 0.0, 0.0 ), GL_LIGHT1, Tupla4f( 0.9, 0.9, 0.9, 1 ),
@@ -47,12 +52,14 @@ Escena::Escena()
     // Creación de los objetos de la escena
     // Cubo=objetosEscena(0)
     Modelo objeto0;
-    objeto0.objeto = new Cubo( 100 );
-    objeto0.dibujar = false;
-    objeto0.posicion = Tupla3f( -250.0, 0.0, -150.0 );
+    objeto0.objeto = new Cubo( 10 );
+    objeto0.dibujar = true;
+    objeto0.posicion = Tupla3f( 50.0, 5.0, 100.0 );
     objeto0.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
     objeto0.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    objeto0.objeto->setMaterial( predefinido );
+    objeto0.objeto->setMaterial( yeso );
+    objeto0.objeto->setTextura( caja );
+    objeto0.objeto->setColorSolido( Tupla3f( 1, 1, 1 ) );
     objetosEscena.push_back( objeto0 );
 
     // Tetraedro=objetosEscena(1)
@@ -88,14 +95,21 @@ Escena::Escena()
     // Cesped=objetosEscena(3)
     Modelo objeto4;
     objeto4.objeto = new Cubo( 10 );
-    objeto4.dibujar = true;
+    objeto4.dibujar = false;
     objeto4.posicion = Tupla3f( 0.0, -5.0, 0.0 );
     objeto4.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
     objeto4.escalado = Tupla3f( 500.0, 1.0, 500.0 );
     objeto4.objeto->setMaterial( hierba );
     objeto4.objeto->setColorSolido( Tupla3f( 0, 1, 0 ) );
+    objeto4.objeto->setTextura( grass );
     objetosEscena.push_back( objeto4 );
 
+    suelo = new Cubo( 500 );
+    suelo->setMaterial( hierba );
+    suelo->setColorSolido( Tupla3f( 0, 1, 0 ) );
+    suelo->setTextura( grass );
+    suelo->ubicarTexturaSuperior();
+/*
     // Cilindro=objetosEscenaConTapas(0)
     ModeloTapas mt0;
     mt0.objeto = new Cilindro( 10, 10, 100, 45);
@@ -184,7 +198,7 @@ Escena::Escena()
     j2.orientacion = Tupla3f( 0.0, 45.0, 0.0 );
     j2.escalado = Tupla3f( 1.0, 1.0, 1.0 );
     modelosJerarquicos.push_back( j2 );
-
+*/
     // Pino3=modelosJerarquicos(2)
     Jerarquico j3;
     j3.objeto = new Pino();
@@ -195,7 +209,7 @@ Escena::Escena()
     modelosJerarquicos.push_back( j3 );
 
     // Tractor = modelosJerarquicos(0)
-    tractor = new TractorRemolque();
+    //tractor = new TractorRemolque();
 
 
     // Inicialización de los flags
@@ -216,6 +230,7 @@ Escena::Escena()
     sumandoInclinacion = true;
     timerInclinacionRemolque = -1;
     sumandoMovimientoRodillo = true;
+    texturas = false;
 
 }
 
@@ -289,7 +304,13 @@ void Escena::DrawMode( visualizacion tipo ) {
   glPushMatrix();
     glTranslatef( 0, 17.5, 0 );
     glScalef( 0.5, 0.5, 0.5 );
-    tractor->draw( modoDibujado, tipo );
+    //tractor->draw( modoDibujado, tipo );
+  glPopMatrix();
+
+  glPushMatrix();
+    glTranslatef( 0.0, 0.5, 0.0 );
+    glScalef( 1, 0.002, 1 );
+    //suelo->draw( modoDibujado, tipo );
   glPopMatrix();
 
 }
@@ -307,6 +328,11 @@ void Escena::dibujar()
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
 	change_observer();
   ejes.draw();
+
+  if( texturas )
+    glEnable( GL_TEXTURE_2D );
+  else
+    glDisable( GL_TEXTURE_2D );
 
   if( modoIluminacion != BASICA ) {
     // Activamos la iluminación
@@ -716,9 +742,16 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
         case 'I':
           modoMenu = ILUMINACION;
           break;
+        case 'T':
+          if( texturas )
+            texturas = false;
+          else
+            texturas = true;
+          break;
         default:
           cout << "ERROR - opciones disponibles:\n'L': Línea\n'P': Puntos\n"
-               << "'S': Sólido\n'A': Ajedrez\n'I': Cambiar Iluminación\n";
+               << "'S': Sólido\n'A': Ajedrez\n'I': Cambiar Iluminación\n"
+               << "'T': Cambiar Utilización de Texturas\n";
           break;
       }
 
@@ -857,14 +890,53 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           cout << "Modo de iluminación establecido: plano.\n";
           break;
 
+        case 'C':
+          modoMenu = COLORLUZ;
+          break;
+
         case 'Q':
           modoMenu = SELVISUALIZACION;
           break;
 
         default:
-          cout << "ERROR - opciones disponibles:\n'N': Modo básico\n'S': Iluminación suave\n"
-               << "'P': Iluminación plana\n'Q': Salir\n";
+          cout << "ERROR - opciones disponibles:\n'N': Modo básico\n"
+               << "'S': Iluminación suave\n'P': Iluminación plana\n"
+               << "'A': Cambiar ángulo alfa\n'B': Cambiar ángulo beta\n"
+               << "'<': Disminuir ángulo seleccionado\n"
+               << "'>': Aumentar ángulo seleccionado\n"
+               << "'C': Cambiar el color de la luz puntual (3)\n'Q': Salir\n";
           break;
+
+      }
+
+      break;
+
+    case COLORLUZ:
+
+      switch( toupper( tecla ) ) {
+
+        case 'R':
+          luzPos2->setColores(Tupla4f( 0.9, 0, 0, 1 ), Tupla4f( 1, 0, 0, 1 ), Tupla4f( 0.9, 0, 0, 1 ));
+          cout << "Luz cambiada a Rojo\n";
+          break;
+
+        case 'G':
+          luzPos2->setColores(Tupla4f( 0, 0.9, 0, 1 ), Tupla4f( 0, 1, 0, 1 ), Tupla4f( 0, 0.9, 0, 1 ));
+          cout << "Luz cambiada a Verde\n";
+          break;
+
+        case 'B':
+          luzPos2->setColores(Tupla4f( 0, 0, 0.9, 1 ), Tupla4f( 0, 0, 1, 1 ), Tupla4f( 0, 0, 0.9, 1 ));
+          cout << "Luz cambiada a Azul\n";
+          break;
+
+        case 'Q':
+          modoMenu = ILUMINACION;
+          break;
+
+        default:
+          cout << "Error - opciones disponibles:\n'R': Luz Roja\n"
+               << "'G': Luz Verde\n'B': Luz Azul\n'Q': Volver al menú anterior\n";
 
       }
 
@@ -957,6 +1029,9 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
       case SELDIBUJADO: cout << "\nMenú de dibujado.\n"; break;
       case TAPAS: cout << "\nMenú de visualización de tapas.\n"; break;
       case ILUMINACION: cout << "\nMenú de iluminación.\n"; break;
+      case ANIMACIONAUTO: cout << "\nMenú de la animación automática.\n"; break;
+      case ANIMACIONMANUAL: cout << "\nMenú de la animación manual.\n"; break;
+      case COLORLUZ: cout << "\nMenú de cambio de color de la luz puntual (3).\n"; break;
     }
   }
 
