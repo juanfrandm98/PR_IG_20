@@ -87,12 +87,38 @@ void special_keys( int tecla, int x, int y )
 	glutPostRedisplay(); // Obliga a redibujar
 }
 
+//***************************************************************************
+// Funcion llamada cuando el usuario no está haciendo nada
+//***************************************************************************
+
 void funcion_idle() {
 
   if( escena != 0 )
     escena->animarModeloJerarquico();
 
   glutPostRedisplay();
+
+}
+
+//***************************************************************************
+// Función que gestiona el click del ratón
+//***************************************************************************
+
+void clickRaton( int boton, int estado, int x, int y ) {
+
+	if( escena != 0 )
+    escena->clickRaton( boton, estado, x, y );
+
+}
+
+//***************************************************************************
+// Función que gestiona el movimiento del ratón
+//***************************************************************************
+
+void ratonMovido( int x, int y ) {
+
+	if( escena != 0 )
+    escena->ratonMovido( x, y );
 
 }
 
@@ -148,6 +174,12 @@ int main( int argc, char **argv )
 
 	 // asignación de la función funcion_idle para la animación automática
 	 glutIdleFunc( funcion_idle );
+
+	 // asignación de la función para utilizar el click del ratón
+	 glutMouseFunc( clickRaton );
+
+	 // asignación de la función para utilizar el movimiento del ratón
+	 glutMotionFunc( ratonMovido );
 
    // inicialización de librería GLEW (solo en Linux)
    #ifdef LINUX

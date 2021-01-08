@@ -143,6 +143,9 @@ Escena::Escena()
     sumandoMovimientoRodillo = true;
     texturas = false;
 
+    botonIzq = SUELTO;
+    botonDer = SUELTO;
+
 }
 
 //**************************************************************************
@@ -433,6 +436,22 @@ void Escena::cambiarVelocidadAnimacion( gradosTractor grado, bool incrementar ) 
   }
 
   comprobarVelocidadesEnRango();
+
+}
+
+// **************************************************************************
+//
+// funciones para controlar el movimiento de la cámara
+//
+// **************************************************************************
+
+void Escena::ratonMovido( int x, int y ) {
+
+  if( botonDer == PULSADO ) {
+    camaras[camaraActiva].girar( x - xant, y - yant );
+    xant = x;
+    yant = y;
+  }
 
 }
 
@@ -1106,7 +1125,5 @@ void Escena::change_observer()
    // posicion del observador
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
-   glTranslatef( 0.0, 0.0, -Observer_distance );
-   glRotatef( Observer_angle_y, 0.0 ,1.0, 0.0 );
-   glRotatef( Observer_angle_x, 1.0, 0.0, 0.0 );
+   camaras[camaraActiva].setObservador();
 }

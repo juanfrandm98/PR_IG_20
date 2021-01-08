@@ -17,11 +17,13 @@
 #include "modelojerarquico.h"
 #include "tractorremolque.h"
 #include "pino.h"
+#include "camara.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,TAPAS,ILUMINACION,ANIMACIONAUTO,ANIMACIONMANUAL,COLORLUZ} menu;
 typedef enum {BASICA, SUAVE, PLANA} iluminacion;
 typedef enum {VARALPHA, VARBETA} variacion;
 typedef enum {TODOS, ROTARRUEDAS, GIRARRUEDASDEL, INCLINARREMOLQUE, GIRARREMOLQUE, TRASLADARRODILLO} gradosTractor;
+typedef enum {PULSADO, SUELTO} estadoBoton;
 
 struct Modelo {
   Malla3D * objeto;
@@ -120,6 +122,14 @@ class Escena
    LuzPosicional * luzPos2 = nullptr;
    LuzDireccional * luzDir = nullptr;
 
+   // Camaras
+   std::vector<Camara *> camaras;
+   int camaraActiva;
+
+   // Botones del ratón
+   estadoBoton botonIzq;
+   estadoBoton botonDer;
+
    public:
 
     Escena();
@@ -135,6 +145,10 @@ class Escena
 
   // Función que anima el tractor de forma automática
   void animarModeloJerarquico();
+
+  // Funciones que gestionan las cámaras en función de la utilización del ratón
+  void clickRaton( int boton, int estado, int x, int y );
+  void ratonMovido( int x, int y );
 
 };
 #endif
