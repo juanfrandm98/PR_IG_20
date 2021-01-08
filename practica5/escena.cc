@@ -126,7 +126,16 @@ Escena::Escena()
     variacionLuz = VARALPHA;
     animacionAutomatica = false;
     gradoSeleccionado = ROTARRUEDAS;
-    velocidadGeneral = 0.01;
+
+    // Las velocidades de los grados de libertad por separado, de esta forma:
+    //    - velocidades(0) -> rotación ruedas y rodillo (avance)
+    //    - velocidades(1) -> rotación ruedas (giro)
+    //    - velocidades(2) -> rotación remolque (vertical)
+    //    - velocidades(3) -> rotación remolque (horizontal)
+    //    - velocidades(4) -> traslación remolque (horizontal)
+    for( int i = 0; i < 5; i++ )
+      velocidades.push_back(minVelocidad);
+
     sumandoGiroRuedas = true;
     sumandoGiroRemolque = true;
     sumandoInclinacion = true;
@@ -323,27 +332,27 @@ void Escena::animarModeloJerarquico() {
 
   if( animacionAutomatica ) {
 
-    animarGradoTractor( ROTARRUEDAS, velocidadGeneral );
+    animarGradoTractor( ROTARRUEDAS, velocidades[0] );
 
     if( sumandoGiroRuedas ) {
-      animarGradoTractor( GIRARRUEDASDEL, velocidadGeneral );
+      animarGradoTractor( GIRARRUEDASDEL, velocidades[1] );
       if( tractor->ruedasAlTope() )
         sumandoGiroRuedas = false;
     } else {
-      animarGradoTractor( GIRARRUEDASDEL, -velocidadGeneral );
+      animarGradoTractor( GIRARRUEDASDEL, -velocidades[1] );
       if( tractor->ruedasAlTope() )
         sumandoGiroRuedas = true;
     }
 
     if( sumandoInclinacion ) {
       if( timerInclinacionRemolque < 0 ) {
-        animarGradoTractor( INCLINARREMOLQUE, velocidadGeneral );
+        animarGradoTractor( INCLINARREMOLQUE, velocidades[2] );
         if( tractor->inclinacionAlTope() )
           sumandoInclinacion = false;
       } else
-        timerInclinacionRemolque -= velocidadGeneral;
+        timerInclinacionRemolque -= velocidades[2];
     } else {
-      animarGradoTractor( INCLINARREMOLQUE, -velocidadGeneral );
+      animarGradoTractor( INCLINARREMOLQUE, -velocidades[2] );
       if( tractor->inclinacionAlTope() ) {
         sumandoInclinacion = true;
         timerInclinacionRemolque = 1000;
@@ -351,21 +360,21 @@ void Escena::animarModeloJerarquico() {
     }
 
     if( sumandoGiroRemolque ) {
-      animarGradoTractor( GIRARREMOLQUE, velocidadGeneral );
+      animarGradoTractor( GIRARREMOLQUE, velocidades[3] );
       if( tractor->remolqueGiradoAlTope() )
         sumandoGiroRemolque = false;
     } else {
-      animarGradoTractor( GIRARREMOLQUE, -velocidadGeneral );
+      animarGradoTractor( GIRARREMOLQUE, -velocidades[3] );
       if( tractor->remolqueGiradoAlTope() )
         sumandoGiroRemolque = true;
     }
 
     if( sumandoMovimientoRodillo ) {
-      animarGradoTractor( TRASLADARRODILLO, velocidadGeneral );
+      animarGradoTractor( TRASLADARRODILLO, velocidades[4] );
       if( tractor->rodilloTrasladadoAlTope() )
         sumandoMovimientoRodillo = false;
     } else {
-      animarGradoTractor( TRASLADARRODILLO, -velocidadGeneral );
+      animarGradoTractor( TRASLADARRODILLO, -velocidades[4] );
       if( tractor->rodilloTrasladadoAlTope() )
         sumandoMovimientoRodillo = true;
     }
@@ -374,18 +383,56 @@ void Escena::animarModeloJerarquico() {
 
 }
 
-void Escena::cambiarVelocidadAnimacion( bool incrementar ) {
+void Escena::comprobarVelocidadesEnRango() {
 
-  if( incrementar )
-    velocidadGeneral += 0.01;
-  else
-    velocidadGeneral -= 0.01;
+  for( int i = 0; i < velocidades.size(); i++ )
+    if( velocidades[i] > maxVelocidad )
+      velocidades[i] = maxVelocidad;
+    else if( velocidades[i] < minVelocidad )
+      velocidades[i] = minVelocidad;
 
-  if( velocidadGeneral < 0.01 )
-    velocidadGeneral = 0.01;
+}
 
-  if( velocidadGeneral > 0.1 )
-    velocidadGeneral = 0.1;
+void Escena::cambiarVelocidadAnimacion( gradosTractor grado, bool incrementar ) {
+
+  float incremento = minVelocidad;
+
+  if( !incrementar )
+    incremento *= -1;
+
+  switch( grado ) {
+
+    case TODOS:
+      for( int i = 0; i < velocidades.size(); i++ )
+        velocidades[i] += incremento;
+      break;
+
+    case ROTARRUEDAS:
+      velocidades[0] += incremento;
+      break;
+
+    case GIRARRUEDASDEL:
+      velocidades[1] += incremento;
+      break;
+
+    case INCLINARREMOLQUE:
+      velocidades[2] += incremento;
+      break;
+
+    case GIRARREMOLQUE:
+      velocidades[3] += incremento;
+      break;
+
+    case TRASLADARRODILLO:
+      velocidades[4] += incremento;
+      break;
+
+    default:
+      std::cout << "Grado de libertad inexistente.\n";
+
+  }
+
+  comprobarVelocidadesEnRango();
 
 }
 
@@ -425,10 +472,12 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           break;
         case 'A':
           modoMenu = ANIMACIONAUTO;
+          gradoSeleccionado = TODOS;
           animacionAutomatica = true;
           break;
         case 'M':
           modoMenu = ANIMACIONMANUAL;
+          gradoSeleccionado = TODOS;
           break;
         default:
           cout << "ERROR - opciones disponibles:\n'O': Cambiar objeto\n"
@@ -794,6 +843,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 
         case 'C':
           modoMenu = COLORLUZ;
+          cout << "Cambiando el color de la luz puntual.\n";
           break;
 
         case 'Q':
@@ -848,18 +898,62 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 
       switch( toupper( tecla ) ) {
 
+        case '0':
+          gradoSeleccionado = TODOS;
+          cout << "Cambiando velocidad general.\n";
+          break;
+
+        case '1':
+          gradoSeleccionado = ROTARRUEDAS;
+          cout << "Cambiando velocidad de la rotación de las ruedas.\n";
+          break;
+
+        case '2':
+          gradoSeleccionado = GIRARRUEDASDEL;
+          cout << "Cambiando velocidad del giro de las ruedas delanteras.\n";
+          break;
+
+        case '3':
+          gradoSeleccionado = INCLINARREMOLQUE;
+          cout << "Cambiando velocidad de la inclinación del remolque.\n";
+          break;
+
+        case '4':
+          gradoSeleccionado = GIRARREMOLQUE;
+          cout << "Cambiando velocidad del giro del remolque.\n";
+          break;
+
+        case '5':
+          gradoSeleccionado = TRASLADARRODILLO;
+          cout << "Cambiando velocidad de la traslación del rodillo.\n";
+          break;
+
         case '+':
-          cambiarVelocidadAnimacion(true);
+          cambiarVelocidadAnimacion( gradoSeleccionado, true );
+          cout << "Aumentando velocidad...\n";
           break;
 
         case '-':
-          cambiarVelocidadAnimacion(false);
+          cambiarVelocidadAnimacion( gradoSeleccionado, false );
+          cout << "Disminuyendo velocidad...\n";
           break;
 
         case 'Q':
           animacionAutomatica = false;
           modoMenu = NADA;
           break;
+
+        default:
+          cout << "ERROR - opciones disponibles:\n"
+               << "'0': Cambiar velocidad general\n"
+               << "'1': Cambiar velocidad de la rotación de las ruedas\n"
+               << "'2': Cambiar velocidad del giro de las ruedas delanteras\n"
+               << "'3': Cambiar velocidad de la inclinación del remolque\n"
+               << "'4': Cambiar velocidad del giro del remolque\n"
+               << "'5': Cambiar velocidad de la traslación del rodillo\n"
+               << "'+': Aumentar grado seleccionado\n"
+               << "'-': Disminuir grado seleccionado\n"
+               << "'Q': Salir\n";
 
       }
 
@@ -870,26 +964,31 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
       switch( toupper( tecla ) ) {
 
         case '0':
+          gradoSeleccionado = TODOS;
+          cout << "Se ha seleccionado\"Animar todo\"\n";
+          break;
+
+        case '1':
           gradoSeleccionado = ROTARRUEDAS;
           cout << "Se ha seleccionado \"Rotar Ruedas\"\n";
           break;
 
-        case '1':
+        case '2':
           gradoSeleccionado = GIRARRUEDASDEL;
           cout << "Se ha seleccionado \"Girar Ruedas Delanteras\"\n";
           break;
 
-        case '2':
+        case '3':
           gradoSeleccionado = INCLINARREMOLQUE;
           cout << "Se ha seleccionado \"Inclinar Remolque\"\n";
           break;
 
-        case '3':
+        case '4':
           gradoSeleccionado = GIRARREMOLQUE;
           cout << "Se ha seleccionado \"Girar Remolque\"\n";
           break;
 
-        case '4':
+        case '5':
           gradoSeleccionado = TRASLADARRODILLO;
           cout << "Se ha seleccionado \"Trasladar Rodillo\"\n";
           break;
@@ -907,8 +1006,12 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           break;
 
         default:
-          cout << "ERROR - opciones disponibles:\n'0': Rotar Ruedas\n"
-               << "'1': Girar Ruedas Delanteras\n"
+          cout << "ERROR - opciones disponibles:\n'0': Animar todo\n"
+               << "'1': Rotar Ruedas\n"
+               << "'2': Girar Ruedas Delanteras\n"
+               << "'3': Inclinar Remolque\n"
+               << "'4': Girar Remolque\n"
+               << "'5': Trasladar rodillo\n"
                << "'+': Aumentar grado seleccionado\n"
                << "'-': Disminuir grado seleccionado\n"
                << "'Q': Salir\n";

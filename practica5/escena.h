@@ -21,7 +21,7 @@
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,TAPAS,ILUMINACION,ANIMACIONAUTO,ANIMACIONMANUAL,COLORLUZ} menu;
 typedef enum {BASICA, SUAVE, PLANA} iluminacion;
 typedef enum {VARALPHA, VARBETA} variacion;
-typedef enum {ROTARRUEDAS, GIRARRUEDASDEL, INCLINARREMOLQUE, GIRARREMOLQUE, TRASLADARRODILLO} gradosTractor;
+typedef enum {TODOS, ROTARRUEDAS, GIRARRUEDASDEL, INCLINARREMOLQUE, GIRARREMOLQUE, TRASLADARRODILLO} gradosTractor;
 
 struct Modelo {
   Malla3D * objeto;
@@ -61,7 +61,10 @@ class Escena
    void animarGradoTractor( gradosTractor gradoSeleccionado, float sentido );
 
    // Función que cambia la velocidad de la animación
-   void cambiarVelocidadAnimacion( bool incrementar );
+   void cambiarVelocidadAnimacion( gradosTractor grado, bool incrementar );
+
+   // Función que comprueba que todas las velocidades están en el rango correcto
+   void comprobarVelocidadesEnRango();
 
  // ** PARÁMETROS DE LA CÁMARA (PROVISIONAL)
 
@@ -102,7 +105,9 @@ class Escena
    variacion variacionLuz;
    bool animacionAutomatica;
    gradosTractor gradoSeleccionado;
-   float velocidadGeneral;
+   std::vector<float> velocidades;
+   const float minVelocidad = 0.01;
+   const float maxVelocidad = 0.1;
    bool sumandoGiroRuedas;
    bool sumandoGiroRemolque;
    bool sumandoInclinacion;

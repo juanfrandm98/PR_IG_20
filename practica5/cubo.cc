@@ -99,16 +99,7 @@ Cubo::Cubo(float lado)
    //  de las agujas del reloj, cuando esa cara se observa desde el exterior del cubo)
 
 }
-/*
-v.push_back( Tupla3f( -lado / 2, -lado / 2, - lado / 2 ) );      // 0 - Abajo-Detrás-Izquierda
-v.push_back( Tupla3f( -lado / 2, -lado / 2, lado / 2 ) );     // 1 - Abajo-Delante-Izquierda
-v.push_back( Tupla3f( lado / 2, -lado / 2, lado / 2 ) );      // 2 - Abajo-Delante-Derecha
-v.push_back( Tupla3f( lado / 2, -lado / 2, -lado / 2 ) );       // 3 - Abajo-Detrás-Derecha
-v.push_back( Tupla3f( -lado / 2, lado / 2, -lado / 2 ) );   // 4 - Arriba-Detrás-Izquierda
-v.push_back( Tupla3f( -lado / 2, lado / 2, lado / 2 ) );  // 5 - Arriba-Delante-Izquierda
-v.push_back( Tupla3f( lado / 2, lado / 2, lado / 2 ) );   // 6 - Arriba-Delante-Derecha
-v.push_back( Tupla3f( lado / 2, lado / 2, -lado / 2 ) );    // 7 - Arriba-Detrás-Derecha
-*/
+
 void Cubo::ubicarTexturaSuperior() {
 
   while( !ct.empty() )
