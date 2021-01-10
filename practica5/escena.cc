@@ -192,8 +192,8 @@ void Escena::DrawMode( visualizacion tipo ) {
         if( tapa_superior and tapa_inferior )
           objetosEscenaConTapas[i].objeto->draw( modoDibujado, tipo );
         else {
-          objetosEscenaConTapas[i].objeto->draw_cuerpo( tipo );
-          objetosEscenaConTapas[i].objeto->draw_tapas( tipo, tapa_superior, tapa_inferior );
+          objetosEscenaConTapas[i].objeto->draw_cuerpo( modoDibujado, tipo );
+          objetosEscenaConTapas[i].objeto->draw_tapas( modoDibujado, tipo, tapa_superior, tapa_inferior );
         }
       glPopMatrix();
     }
@@ -221,7 +221,7 @@ void Escena::DrawMode( visualizacion tipo ) {
   glPushMatrix();
     glTranslatef( 0.0, 0.5, 0.0 );
     glScalef( 1, 0.002, 1 );
-    suelo->draw( modoDibujado, tipo );
+    //suelo->draw( modoDibujado, tipo );
   glPopMatrix();
 
 }

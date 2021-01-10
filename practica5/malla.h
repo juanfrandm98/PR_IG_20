@@ -61,6 +61,7 @@ class Malla3D
 
    void calcular_normales() ; // calcula tabla de normales de vértices (práctica 3)
    GLuint CrearVBO( GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram );
+   void comprobarVBOsBasicos();
 
    std::vector<Tupla3f> v ;   // tabla de coordenadas de vértices (una tupla por vértice, con tres floats)
    std::vector<Tupla3i> f ; // una terna de 3 enteros por cada cara o triángulo
@@ -84,6 +85,8 @@ class Malla3D
    GLuint id_vbo_c_solido = 0;
    GLuint id_vbo_c_chess_impares = 0;
    GLuint id_vbo_c_chess_pares = 0;
+   GLuint id_vbo_nv = 0;
+   GLuint id_vbo_ct = 0;
 
    Material * m = nullptr;  // Material
    Textura * textura = nullptr; // Textura

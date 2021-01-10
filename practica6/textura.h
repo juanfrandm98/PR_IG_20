@@ -15,6 +15,7 @@ public:
   void activar();
   int getWidth();
   int getHeight();
+  std::vector<unsigned char> getData();
 
 };
 

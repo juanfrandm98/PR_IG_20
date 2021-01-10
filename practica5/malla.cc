@@ -30,9 +30,11 @@ void Malla3D::draw_ModoInmediato( visualizacion tipoVisualizacion )
     textura->activar();
     glEnableClientState( GL_TEXTURE_COORD_ARRAY );
     glTexCoordPointer( 2, GL_FLOAT, 0, ct.data() );
+    glDisableClientState( GL_COLOR_ARRAY );
   } else {
     glDisable( GL_TEXTURE_2D );
     glDisable( GL_TEXTURE_COORD_ARRAY );
+    glEnableClientState( GL_COLOR_ARRAY );
   }
 
 
@@ -73,10 +75,7 @@ void Malla3D::draw_ModoInmediato( visualizacion tipoVisualizacion )
 // -----------------------------------------------------------------------------
 // Visualización en modo diferido con 'glDrawElements' (usando VBOs)
 
-void Malla3D::draw_ModoDiferido( visualizacion tipoVisualizacion )
-{
-  // (la primera vez, se deben crear los VBOs y guardar sus identificadores en el objeto)
-  // completar (práctica 1)
+void Malla3D::comprobarVBOsBasicos() {
 
   // Creación de los VBOs (primera vez que se llama a draw_ModoDiferido)
   if( id_vbo_v == 0 )
@@ -106,11 +105,48 @@ void Malla3D::draw_ModoDiferido( visualizacion tipoVisualizacion )
   if( id_vbo_c_chess_pares == 0 )
     id_vbo_c_chess_pares = CrearVBO( GL_ARRAY_BUFFER, 3 * c_chess_par.size() * sizeof(float), c_chess_par.data() );
 
+  if( id_vbo_nv == 0 )
+    id_vbo_nv = CrearVBO( GL_ARRAY_BUFFER, 3 * nv.size() * sizeof(float), nv.data() );
+
+  if( id_vbo_ct == 0 )
+    id_vbo_ct = CrearVBO( GL_ARRAY_BUFFER, 2 * ct.size() * sizeof(float), ct.data() );
+
+
+}
+
+void Malla3D::draw_ModoDiferido( visualizacion tipoVisualizacion )
+{
+  // (la primera vez, se deben crear los VBOs y guardar sus identificadores en el objeto)
+  // completar (práctica 1)
+
+  comprobarVBOsBasicos();
+
   glBindBuffer( GL_ARRAY_BUFFER, id_vbo_v ); // Activar VBO de vértices
   glVertexPointer( 3, GL_FLOAT, 0, 0 ); // Especificar formato y offset (0)
   glBindBuffer( GL_ARRAY_BUFFER, 0 );   // Desactivar VBO de vértices
   glEnableClientState( GL_VERTEX_ARRAY );  // Habilitar tabla de vértices
   glEnableClientState( GL_COLOR_ARRAY );   // Habilitar tabla de colores
+
+  if( glIsEnabled( GL_LIGHTING ) ) {
+    glEnableClientState( GL_NORMAL_ARRAY );
+    glBindBuffer( GL_ARRAY_BUFFER, id_vbo_nv );
+    glNormalPointer( GL_FLOAT, 0, 0 );
+    m->aplicar();
+  } else {
+    glEnableClientState( GL_COLOR_ARRAY );
+  }
+
+  if( textura != nullptr and ct.size() != 0 ) {
+    textura->activar();
+    glEnableClientState( GL_TEXTURE_COORD_ARRAY );
+    glBindBuffer( GL_ARRAY_BUFFER, id_vbo_ct );
+    glTexCoordPointer( 2, GL_FLOAT, 0, 0 );
+    glDisableClientState( GL_COLOR_ARRAY );
+  } else {
+    glDisable( GL_TEXTURE_2D );
+    glDisable( GL_TEXTURE_COORD_ARRAY );
+    glEnableClientState( GL_COLOR_ARRAY );
+  }
 
   switch( tipoVisualizacion ) {
 

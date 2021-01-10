@@ -84,6 +84,8 @@ class Malla3D
    GLuint id_vbo_c_solido = 0;
    GLuint id_vbo_c_chess_impares = 0;
    GLuint id_vbo_c_chess_pares = 0;
+   GLuint id_vbo_nv = 0;
+   GLuint id_vbo_tex = 0;
 
    Material * m = nullptr;  // Material
    Textura * textura = nullptr; // Textura

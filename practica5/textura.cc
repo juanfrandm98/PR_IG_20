@@ -55,3 +55,7 @@ int Textura::getWidth() {
 int Textura::getHeight() {
   return height;
 }
+
+std::vector<unsigned char> Textura::getData() {
+  return data;
+}

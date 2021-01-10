@@ -445,6 +445,12 @@ void Escena::cambiarVelocidadAnimacion( gradosTractor grado, bool incrementar ) 
 //
 // **************************************************************************
 
+void clickRaton( int boton, int estado, int x, int y ) {
+
+
+
+}
+
 void Escena::ratonMovido( int x, int y ) {
 
   if( botonDer == PULSADO ) {
