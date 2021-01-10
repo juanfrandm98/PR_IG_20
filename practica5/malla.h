@@ -54,6 +54,8 @@ class Malla3D
    // Función para asignar una textura
    void setTextura( Textura tex );
 
+   void invertirCaras();
+
    protected:
 
    float calcularYMax();

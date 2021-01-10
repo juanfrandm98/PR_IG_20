@@ -265,6 +265,8 @@ GLuint Malla3D::CrearVBO( GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * punter
 
 void Malla3D::Calcular_normales( std::vector<Tupla3f> normalesCaras ) {
 
+  while( !nv.empty() ) nv.pop_back();
+
   // Inicializamos las normales de cada vértice a 0
   for( int i = 0; i < v.size(); i++ )
     nv.push_back( Tupla3f( 0.0, 0.0, 0.0 ) );
@@ -283,7 +285,8 @@ void Malla3D::Calcular_normales( std::vector<Tupla3f> normalesCaras ) {
 
   // Se normalizan las normales finales
   for( int i = 0; i < nv.size(); i++ )
-    nv[i] = nv[i].normalized();
+    if( nv[i](0) != 0 or nv[i](1) != 0 or nv[i](2) != 0 )
+      nv[i] = nv[i].normalized();
 
 }
 
@@ -385,5 +388,29 @@ float Malla3D::calcularYMax() {
       ymax = v[i](1);
 
   return ymax;
+
+}
+
+void Malla3D::invertirCaras() {
+
+  for( int i = 0; i < f.size(); i++ ) {
+    int temp = f[i](0);
+    f[i](0) = f[i](1);
+    f[i](1) = temp;
+  }
+
+  for( int i = 0; i < f_chess_par.size(); i++ ) {
+    int temp = f_chess_par[i](0);
+    f_chess_par[i](0) = f_chess_par[i](1);
+    f_chess_par[i](1) = temp;
+  }
+
+  for( int i = 0; i < f_chess_impar.size(); i++ ) {
+    int temp = f_chess_impar[i](0);
+    f_chess_impar[i](0) = f_chess_impar[i](1);
+    f_chess_impar[i](1) = temp;
+  }
+
+  Calcular_normales( CalcularNormalesCaras() );
 
 }

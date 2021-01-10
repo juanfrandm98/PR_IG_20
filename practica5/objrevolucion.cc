@@ -359,7 +359,7 @@ void ObjRevolucion::draw_cuerpo_diferido( visualizacion tipoVisualizacion )
   } else {
     glEnableClientState( GL_COLOR_ARRAY );
   }
-
+/*
   if( textura != nullptr and ct.size() != 0 ) {
     textura->activar();
     glEnableClientState( GL_TEXTURE_COORD_ARRAY );
@@ -371,7 +371,7 @@ void ObjRevolucion::draw_cuerpo_diferido( visualizacion tipoVisualizacion )
     glDisable( GL_TEXTURE_COORD_ARRAY );
     glEnableClientState( GL_COLOR_ARRAY );
   }
-
+*/
   switch( tipoVisualizacion ) {
 
     case POINTS:
