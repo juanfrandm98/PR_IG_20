@@ -75,10 +75,7 @@ void Malla3D::draw_ModoInmediato( visualizacion tipoVisualizacion )
 // -----------------------------------------------------------------------------
 // Visualización en modo diferido con 'glDrawElements' (usando VBOs)
 
-void Malla3D::draw_ModoDiferido( visualizacion tipoVisualizacion )
-{
-  // (la primera vez, se deben crear los VBOs y guardar sus identificadores en el objeto)
-  // completar (práctica 1)
+void Malla3D::comprobarVBOsBasicos() {
 
   // Creación de los VBOs (primera vez que se llama a draw_ModoDiferido)
   if( id_vbo_v == 0 )
@@ -111,8 +108,18 @@ void Malla3D::draw_ModoDiferido( visualizacion tipoVisualizacion )
   if( id_vbo_nv == 0 )
     id_vbo_nv = CrearVBO( GL_ARRAY_BUFFER, 3 * nv.size() * sizeof(float), nv.data() );
 
-  if( id_vbo_tex == 0 )
-    id_vbo_tex = CrearVBO( GL_ARRAY_BUFFER, textura.getData().size() * sizeof(unsigned char), textura.getData().data() );
+  if( id_vbo_ct == 0 )
+    id_vbo_ct = CrearVBO( GL_ARRAY_BUFFER, 2 * ct.size() * sizeof(float), ct.data() );
+
+
+}
+
+void Malla3D::draw_ModoDiferido( visualizacion tipoVisualizacion )
+{
+  // (la primera vez, se deben crear los VBOs y guardar sus identificadores en el objeto)
+  // completar (práctica 1)
+
+  comprobarVBOsBasicos();
 
   glBindBuffer( GL_ARRAY_BUFFER, id_vbo_v ); // Activar VBO de vértices
   glVertexPointer( 3, GL_FLOAT, 0, 0 ); // Especificar formato y offset (0)
@@ -132,7 +139,7 @@ void Malla3D::draw_ModoDiferido( visualizacion tipoVisualizacion )
   if( textura != nullptr and ct.size() != 0 ) {
     textura->activar();
     glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-    glBindBuffer( GL_ARRAY_BUFFER, id_vbo_tex );
+    glBindBuffer( GL_ARRAY_BUFFER, id_vbo_ct );
     glTexCoordPointer( 2, GL_FLOAT, 0, 0 );
     glDisableClientState( GL_COLOR_ARRAY );
   } else {
@@ -258,6 +265,8 @@ GLuint Malla3D::CrearVBO( GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * punter
 
 void Malla3D::Calcular_normales( std::vector<Tupla3f> normalesCaras ) {
 
+  while( !nv.empty() ) nv.pop_back();
+
   // Inicializamos las normales de cada vértice a 0
   for( int i = 0; i < v.size(); i++ )
     nv.push_back( Tupla3f( 0.0, 0.0, 0.0 ) );
@@ -276,7 +285,8 @@ void Malla3D::Calcular_normales( std::vector<Tupla3f> normalesCaras ) {
 
   // Se normalizan las normales finales
   for( int i = 0; i < nv.size(); i++ )
-    nv[i] = nv[i].normalized();
+    if( nv[i](0) != 0 or nv[i](1) != 0 or nv[i](2) != 0 )
+      nv[i] = nv[i].normalized();
 
 }
 
@@ -378,5 +388,29 @@ float Malla3D::calcularYMax() {
       ymax = v[i](1);
 
   return ymax;
+
+}
+
+void Malla3D::invertirCaras() {
+
+  for( int i = 0; i < f.size(); i++ ) {
+    int temp = f[i](0);
+    f[i](0) = f[i](1);
+    f[i](1) = temp;
+  }
+
+  for( int i = 0; i < f_chess_par.size(); i++ ) {
+    int temp = f_chess_par[i](0);
+    f_chess_par[i](0) = f_chess_par[i](1);
+    f_chess_par[i](1) = temp;
+  }
+
+  for( int i = 0; i < f_chess_impar.size(); i++ ) {
+    int temp = f_chess_impar[i](0);
+    f_chess_impar[i](0) = f_chess_impar[i](1);
+    f_chess_impar[i](1) = temp;
+  }
+
+  Calcular_normales( CalcularNormalesCaras() );
 
 }

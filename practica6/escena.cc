@@ -37,9 +37,11 @@ Escena::Escena()
     Textura caja = Textura( "./images/text-madera.jpg" );
     Textura grass = Textura( "./images/hierba.jpeg" );
     Textura lata = Textura( "./images/text-lata-1.jpg" );
+    Textura skybox = Textura( "./images/skybox.jpeg" );
 
     // Creación de colores
     Tupla3f colorBlanco = Tupla3f( 1, 1, 1 );
+    Tupla3f colorAzul = Tupla3f( 0, 0, 1 );
 
     // Creación de las luces
     // Luz direccional inicial
@@ -72,16 +74,28 @@ Escena::Escena()
     suelo->ubicarTexturaSuperior();
 
     // ObjetoRevolución=objetosEscenaConTapas(6)
-    ModeloTapas mt6;
-    mt6.objeto = new ObjRevolucion( "./plys/lata-pcue", 20, true, true );
-    mt6.dibujar = true;
-    mt6.posicion = Tupla3f( 0.0, 0.0, 80.0 );
-    mt6.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
-    mt6.escalado = Tupla3f( 30.0, 30.0, 30.0 );
-    mt6.objeto->setMaterial( yeso );
-    mt6.objeto->setColorSolido( colorBlanco );
-    mt6.objeto->setTextura( lata );
-    objetosEscenaConTapas.push_back( mt6 );
+    ModeloTapas mt0;
+    mt0.objeto = new ObjRevolucion( "./plys/lata-pcue", 20, true, true );
+    mt0.dibujar = true;
+    mt0.posicion = Tupla3f( 0.0, 0.0, 80.0 );
+    mt0.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt0.escalado = Tupla3f( 30.0, 30.0, 30.0 );
+    mt0.objeto->setMaterial( yeso );
+    mt0.objeto->setColorSolido( colorBlanco );
+    mt0.objeto->setTextura( lata );
+    objetosEscenaConTapas.push_back( mt0 );
+
+    ModeloTapas mt1;
+    mt1.objeto = new Esfera( 20, 20, 300 );
+    mt1.dibujar = true;
+    mt1.posicion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    mt1.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    mt1.objeto->setMaterial( yeso );
+    mt1.objeto->setColorSolido( colorAzul );
+    mt1.objeto->setTextura( skybox );
+    mt1.objeto->invertirCaras();
+    objetosEscenaConTapas.push_back( mt1 );
 
     // Pino1=modelosJerarquicos(0)
     Jerarquico j1;
@@ -113,6 +127,23 @@ Escena::Escena()
     // Tractor = modelosJerarquicos(0)
     tractor = new TractorRemolque();
 
+    // Cámaras
+    Tupla3f eye = Tupla3f( -150, 100, 150 );
+    Tupla3f at  = Tupla3f( 0, 0, 0 );
+    Tupla3f up  = Tupla3f( 0, 1, 0 );
+
+    Camara c0( eye, at, up, PERSPECTIVA, 5, 5, 2, 2, 50, 2000 );
+    camaras.push_back(c0);
+
+    Camara c1( eye, at, up, ORTOGONAL, 5, 5, 2, 2, 50, 2000 );
+    camaras.push_back(c1);
+
+    eye = Tupla3f( 150, 100, 150 );
+    Camara c2( eye, at, up, PERSPECTIVA, 5, 5, 2, 2, 50, 2000 );
+    camaras.push_back(c2);
+
+    camaraActiva = 0;
+
 
     // Inicialización de los flags
     puntos = false;
@@ -143,8 +174,8 @@ Escena::Escena()
     sumandoMovimientoRodillo = true;
     texturas = false;
 
-    botonIzq = SUELTO;
-    botonDer = SUELTO;
+    //botonIzq = SUELTO;
+    //botonDer = SUELTO;
 
 }
 
@@ -165,8 +196,27 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 	Width  = UI_window_width/10;
 	Height = UI_window_height/10;
 
-  change_projection( float(UI_window_width)/float(UI_window_height) );
+  ajustarCamaras( Width, Height );
+
+  change_projection();
 	glViewport( 0, 0, UI_window_width, UI_window_height );
+}
+
+void Escena::ajustarCamaras( float width, float height ) {
+
+  for( int i = 0; i < camaras.size(); i++ ) {
+    /*
+    camaras[i].setLeft( width / 2 );
+    camaras[i].setRight( width / 2 );
+    camaras[i].setTop( height / 2 );
+    camaras[i].setBottom( height / 2 );
+    */
+    camaras[i].setLeft( -width );
+    camaras[i].setRight( width );
+    camaras[i].setTop( height );
+    camaras[i].setBottom( -height );
+  }
+
 }
 
 void Escena::DrawMode( visualizacion tipo ) {
@@ -195,8 +245,8 @@ void Escena::DrawMode( visualizacion tipo ) {
         if( tapa_superior and tapa_inferior )
           objetosEscenaConTapas[i].objeto->draw( modoDibujado, tipo );
         else {
-          objetosEscenaConTapas[i].objeto->draw_cuerpo( tipo );
-          objetosEscenaConTapas[i].objeto->draw_tapas( tipo, tapa_superior, tapa_inferior );
+          objetosEscenaConTapas[i].objeto->draw_cuerpo( modoDibujado, tipo );
+          objetosEscenaConTapas[i].objeto->draw_tapas( modoDibujado, tipo, tapa_superior, tapa_inferior );
         }
       glPopMatrix();
     }
@@ -450,13 +500,27 @@ void clickRaton( int boton, int estado, int x, int y ) {
 
 
 }
-
+/*
 void Escena::ratonMovido( int x, int y ) {
 
   if( botonDer == PULSADO ) {
     camaras[camaraActiva].girar( x - xant, y - yant );
     xant = x;
     yant = y;
+  }
+
+}
+*/
+
+void Escena::cambiarCamara( int numCamara ) {
+
+  if( numCamara >= 0 and numCamara < camaras.size() ) {
+    camaraActiva = numCamara;
+    std::cout << "Cámara #" << camaraActiva << " seleccionada.\n";
+    change_projection();
+    change_observer();
+  } else {
+    std::cout << "ERROR - intentando cambiar a cámara no existente.\n";
   }
 
 }
@@ -504,11 +568,14 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           modoMenu = ANIMACIONMANUAL;
           gradoSeleccionado = TODOS;
           break;
+        case 'C':
+          modoMenu = CAMARAS;
+          break;
         default:
           cout << "ERROR - opciones disponibles:\n'O': Cambiar objeto\n"
                << "'V': Cambiar modo de visualización\n'D': Cambiar modo de dibujado\n"
                << "'T': Cambiar visualización de tapas\n'A': Animación Automática\n"
-               << "'M': Animación Manual\nQ': Salir\n";
+               << "'M': Animación Manual\n'C': Cámaras\n'Q': Salir\n";
           break;
       }
 
@@ -1045,6 +1112,34 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 
       break;
 
+    case CAMARAS:
+
+      switch( toupper( tecla ) ) {
+
+        case '0':
+          cambiarCamara(0);
+          break;
+
+        case '1':
+          cambiarCamara(1);
+          break;
+
+        case '2':
+          cambiarCamara(2);
+          break;
+
+        case 'Q':
+          modoMenu = NADA;
+          break;
+
+        default:
+          cout << "ERROR - opciones disponibles:\n'0': Cámara 0\n"
+               << "'1': Cámara 1\n'Q': Salir\n";
+
+      }
+
+      break;
+
     default:
       cout << "ERROR EN EL MENU\n";
       modoMenu = NADA;
@@ -1062,6 +1157,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
       case ANIMACIONAUTO: cout << "\nMenú de la animación automática.\n"; break;
       case ANIMACIONMANUAL: cout << "\nMenú de la animación manual.\n"; break;
       case COLORLUZ: cout << "\nMenú de cambio de color de la luz puntual (3).\n"; break;
+      case CAMARAS: cout << "\nMenú de selección de cámara.\n"; break;
     }
   }
 
@@ -1103,12 +1199,9 @@ void Escena::teclaEspecial( int Tecla1, int x, int y )
 //
 //***************************************************************************
 
-void Escena::change_projection( const float ratio_xy )
+void Escena::change_projection()
 {
-   glMatrixMode( GL_PROJECTION );
-   glLoadIdentity();
-   const float wx = float(Height)*ratio_xy ;
-   glFrustum( -wx, wx, -Height, Height, Front_plane, Back_plane );
+   camaras[camaraActiva].setProyeccion();
 }
 //**************************************************************************
 // Funcion que se invoca cuando cambia el tamaño de la ventana
@@ -1118,7 +1211,10 @@ void Escena::redimensionar( int newWidth, int newHeight )
 {
    Width  = newWidth/10;
    Height = newHeight/10;
-   change_projection( float(newHeight)/float(newWidth) );
+
+   ajustarCamaras( Width, Height );
+
+   change_projection();
    glViewport( 0, 0, newWidth, newHeight );
 }
 
@@ -1129,7 +1225,5 @@ void Escena::redimensionar( int newWidth, int newHeight )
 void Escena::change_observer()
 {
    // posicion del observador
-   glMatrixMode(GL_MODELVIEW);
-   glLoadIdentity();
    camaras[camaraActiva].setObservador();
 }
