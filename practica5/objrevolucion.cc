@@ -203,7 +203,7 @@ void ObjRevolucion::comprobarVBOsRevolucion() {
     for( int i = 0; i < final_cuerpo; i++ )
       cuerpo.push_back( f[i] );
 
-    id_vbo_f_cuerpo = CrearVBO( GL_ARRAY_BUFFER, 3 * cuerpo.size() * sizeof(float), cuerpo.data() );
+    id_vbo_f_cuerpo = CrearVBO( GL_ELEMENT_ARRAY_BUFFER, 3 * cuerpo.size() * sizeof(int), cuerpo.data() );
   }
 
   if( id_vbo_f_cuerpo_pares == 0 ) {
@@ -211,7 +211,7 @@ void ObjRevolucion::comprobarVBOsRevolucion() {
     for( int i = 0; i < final_cuerpo_pares; i++ )
       cuerpo_pares.push_back( f_chess_par[i] );
 
-    id_vbo_f_cuerpo_pares = CrearVBO( GL_ARRAY_BUFFER, 3 * cuerpo_pares.size() * sizeof(float), cuerpo_pares.data() );
+    id_vbo_f_cuerpo_pares = CrearVBO( GL_ELEMENT_ARRAY_BUFFER, 3 * cuerpo_pares.size() * sizeof(int), cuerpo_pares.data() );
   }
 
   if( id_vbo_f_cuerpo_impares == 0 ) {
@@ -219,7 +219,7 @@ void ObjRevolucion::comprobarVBOsRevolucion() {
     for( int i = 0; i < final_cuerpo_impares; i++ )
       cuerpo_impares.push_back( f_chess_impar[i] );
 
-    id_vbo_f_cuerpo_impares = CrearVBO( GL_ARRAY_BUFFER, 3 * cuerpo_impares.size() * sizeof(float), cuerpo_impares.data() );
+    id_vbo_f_cuerpo_impares = CrearVBO( GL_ELEMENT_ARRAY_BUFFER, 3 * cuerpo_impares.size() * sizeof(int), cuerpo_impares.data() );
   }
 
   if( tiene_tapa_inf ) {
@@ -229,7 +229,7 @@ void ObjRevolucion::comprobarVBOsRevolucion() {
       for( int i = final_cuerpo; i < final_tapa_inf; i++ )
         tapainf.push_back( f[i] );
 
-      id_vbo_f_tapa_inf = CrearVBO( GL_ARRAY_BUFFER, 3 * tapainf.size() * sizeof(float), tapainf.data() );
+      id_vbo_f_tapa_inf = CrearVBO( GL_ELEMENT_ARRAY_BUFFER, 3 * tapainf.size() * sizeof(int), tapainf.data() );
     }
 
     if( id_vbo_f_tapa_inf_pares == 0 ) {
@@ -237,7 +237,7 @@ void ObjRevolucion::comprobarVBOsRevolucion() {
       for( int i = final_cuerpo_pares; i < final_tapa_inf_pares; i++ )
         tapainf_pares.push_back( f_chess_par[i] );
 
-      id_vbo_f_tapa_inf_pares = CrearVBO( GL_ARRAY_BUFFER, 3 * tapainf_pares.size() * sizeof(float), tapainf_pares.data() );
+      id_vbo_f_tapa_inf_pares = CrearVBO( GL_ELEMENT_ARRAY_BUFFER, 3 * tapainf_pares.size() * sizeof(int), tapainf_pares.data() );
     }
 
     if( id_vbo_f_tapa_inf_impares == 0 ) {
@@ -245,7 +245,7 @@ void ObjRevolucion::comprobarVBOsRevolucion() {
       for( int i = final_cuerpo_impares; i < final_tapa_inf_impares; i++ )
         tapainf_impares.push_back( f_chess_par[i] );
 
-      id_vbo_f_tapa_inf_impares = CrearVBO( GL_ARRAY_BUFFER, 3 * tapainf_impares.size() * sizeof(float), tapainf_impares.data() );
+      id_vbo_f_tapa_inf_impares = CrearVBO( GL_ELEMENT_ARRAY_BUFFER, 3 * tapainf_impares.size() * sizeof(int), tapainf_impares.data() );
     }
   }
 
@@ -256,7 +256,7 @@ void ObjRevolucion::comprobarVBOsRevolucion() {
       for( int i = final_tapa_inf; i < final_tapa_sup; i++ )
         tapasup.push_back( f[i] );
 
-      id_vbo_f_tapa_sup = CrearVBO( GL_ARRAY_BUFFER, 3 * tapasup.size() * sizeof(float), tapasup.data() );
+      id_vbo_f_tapa_sup = CrearVBO( GL_ELEMENT_ARRAY_BUFFER, 3 * tapasup.size() * sizeof(int), tapasup.data() );
     }
 
     if( id_vbo_f_tapa_sup_pares == 0 ) {
@@ -264,7 +264,7 @@ void ObjRevolucion::comprobarVBOsRevolucion() {
       for( int i = final_tapa_sup_pares; i < final_tapa_sup_pares; i++ )
         tapasup_pares.push_back( f_chess_par[i] );
 
-      id_vbo_f_tapa_sup_pares = CrearVBO( GL_ARRAY_BUFFER, 3 * tapasup_pares.size() * sizeof(float), tapasup_pares.data() );
+      id_vbo_f_tapa_sup_pares = CrearVBO( GL_ELEMENT_ARRAY_BUFFER, 3 * tapasup_pares.size() * sizeof(int), tapasup_pares.data() );
     }
 
     if( id_vbo_f_tapa_sup_impares == 0 ) {
@@ -272,7 +272,7 @@ void ObjRevolucion::comprobarVBOsRevolucion() {
       for( int i = final_tapa_sup_impares; i < final_tapa_sup_impares; i++ )
         tapasup_impares.push_back( f_chess_impar[i] );
 
-      id_vbo_f_tapa_sup_impares = CrearVBO( GL_ARRAY_BUFFER, 3 * tapasup_impares.size() * sizeof(float), tapasup_impares.data() );
+      id_vbo_f_tapa_sup_impares = CrearVBO( GL_ELEMENT_ARRAY_BUFFER, 3 * tapasup_impares.size() * sizeof(int), tapasup_impares.data() );
     }
   }
 
@@ -359,7 +359,7 @@ void ObjRevolucion::draw_cuerpo_diferido( visualizacion tipoVisualizacion )
   } else {
     glEnableClientState( GL_COLOR_ARRAY );
   }
-/*
+
   if( textura != nullptr and ct.size() != 0 ) {
     textura->activar();
     glEnableClientState( GL_TEXTURE_COORD_ARRAY );
@@ -371,7 +371,7 @@ void ObjRevolucion::draw_cuerpo_diferido( visualizacion tipoVisualizacion )
     glDisable( GL_TEXTURE_COORD_ARRAY );
     glEnableClientState( GL_COLOR_ARRAY );
   }
-*/
+
   switch( tipoVisualizacion ) {
 
     case POINTS:
@@ -382,9 +382,9 @@ void ObjRevolucion::draw_cuerpo_diferido( visualizacion tipoVisualizacion )
       glPointSize( 7.5 );
       glPolygonMode( GL_FRONT_AND_BACK, GL_POINT );
 
-      glBindBuffer( GL_ARRAY_BUFFER, id_vbo_f_cuerpo );
+      glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f_cuerpo );
       glDrawElements( GL_TRIANGLES, 3 * final_cuerpo, GL_UNSIGNED_INT, 0 );
-      glBindBuffer( GL_ARRAY_BUFFER, 0 );
+      glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
       break;
 
     case LINES:
@@ -394,9 +394,9 @@ void ObjRevolucion::draw_cuerpo_diferido( visualizacion tipoVisualizacion )
 
       glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
-      glBindBuffer( GL_ARRAY_BUFFER, id_vbo_f_cuerpo );
+      glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f_cuerpo );
       glDrawElements( GL_TRIANGLES, 3 * final_cuerpo, GL_UNSIGNED_INT, 0 );
-      glBindBuffer( GL_ARRAY_BUFFER, 0 );
+      glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
       break;
 
     case SOLID:
@@ -406,9 +406,9 @@ void ObjRevolucion::draw_cuerpo_diferido( visualizacion tipoVisualizacion )
 
       glPolygonMode( GL_FRONT, GL_FILL );
 
-      glBindBuffer( GL_ARRAY_BUFFER, id_vbo_f_cuerpo );
+      glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f_cuerpo );
       glDrawElements( GL_TRIANGLES, 3 * final_cuerpo, GL_UNSIGNED_INT, 0 );
-      glBindBuffer( GL_ARRAY_BUFFER, 0 );
+      glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
       break;
 
     case CHESS:
@@ -596,15 +596,15 @@ void ObjRevolucion::draw_tapas_diferido( visualizacion tipoVisualizacion, bool s
       glPolygonMode( GL_FRONT_AND_BACK, GL_POINT );
 
       if( inferior and tiene_tapa_inf ) {
-        glBindBuffer( GL_ARRAY_BUFFER, id_vbo_f_tapa_inf );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f_tapa_inf );
         glDrawElements( GL_TRIANGLES, 3 * ( final_tapa_inf - final_cuerpo ), GL_UNSIGNED_INT, 0 );
-        glBindBuffer( GL_ARRAY_BUFFER, 0 );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
       }
 
       if( superior and tiene_tapa_sup ) {
-        glBindBuffer( GL_ARRAY_BUFFER, id_vbo_f_tapa_sup );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f_tapa_sup );
         glDrawElements( GL_TRIANGLES, 3 * ( final_tapa_sup - final_tapa_inf ), GL_UNSIGNED_INT, 0 );
-        glBindBuffer( GL_ARRAY_BUFFER, 0 );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
       }
       break;
 
@@ -616,15 +616,15 @@ void ObjRevolucion::draw_tapas_diferido( visualizacion tipoVisualizacion, bool s
       glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
       if( inferior and tiene_tapa_inf ) {
-        glBindBuffer( GL_ARRAY_BUFFER, id_vbo_f_tapa_inf );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f_tapa_inf );
         glDrawElements( GL_TRIANGLES, 3 * ( final_tapa_inf - final_cuerpo ), GL_UNSIGNED_INT, 0 );
-        glBindBuffer( GL_ARRAY_BUFFER, 0 );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
       }
 
       if( superior and tiene_tapa_sup ) {
-        glBindBuffer( GL_ARRAY_BUFFER, id_vbo_f_tapa_sup );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f_tapa_sup );
         glDrawElements( GL_TRIANGLES, 3 * ( final_tapa_sup - final_tapa_inf ), GL_UNSIGNED_INT, 0 );
-        glBindBuffer( GL_ARRAY_BUFFER, 0 );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
       }
       break;
 
@@ -636,15 +636,15 @@ void ObjRevolucion::draw_tapas_diferido( visualizacion tipoVisualizacion, bool s
       glPolygonMode( GL_FRONT, GL_FILL );
 
       if( inferior and tiene_tapa_inf ) {
-        glBindBuffer( GL_ARRAY_BUFFER, id_vbo_f_tapa_inf );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f_tapa_inf );
         glDrawElements( GL_TRIANGLES, 3 * ( final_tapa_inf - final_cuerpo ), GL_UNSIGNED_INT, 0 );
-        glBindBuffer( GL_ARRAY_BUFFER, 0 );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
       }
 
       if( superior and tiene_tapa_sup ) {
-        glBindBuffer( GL_ARRAY_BUFFER, id_vbo_f_tapa_sup );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f_tapa_sup );
         glDrawElements( GL_TRIANGLES, 3 * ( final_tapa_sup - final_tapa_inf ), GL_UNSIGNED_INT, 0 );
-        glBindBuffer( GL_ARRAY_BUFFER, 0 );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
       }
       break;
 
@@ -656,15 +656,15 @@ void ObjRevolucion::draw_tapas_diferido( visualizacion tipoVisualizacion, bool s
       glPolygonMode( GL_FRONT, GL_FILL );
 
       if( inferior and tiene_tapa_inf ) {
-        glBindBuffer( GL_ARRAY_BUFFER, id_vbo_f_tapa_inf_impares );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f_tapa_inf_impares );
         glDrawElements( GL_TRIANGLES, 3 * ( final_tapa_inf_impares - final_cuerpo_impares ), GL_UNSIGNED_INT, 0 );
-        glBindBuffer( GL_ARRAY_BUFFER, 0 );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
       }
 
       if( superior and tiene_tapa_sup ) {
-        glBindBuffer( GL_ARRAY_BUFFER, id_vbo_f_tapa_sup_impares );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f_tapa_sup_impares );
         glDrawElements( GL_TRIANGLES, 3 * ( final_tapa_sup_impares - final_tapa_inf_impares ), GL_UNSIGNED_INT, 0 );
-        glBindBuffer( GL_ARRAY_BUFFER, 0 );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
       }
 
       glBindBuffer( GL_ARRAY_BUFFER, id_vbo_c_chess_pares );
@@ -674,15 +674,15 @@ void ObjRevolucion::draw_tapas_diferido( visualizacion tipoVisualizacion, bool s
       glPolygonMode( GL_FRONT, GL_FILL );
 
       if( inferior and tiene_tapa_inf ) {
-        glBindBuffer( GL_ARRAY_BUFFER, id_vbo_f_tapa_inf_pares );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f_tapa_inf_pares );
         glDrawElements( GL_TRIANGLES, 3 * ( final_tapa_inf_pares - final_cuerpo_pares ), GL_UNSIGNED_INT, 0 );
-        glBindBuffer( GL_ARRAY_BUFFER, 0 );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
       }
 
       if( superior and tiene_tapa_sup ) {
-        glBindBuffer( GL_ARRAY_BUFFER, id_vbo_f_tapa_sup_impares );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, id_vbo_f_tapa_sup_impares );
         glDrawElements( GL_TRIANGLES, 3 * ( final_tapa_sup_pares - final_tapa_inf_pares ), GL_UNSIGNED_INT, 0 );
-        glBindBuffer( GL_ARRAY_BUFFER, 0 );
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
       }
       break;
 
