@@ -495,22 +495,22 @@ void Escena::cambiarVelocidadAnimacion( gradosTractor grado, bool incrementar ) 
 //
 // **************************************************************************
 
-void clickRaton( int boton, int estado, int x, int y ) {
+void Escena::clickRaton( int boton, int estado, int x, int y ) {
 
 
 
 }
-/*
-void Escena::ratonMovido( int x, int y ) {
 
+void Escena::ratonMovido( int x, int y ) {
+/*
   if( botonDer == PULSADO ) {
     camaras[camaraActiva].girar( x - xant, y - yant );
     xant = x;
     yant = y;
   }
-
-}
 */
+}
+
 
 void Escena::cambiarCamara( int numCamara ) {
 
@@ -1170,26 +1170,26 @@ void Escena::teclaEspecial( int Tecla1, int x, int y )
    switch ( Tecla1 )
    {
 	   case GLUT_KEY_LEFT:
-         Observer_angle_y-- ;
+         camaras[camaraActiva].rotarYExaminar(-0.0174533);
          break;
 	   case GLUT_KEY_RIGHT:
-         Observer_angle_y++ ;
+         camaras[camaraActiva].rotarYExaminar(0.0174533);
          break;
 	   case GLUT_KEY_UP:
-         Observer_angle_x-- ;
+         camaras[camaraActiva].rotarXExaminar(-0.0174533);;
          break;
 	   case GLUT_KEY_DOWN:
-         Observer_angle_x++ ;
+         camaras[camaraActiva].rotarXExaminar(0.0174533);;
          break;
-	   case GLUT_KEY_PAGE_UP:
-         Observer_distance *=1.2 ;
+	   case GLUT_KEY_F1:
+         camaras[camaraActiva].zoom(0.8);
          break;
-	   case GLUT_KEY_PAGE_DOWN:
-         Observer_distance /= 1.2 ;
+	   case GLUT_KEY_F2:
+         camaras[camaraActiva].zoom(1.2);
          break;
 	}
 
-	//std::cout << Observer_distance << std::endl;
+	change_projection();
 }
 
 //**************************************************************************

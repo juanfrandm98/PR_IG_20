@@ -144,5 +144,9 @@ class Escena
   // Función que anima el tractor de forma automática
   void animarModeloJerarquico();
 
+  // Función para mover las cámaras con el ratón
+  void clickRaton( int boton, int estado, int x, int y );
+  void ratonMovido( int x, int y );
+
 };
 #endif

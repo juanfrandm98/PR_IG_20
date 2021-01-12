@@ -36,13 +36,43 @@ void Camara::setBottom( float nbottom ) {
 
 void Camara::rotarXExaminar( float angle ) {
 
+  Tupla3f nuevo_eye = eye - at;
+
+  float z = nuevo_eye(2);
+  float y = nuevo_eye(1);
+
+  nuevo_eye(2) = z * cos(angle) + y * sin(angle);
+  nuevo_eye(1) = -z * sin(angle) + y * cos(angle);
+
+  eye = nuevo_eye + at;
+
 }
 
 void Camara::rotarYExaminar( float angle ) {
 
+  Tupla3f nuevo_eye = eye - at;
+
+  float x = nuevo_eye(0);
+  float z = nuevo_eye(2);
+
+  nuevo_eye(0) = x * cos(angle) + z * sin(angle);
+  nuevo_eye(2) = -x * sin(angle) + z * cos(angle);
+
+  eye = nuevo_eye + at;
+
 }
 
 void Camara::rotarZExaminar( float angle ) {
+
+  Tupla3f nuevo_eye = eye - at;
+
+  float x = nuevo_eye(0);
+  float y = nuevo_eye(1);
+
+  nuevo_eye(0) = x * cos(angle) + y * sin(angle);
+  nuevo_eye(1) = -x * sin(angle) + y * cos(angle);
+
+  eye = nuevo_eye + at;
 
 }
 

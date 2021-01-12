@@ -103,11 +103,11 @@ void funcion_idle() {
 //***************************************************************************
 // Función que gestiona el click del ratón
 //***************************************************************************
-/*
+
 void clickRaton( int boton, int estado, int x, int y ) {
 
-	//if( escena != 0 )
-  //  escena->clickRaton( boton, estado, x, y );
+	if( escena != 0 )
+    escena->clickRaton( boton, estado, x, y );
 
 }
 
@@ -117,11 +117,11 @@ void clickRaton( int boton, int estado, int x, int y ) {
 
 void ratonMovido( int x, int y ) {
 
-	//if( escena != 0 )
-  //  escena->ratonMovido( x, y );
+	if( escena != 0 )
+    escena->ratonMovido( x, y );
 
 }
-*/
+
 //***************************************************************************
 // Programa principal
 //
@@ -176,10 +176,10 @@ int main( int argc, char **argv )
 	 glutIdleFunc( funcion_idle );
 
 	 // asignación de la función para utilizar el click del ratón
-	 //glutMouseFunc( clickRaton );
+	 glutMouseFunc( clickRaton );
 
 	 // asignación de la función para utilizar el movimiento del ratón
-	 //glutMotionFunc( ratonMovido );
+	 glutMotionFunc( ratonMovido );
 
    // inicialización de librería GLEW (solo en Linux)
    #ifdef LINUX

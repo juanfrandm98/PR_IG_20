@@ -270,7 +270,7 @@ void ObjRevolucion::comprobarVBOsRevolucion() {
     if( id_vbo_f_tapa_sup_impares == 0 ) {
       std::vector<Tupla3i> tapasup_impares;
       for( int i = final_tapa_sup_impares; i < final_tapa_sup_impares; i++ )
-        tapasup_impares.push_back( f_chess_par[i] );
+        tapasup_impares.push_back( f_chess_impar[i] );
 
       id_vbo_f_tapa_sup_impares = CrearVBO( GL_ARRAY_BUFFER, 3 * tapasup_impares.size() * sizeof(float), tapasup_impares.data() );
     }
