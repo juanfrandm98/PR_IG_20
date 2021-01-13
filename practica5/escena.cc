@@ -15,7 +15,7 @@ Escena::Escena()
     Front_plane       = 50.0;
     Back_plane        = 2000.0;
     Observer_distance = 4*Front_plane;
-    Observer_angle_x  = 0.0 ;
+    Observer_angle_x  = 30.0 ;
     Observer_angle_y  = 0.0 ;
 
     ejes.changeAxisSize( 5000 );
@@ -38,10 +38,12 @@ Escena::Escena()
     Textura grass = Textura( "./images/hierba.jpeg" );
     Textura lata = Textura( "./images/text-lata-1.jpg" );
     Textura skybox = Textura( "./images/skybox.jpeg" );
+    Textura heno = Textura( "./images/heno.jpeg" );
 
     // Creación de colores
     Tupla3f colorBlanco = Tupla3f( 1, 1, 1 );
     Tupla3f colorAzul = Tupla3f( 0, 0, 1 );
+    Tupla3f colorAmarilloOscuro = Tupla3f( 229/255, 190/255, 1/255 );
 
     // Creación de las luces
     // Luz direccional inicial
@@ -67,13 +69,49 @@ Escena::Escena()
     objeto0.objeto->setColorSolido( Tupla3f( 1, 1, 1 ) );
     objetosEscena.push_back( objeto0 );
 
+    // Valla1=objetosEscena(1)
+    Modelo valla1;
+    valla1.objeto = new Cubo( 10 );
+    valla1.dibujar = true;
+    valla1.posicion = Tupla3f( -120.0, 15.0, -120.0 );
+    valla1.orientacion = Tupla3f( 0.0, 60.0, 0.0 );
+    valla1.escalado = Tupla3f( 25.0, 3.0, 0.5 );
+    valla1.objeto->setMaterial( oro );
+    valla1.objeto->setTextura( caja );
+    valla1.objeto->setColorSolido( colorAmarilloOscuro );
+    objetosEscena.push_back( valla1 );
+
+    // Valla2=objetosEscena(2)
+    Modelo valla2;
+    valla2.objeto = new Cubo( 10 );
+    valla2.dibujar = true;
+    valla2.posicion = Tupla3f( 44.0, 15.0, -230.0 );
+    valla2.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    valla2.escalado = Tupla3f( 20.0, 3.0, 0.5 );
+    valla2.objeto->setMaterial( oro );
+    valla2.objeto->setTextura( caja );
+    valla2.objeto->setColorSolido( colorAmarilloOscuro );
+    objetosEscena.push_back( valla2 );
+
+    // Valla3=objetosEscena(3)
+    Modelo valla3;
+    valla3.objeto = new Cubo( 10 );
+    valla3.dibujar = true;
+    valla3.posicion = Tupla3f( 195.0, 15.0, -85.0 );
+    valla3.orientacion = Tupla3f( 0.0, -70.0, 0.0 );
+    valla3.escalado = Tupla3f( 30.0, 3.0, 0.5 );
+    valla3.objeto->setMaterial( oro );
+    valla3.objeto->setTextura( caja );
+    valla3.objeto->setColorSolido( colorAmarilloOscuro );
+    objetosEscena.push_back( valla3 );
+
     suelo = new Cubo( 600 );
     suelo->setMaterial( hierba );
     suelo->setColorSolido( Tupla3f( 0, 1, 0 ) );
     suelo->setTextura( grass );
     suelo->ubicarTexturaSuperior();
 
-    // ObjetoRevolución=objetosEscenaConTapas(6)
+    // Lata=objetosEscenaConTapas(0)
     ModeloTapas mt0;
     mt0.objeto = new ObjRevolucion( "./plys/lata-pcue", 20, true, true );
     mt0.dibujar = true;
@@ -85,8 +123,9 @@ Escena::Escena()
     mt0.objeto->setTextura( lata );
     objetosEscenaConTapas.push_back( mt0 );
 
+    // Skybox=objetosEscenaConTapas(1)
     ModeloTapas mt1;
-    mt1.objeto = new Esfera( 20, 20, 300 );
+    mt1.objeto = new Esfera( 30, 30, 350 );
     mt1.dibujar = true;
     mt1.posicion = Tupla3f( 0.0, 0.0, 0.0 );
     mt1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
@@ -96,6 +135,42 @@ Escena::Escena()
     mt1.objeto->setTextura( skybox );
     mt1.objeto->invertirCaras();
     objetosEscenaConTapas.push_back( mt1 );
+
+    // Heno1=objetosEscenaConTapas(2)
+    ModeloTapas heno1;
+    heno1.objeto = new Cilindro( 10, 10, 30, 10 );
+    heno1.dibujar = true;
+    heno1.posicion = Tupla3f( 120, 15, 40 );
+    heno1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    heno1.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    heno1.objeto->setMaterial( oro );
+    heno1.objeto->setColorSolido( colorAmarilloOscuro );
+    heno1.objeto->setTextura( heno );
+    objetosEscenaConTapas.push_back( heno1 );
+
+    // Heno2=objetosEscenaConTapas(3)
+    ModeloTapas heno2;
+    heno2.objeto = new Cilindro( 10, 10, 20, 10 );
+    heno2.dibujar = true;
+    heno2.posicion = Tupla3f( 105, 10, 55 );
+    heno2.orientacion = Tupla3f( 0.0, -45.0, 90.0 );
+    heno2.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    heno2.objeto->setMaterial( oro );
+    heno2.objeto->setColorSolido( colorAmarilloOscuro );
+    heno2.objeto->setTextura( heno );
+    objetosEscenaConTapas.push_back( heno2 );
+
+    // Heno3=objetosEscenaConTapas(4)
+    ModeloTapas heno3;
+    heno3.objeto = new Cilindro( 10, 10, 30, 10 );
+    heno3.dibujar = true;
+    heno3.posicion = Tupla3f( -135, 15, 40 );
+    heno3.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    heno3.escalado = Tupla3f( 1.0, 1.0, 1.0 );
+    heno3.objeto->setMaterial( oro );
+    heno3.objeto->setColorSolido( colorAmarilloOscuro );
+    heno3.objeto->setTextura( heno );
+    objetosEscenaConTapas.push_back( heno3 );
 
     // Pino1=modelosJerarquicos(0)
     Jerarquico j1;
@@ -124,7 +199,6 @@ Escena::Escena()
     j3.escalado = Tupla3f( 1.0, 1.0, 1.0 );
     modelosJerarquicos.push_back( j3 );
 
-    // Tractor = modelosJerarquicos(0)
     tractor = new TractorRemolque();
 
 
@@ -472,9 +546,6 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
         case 'Q':
           salir = true;
           break;
-        case 'O' :
-          modoMenu=SELOBJETO;
-          break ;
         case 'V' :
           modoMenu=SELVISUALIZACION;
           break ;
@@ -494,181 +565,10 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           gradoSeleccionado = TODOS;
           break;
         default:
-          cout << "ERROR - opciones disponibles:\n'O': Cambiar objeto\n"
+          cout << "ERROR - opciones disponibles:\n"
                << "'V': Cambiar modo de visualización\n'D': Cambiar modo de dibujado\n"
                << "'T': Cambiar visualización de tapas\n'A': Animación Automática\n"
                << "'M': Animación Manual\nQ': Salir\n";
-          break;
-      }
-
-      break;
-
-    case SELOBJETO:
-
-      switch( toupper( tecla ) ) {
-
-        case 'Q':
-          modoMenu = NADA;
-          break;
-
-        case '0':
-          cout << "Cambiando la visualización del Cubo.\n";
-          if( objetosEscena[0].dibujar )
-            objetosEscena[0].dibujar = false;
-          else
-            objetosEscena[0].dibujar = true;
-          break;
-
-        case '1':
-          cout << "Cambiando la visualización del Tetraedro.\n";
-          if( objetosEscena[1].dibujar )
-            objetosEscena[1].dibujar = false;
-          else
-            objetosEscena[1].dibujar = true;
-          break;
-
-        case '2':
-          cout << "Cambiando la visualización del Cilindro.\n";
-          if( objetosEscenaConTapas[0].dibujar )
-            objetosEscenaConTapas[0].dibujar = false;
-          else
-            objetosEscenaConTapas[0].dibujar = true;
-          break;
-
-        case '3':
-          cout << "Cambiando la visualización de la Esfera.\n";
-          if( objetosEscenaConTapas[1].dibujar )
-            objetosEscenaConTapas[1].dibujar = false;
-          else
-            objetosEscenaConTapas[1].dibujar = true;
-          break;
-
-        case '4':
-          cout << "Cambiando la visualización del Cono.\n";
-          if( objetosEscenaConTapas[2].dibujar )
-            objetosEscenaConTapas[2].dibujar = false;
-          else
-            objetosEscenaConTapas[2].dibujar = true;
-          break;
-
-        case '5':
-          cout << "Cambiando la visualización del Objeto PLY.\n";
-          if( objetosEscena[3].dibujar )
-            objetosEscena[3].dibujar = false;
-          else
-            objetosEscena[3].dibujar = true;
-          break;
-
-        case '6':
-          cout << "Cambiando la visualización del Objeto de Revolución.\n";
-          if( objetosEscenaConTapas[6].dibujar )
-            objetosEscenaConTapas[6].dibujar = false;
-          else
-            objetosEscenaConTapas[6].dibujar = true;
-          break;
-
-        case '7':
-          cout << "Cambiando la visualización del Peón Blanco.\n";
-          if( objetosEscenaConTapas[3].dibujar )
-            objetosEscenaConTapas[3].dibujar = false;
-          else
-            objetosEscenaConTapas[3].dibujar = true;
-          break;
-
-        case '8':
-          cout << "Cambiando la visualización del Peón Negro.\n";
-          if( objetosEscenaConTapas[4].dibujar )
-            objetosEscenaConTapas[4].dibujar = false;
-          else
-            objetosEscenaConTapas[4].dibujar = true;
-          break;
-
-        case '9':
-          cout << "Cambiando la visualización del Lingote.\n";
-          if( objetosEscena[2].dibujar )
-            objetosEscena[2].dibujar = false;
-          else
-            objetosEscena[2].dibujar = true;
-          break;
-
-        case 'J':
-          cout << "Cambiando la visualización de los modelos jerárquicos.\n";
-          if( modelosJerarquicos[0].dibujar )
-            for( int i = 0; i < modelosJerarquicos.size(); i++ )
-              modelosJerarquicos[i].dibujar = false;
-          else
-            for( int i = 0; i < modelosJerarquicos.size(); i++ )
-              modelosJerarquicos[i].dibujar = true;
-          break;
-
-        case 'P':
-
-          cout << "Cambiando el Objeto PLY, introduzca la ruta del nuevo: ";
-
-          char nombreArchivoPLY[100];
-
-          scanf( "%[^\n]", nombreArchivoPLY );
-          while( ( getchar() ) != '\n');
-
-          objetosEscena[3].objeto = new ObjPLY( nombreArchivoPLY );
-          objetosEscena[3].dibujar = true;
-
-          cout << endl;
-          break;
-
-        case 'R':
-
-          cout << "Cambiando el Objeto de Revolución, introduzca la ruta del nuevo: ";
-
-          char nombreArchivoRev[100];
-          scanf( "%[^\n]", nombreArchivoRev );
-          while( ( getchar() ) != '\n');
-
-          cout << "\nIntroduzca el número de instancias: ";
-
-          int num_instancias;
-          scanf( "%d", &num_instancias );
-          while( ( getchar() ) != '\n');
-
-          char eleccion;
-          bool tapa_sup, tapa_inf;
-
-          do {
-            cout << "\n¿Tiene tapa superior (S - Sí, N - No)? ";
-            eleccion = getchar();
-            cout << "Eleccion " << eleccion;
-            while( ( getchar() ) != '\n');
-          } while( toupper( eleccion ) != 'S' && toupper( eleccion ) != 'N' );
-
-          if( toupper( eleccion ) == 'S' )
-            tapa_sup = true;
-          else
-            tapa_sup = false;
-
-          do {
-            cout << "\n¿Y tapa inferior (S - Sí, N - No)? ";
-            eleccion = getchar();
-            while( ( getchar() ) != '\n');
-          } while( toupper( eleccion ) != 'S' && toupper( eleccion ) != 'N' );
-
-          if( toupper( eleccion ) == 'S' )
-            tapa_inf = true;
-          else
-            tapa_inf = false;
-
-          objetosEscenaConTapas[6].objeto = new ObjRevolucion( nombreArchivoRev, num_instancias, tapa_sup, tapa_inf );
-          objetosEscenaConTapas[6].dibujar = true;
-
-          cout << endl;
-          break;
-
-
-        default:
-          cout << "ERROR - opciones disponibles:\n'0': Cubo\n'1': Tetraedro\n"
-               << "'2': Cilindro\n'3': Esfera\n'4': Cono\n'5': Objeto PLY\n"
-               << "'6': Objeto de Revolución\n'7': Peón Blanco\n"
-               << "'8': Peón Negro (Invertido)\n'9': Lingote\n'P': Cambiar el Objeto PLY\n"
-               << "'R': Cambiar el Objeto de Revolución\n'J': Pinos\n'Q': Salir\n\n";
           break;
       }
 
@@ -1043,7 +943,6 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
   if( !salir ) {
     switch( modoMenu ) {
       case NADA: cout << "\nMenú Principal.\n"; break;
-      case SELOBJETO: cout << "\nMenú de selección de objeto.\n"; break;
       case SELVISUALIZACION: cout << "\nMenú de visualización.\n"; break;
       case SELDIBUJADO: cout << "\nMenú de dibujado.\n"; break;
       case TAPAS: cout << "\nMenú de visualización de tapas.\n"; break;
