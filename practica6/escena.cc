@@ -203,7 +203,7 @@ Escena::Escena()
 
     // Cámaras
     Tupla3f eye = Tupla3f( -150, 100, 150 );
-    Tupla3f at  = Tupla3f( 0, 0, 0 );
+    Tupla3f at  = Tupla3f( 0, 1, 0 );
     Tupla3f up  = Tupla3f( 0, 1, 0 );
 
     Camara c0( eye, at, up, PERSPECTIVA, 5, 5, 2, 2, 50, 2000 );
@@ -248,8 +248,7 @@ Escena::Escena()
     sumandoMovimientoRodillo = true;
     texturas = false;
 
-    //botonIzq = SUELTO;
-    //botonDer = SUELTO;
+    botonDerechoPulsado = false;
 
 }
 
@@ -571,18 +570,48 @@ void Escena::cambiarVelocidadAnimacion( gradosTractor grado, bool incrementar ) 
 
 void Escena::clickRaton( int boton, int estado, int x, int y ) {
 
+  switch( boton ) {
 
+    // BOTÓN IZQUIERDO
+    case 0:
+      break;
+
+    // BOTÓN DERECHO
+    case 2:
+      if( estado == GLUT_DOWN ) {
+        botonDerechoPulsado = true;
+        xactiva = x;
+        yactiva = y;
+      } else {
+        botonDerechoPulsado = false;
+      }
+      break;
+
+    // RUEDA HACIA DELANTE
+    case 3:
+      camaras[camaraActiva].zoomIn();
+      break;
+
+    // RUEDA HACIA DETRÁS
+    case 4:
+      camaras[camaraActiva].zoomOut();
+      break;
+
+  }
+
+  change_projection();
 
 }
 
 void Escena::ratonMovido( int x, int y ) {
-/*
-  if( botonDer == PULSADO ) {
-    camaras[camaraActiva].girar( x - xant, y - yant );
-    xant = x;
-    yant = y;
+
+  if( botonDerechoPulsado ) {
+    camaras[camaraActiva].girar( 2 *( x - xactiva ), 2 * ( y - yactiva ) );
+    xactiva = x;
+    yactiva = y;
+    change_projection();
   }
-*/
+
 }
 
 
@@ -1069,22 +1098,22 @@ void Escena::teclaEspecial( int Tecla1, int x, int y )
    switch ( Tecla1 )
    {
 	   case GLUT_KEY_LEFT:
-         camaras[camaraActiva].rotarYExaminar(-0.0174533);
+         camaras[camaraActiva].rotarYExaminar(-1);
          break;
 	   case GLUT_KEY_RIGHT:
-         camaras[camaraActiva].rotarYExaminar(0.0174533);
+         camaras[camaraActiva].rotarYExaminar(1);
          break;
 	   case GLUT_KEY_UP:
-         camaras[camaraActiva].rotarXExaminar(-0.0174533);;
+         camaras[camaraActiva].rotarXExaminar(-1);;
          break;
 	   case GLUT_KEY_DOWN:
-         camaras[camaraActiva].rotarXExaminar(0.0174533);;
+         camaras[camaraActiva].rotarXExaminar(1);;
          break;
 	   case GLUT_KEY_F1:
-         camaras[camaraActiva].zoom(0.8);
+         camaras[camaraActiva].zoomIn();
          break;
 	   case GLUT_KEY_F2:
-         camaras[camaraActiva].zoom(1.2);
+         camaras[camaraActiva].zoomOut();
          break;
 	}
 

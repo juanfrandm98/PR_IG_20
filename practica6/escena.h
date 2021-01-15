@@ -128,6 +128,11 @@ class Escena
    std::vector<Camara> camaras;
    int camaraActiva;
 
+   // Ratón
+   bool botonDerechoPulsado;
+   int xactiva;
+   int yactiva;
+
    public:
 
     Escena();

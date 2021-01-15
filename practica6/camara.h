@@ -4,6 +4,7 @@
 #include "aux.h"
 
 typedef enum {PERSPECTIVA, ORTOGONAL} tipoCamara;
+#define FACTOR_GRAD_RAD 0.0174533
 
 class Camara {
 
@@ -23,11 +24,21 @@ private:
   float near;   // Distancia del observador al plano más cercano (no se ve nada más cerca de near)
   float far;    // Distancia del observador al plano más lejano (no se ve nada más lejos de far)
 
+  // Parámetros para regular el zoom
+  const float factorZoomIn  = 0.9;
+  const float factorZoomOut = 1.1;
+
+  std::vector<Tupla3f> colocarEjes( float & alpha, float & beta, float & gamma );
+  std::vector<Tupla3f> deshacerEjes( std::vector<Tupla3f> ejes, float alpha, float beta, float gamma );
+  float angulo( Tupla2f a, Tupla2f b );
+  void zoom( float factor );
+
 public:
 
   Camara( Tupla3f e, Tupla3f a, Tupla3f u, tipoCamara ti, float l, float r,
           float t, float b, float n, float f );
 
+  void setAt( Tupla3f nat );
   void setLeft( float nleft );
   void setRight( float nright );
   void setTop( float ntop );
@@ -42,8 +53,10 @@ public:
   void rotarZFirstPerson( float angle );
 
   void mover( float x, float y, float z );
+  void girar( int x, int y );
 
-  void zoom( float factor );
+  void zoomIn();
+  void zoomOut();
 
   void setObservador();
   void setProyeccion();
