@@ -21,7 +21,7 @@
 // *****************************************************************************
 
 typedef enum {POINTS, LINES, SOLID, CHESS} visualizacion;
-typedef enum {DIFERIDO, INMEDIATO} dibujado;
+typedef enum {DIFERIDO, INMEDIATO, SELECCION} dibujado;
 
 #define M_PI 3.14159265358979323846
 
@@ -39,6 +39,9 @@ class Malla3D
    // dibuja el objeto en modo diferido (usando VBOs)
    void draw_ModoDiferido( visualizacion tipoVisualizacion );
 
+   // dibuja el objeto en modo selección (utilizando colores de selección)
+   void draw_ModoSeleccion();
+
    // función que redibuja el objeto
    // está función llama a 'draw_ModoInmediato' (modo inmediato)
    // o bien a 'draw_ModoDiferido' (modo diferido, VBOs)
@@ -51,10 +54,15 @@ class Malla3D
    // Función para cambiar el color sólido de un objeto
    void setColorSolido( Tupla3f nuevoColor );
 
+   // Función para cambiar el color de selección de un objeto
+   void setColorSeleccion( Tupla3f nuevoColor );
+
    // Función para asignar una textura
    void setTextura( Textura tex );
 
    void invertirCaras();
+
+   Tupla3f getCentro();
 
    protected:
 
@@ -74,6 +82,7 @@ class Malla3D
    std::vector<Tupla3f> c_solid ; // una terna de 3 floats por cada vértice (color)
    std::vector<Tupla3f> c_chess_impar;  // una terna de 3 floats por cada vértice (color)
    std::vector<Tupla3f> c_chess_par;  // una terna de 3 floats por cada vértice (color)
+   std::vector<Tupla3f> c_seleccion;
    std::vector<Tupla3f> nv;     // Normales de los vértices
    std::vector<Tupla2f> ct;     // Coordenadas de textura
 

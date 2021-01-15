@@ -30,3 +30,8 @@ void EjeTrasero::rotarRuedas( float angulo ) {
   anguloRotacion += angulo;
 
 }
+
+void EjeTrasero::setColorSeleccion( Tupla3f color ) {
+  ruedaDerecha->setColorSeleccion(color);
+  ruedaIzquierda->setColorSeleccion(color);
+}

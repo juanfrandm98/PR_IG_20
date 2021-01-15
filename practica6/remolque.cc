@@ -99,3 +99,9 @@ bool Remolque::rodilloTrasladadoAlTope() {
   return rodillo->rodilloTrasladadoAlTope();
 
 }
+
+void Remolque::setColorSeleccion( Tupla3f color ) {
+  rodillo->setColorSeleccion(color);
+  extensor->setColorSeleccion(color);
+  enganche->setColorSeleccion(color);
+}

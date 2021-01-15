@@ -75,3 +75,12 @@ bool TractorRemolque::rodilloTrasladadoAlTope() {
   return remolque->rodilloTrasladadoAlTope();
 
 }
+
+void TractorRemolque::setColorSeleccion( Tupla3f color ) {
+  tractor->setColorSeleccion(color);
+  remolque->setColorSeleccion(color);
+}
+
+Tupla3f TractorRemolque::getCentro() {
+  return Tupla3f( 0, 40, 0 );
+}

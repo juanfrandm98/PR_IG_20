@@ -42,8 +42,16 @@ Escena::Escena()
 
     // Creación de colores
     Tupla3f colorBlanco = Tupla3f( 1, 1, 1 );
+    Tupla3f colorRojo = Tupla3f( 1, 0, 0 );
+    Tupla3f colorVerde = Tupla3f( 0, 1, 0 );
     Tupla3f colorAzul = Tupla3f( 0, 0, 1 );
     Tupla3f colorAmarilloOscuro = Tupla3f( 229/255, 190/255, 1/255 );
+    Tupla3f colorGrisOscuro = Tupla3f( 155/255, 155/255, 155/255 );
+
+    coloresSeleccion.push_back( colorGrisOscuro );
+    coloresSeleccion.push_back( colorRojo );
+    coloresSeleccion.push_back( colorVerde );
+    coloresSeleccion.push_back( colorAzul );
 
     // Creación de las luces
     // Luz direccional inicial
@@ -67,6 +75,7 @@ Escena::Escena()
     objeto0.objeto->setMaterial( yeso );
     objeto0.objeto->setTextura( caja );
     objeto0.objeto->setColorSolido( Tupla3f( 1, 1, 1 ) );
+    objeto0.objeto->setColorSeleccion( coloresSeleccion[0] );
     objetosEscena.push_back( objeto0 );
 
     // Valla1=objetosEscena(1)
@@ -79,6 +88,7 @@ Escena::Escena()
     valla1.objeto->setMaterial( oro );
     valla1.objeto->setTextura( caja );
     valla1.objeto->setColorSolido( colorAmarilloOscuro );
+    valla1.objeto->setColorSeleccion( coloresSeleccion[0] );
     objetosEscena.push_back( valla1 );
 
     // Valla2=objetosEscena(2)
@@ -91,6 +101,7 @@ Escena::Escena()
     valla2.objeto->setMaterial( oro );
     valla2.objeto->setTextura( caja );
     valla2.objeto->setColorSolido( colorAmarilloOscuro );
+    valla2.objeto->setColorSeleccion( coloresSeleccion[0] );
     objetosEscena.push_back( valla2 );
 
     // Valla3=objetosEscena(3)
@@ -103,6 +114,7 @@ Escena::Escena()
     valla3.objeto->setMaterial( oro );
     valla3.objeto->setTextura( caja );
     valla3.objeto->setColorSolido( colorAmarilloOscuro );
+    valla3.objeto->setColorSeleccion( coloresSeleccion[0] );
     objetosEscena.push_back( valla3 );
 
     suelo = new Cubo( 600 );
@@ -120,6 +132,7 @@ Escena::Escena()
     mt0.escalado = Tupla3f( 30.0, 30.0, 30.0 );
     mt0.objeto->setMaterial( yeso );
     mt0.objeto->setColorSolido( colorBlanco );
+    mt0.objeto->setColorSeleccion( coloresSeleccion[3] );
     mt0.objeto->setTextura( lata );
     objetosEscenaConTapas.push_back( mt0 );
 
@@ -145,6 +158,7 @@ Escena::Escena()
     heno1.escalado = Tupla3f( 1.0, 1.0, 1.0 );
     heno1.objeto->setMaterial( oro );
     heno1.objeto->setColorSolido( colorAmarilloOscuro );
+    heno1.objeto->setColorSeleccion( coloresSeleccion[0] );
     heno1.objeto->setTextura( heno );
     objetosEscenaConTapas.push_back( heno1 );
 
@@ -157,6 +171,7 @@ Escena::Escena()
     heno2.escalado = Tupla3f( 1.0, 1.0, 1.0 );
     heno2.objeto->setMaterial( oro );
     heno2.objeto->setColorSolido( colorAmarilloOscuro );
+    heno2.objeto->setColorSeleccion( coloresSeleccion[0] );
     heno2.objeto->setTextura( heno );
     objetosEscenaConTapas.push_back( heno2 );
 
@@ -169,37 +184,42 @@ Escena::Escena()
     heno3.escalado = Tupla3f( 1.0, 1.0, 1.0 );
     heno3.objeto->setMaterial( oro );
     heno3.objeto->setColorSolido( colorAmarilloOscuro );
+    heno3.objeto->setColorSeleccion( coloresSeleccion[0] );
     heno3.objeto->setTextura( heno );
     objetosEscenaConTapas.push_back( heno3 );
 
     // Pino1=modelosJerarquicos(0)
-    Jerarquico j1;
+    PinoColocado j1;
     j1.objeto = new Pino();
     j1.dibujar = true;
     j1.posicion = Tupla3f( 0.0, 0.0, -150.0 );
     j1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
     j1.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    modelosJerarquicos.push_back( j1 );
+    j1.objeto->setColorSeleccion( coloresSeleccion[0] );
+    pinos.push_back( j1 );
 
     // Pino2=modelosJerarquicos(1)
-    Jerarquico j2;
+    PinoColocado j2;
     j2.objeto = new Pino();
     j2.dibujar = true;
     j2.posicion = Tupla3f( 150.0, 0.0, -100.0 );
     j2.orientacion = Tupla3f( 0.0, 45.0, 0.0 );
     j2.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    modelosJerarquicos.push_back( j2 );
+    j2.objeto->setColorSeleccion( coloresSeleccion[1] );
+    pinos.push_back( j2 );
 
     // Pino3=modelosJerarquicos(2)
-    Jerarquico j3;
+    PinoColocado j3;
     j3.objeto = new Pino();
     j3.dibujar = true;
     j3.posicion = Tupla3f( -120.0, 0.0, 20.0 );
     j3.orientacion = Tupla3f( 0.0, -32.0, 0.0 );
     j3.escalado = Tupla3f( 1.0, 1.0, 1.0 );
-    modelosJerarquicos.push_back( j3 );
+    j3.objeto->setColorSeleccion( coloresSeleccion[0] );
+    pinos.push_back( j3 );
 
     tractor = new TractorRemolque();
+    tractor->setColorSeleccion( coloresSeleccion[2] );
 
     // Cámaras
     Tupla3f eye = Tupla3f( -150, 100, 150 );
@@ -246,7 +266,6 @@ Escena::Escena()
     sumandoInclinacion = true;
     timerInclinacionRemolque = -1;
     sumandoMovimientoRodillo = true;
-    texturas = false;
 
     botonDerechoPulsado = false;
 
@@ -265,6 +284,7 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 	glEnable( GL_DEPTH_TEST );	// se habilita el z-bufer
   glEnable( GL_CULL_FACE );   // se habilita el cull-face
   glEnable( GL_NORMALIZE );   // para evitar la alteración de la longitud de las normales
+  glEnable( GL_TEXTURE_2D );    // Para la utilización de texturas
 
 	Width  = UI_window_width/10;
 	Height = UI_window_height/10;
@@ -325,15 +345,15 @@ void Escena::DrawMode( visualizacion tipo ) {
     }
   }
 
-  for( int i = 0; i < modelosJerarquicos.size(); i++ ) {
-    if( modelosJerarquicos[i].dibujar ) {
+  for( int i = 0; i < pinos.size(); i++ ) {
+    if( pinos[i].dibujar ) {
       glPushMatrix();
-        glTranslatef( modelosJerarquicos[i].posicion(0), modelosJerarquicos[i].posicion(1), modelosJerarquicos[i].posicion(2) );
-        glRotatef( modelosJerarquicos[i].orientacion(0), 1, 0, 0 );
-        glRotatef( modelosJerarquicos[i].orientacion(1), 0, 1, 0 );
-        glRotatef( modelosJerarquicos[i].orientacion(2), 0, 0, 1 );
-        glScalef( modelosJerarquicos[i].escalado(0), modelosJerarquicos[i].escalado(1), modelosJerarquicos[i].escalado(2) );
-        modelosJerarquicos[i].objeto->draw( modoDibujado, tipo );
+        glTranslatef( pinos[i].posicion(0), pinos[i].posicion(1), pinos[i].posicion(2) );
+        glRotatef( pinos[i].orientacion(0), 1, 0, 0 );
+        glRotatef( pinos[i].orientacion(1), 0, 1, 0 );
+        glRotatef( pinos[i].orientacion(2), 0, 0, 1 );
+        glScalef( pinos[i].escalado(0), pinos[i].escalado(1), pinos[i].escalado(2) );
+        pinos[i].objeto->draw( modoDibujado, tipo );
       glPopMatrix();
     }
   }
@@ -364,54 +384,55 @@ void Escena::dibujar()
 
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
 	change_observer();
-  ejes.draw();
 
-  if( texturas )
-    glEnable( GL_TEXTURE_2D );
-  else
-    glDisable( GL_TEXTURE_2D );
+  if( modoDibujado != SELECCION ) {
+    ejes.draw();
 
-  if( modoIluminacion != BASICA ) {
-    // Activamos la iluminación
-    glEnable( GL_LIGHTING );
+    if( modoIluminacion != BASICA ) {
+      // Activamos la iluminación
+      glEnable( GL_LIGHTING );
 
-    // Seleccionamos el modo de iluminación
-    if( modoIluminacion == PLANA )
-      glShadeModel( GL_FLAT );
-    else
-      glShadeModel( GL_SMOOTH );
+      // Seleccionamos el modo de iluminación
+      if( modoIluminacion == PLANA )
+        glShadeModel( GL_FLAT );
+      else
+        glShadeModel( GL_SMOOTH );
 
-    // Si la luz direccional está activada, la aplicamos y dibujamos la esfera
-    // para ayudar a ver la dirección
-    if( glIsEnabled( GL_LIGHT1 ) ) {
-      //objetosEscenaConTapas[5].posicion = luzDir->getPosicion();
-      luzDir->aplicar();
+      // Si la luz direccional está activada, la aplicamos y dibujamos la esfera
+      // para ayudar a ver la dirección
+      if( glIsEnabled( GL_LIGHT1 ) ) {
+        //objetosEscenaConTapas[5].posicion = luzDir->getPosicion();
+        luzDir->aplicar();
+      }
+
+      // Comprobamos si necesitamos aplicar el resto de luces
+      if( glIsEnabled( GL_LIGHT2 ) )
+        luzPos1->aplicar();
+      if( glIsEnabled( GL_LIGHT3 ) )
+        luzPos2->aplicar();
+
+      // Dibujamos los objetos
+      DrawMode( SOLID );
+
+    } else {
+
+      glDisable( GL_LIGHTING );
+
+      if( ajedrez ) {
+        DrawMode( CHESS );
+      } else {
+        if( puntos )
+          DrawMode( POINTS );
+        if( lineas )
+          DrawMode( LINES );
+        if( solido )
+          DrawMode( SOLID );
+      }
+
     }
-
-    // Comprobamos si necesitamos aplicar el resto de luces
-    if( glIsEnabled( GL_LIGHT2 ) )
-      luzPos1->aplicar();
-    if( glIsEnabled( GL_LIGHT3 ) )
-      luzPos2->aplicar();
-
-    // Dibujamos los objetos
-    DrawMode( SOLID );
 
   } else {
-
-    glDisable( GL_LIGHTING );
-
-    if( ajedrez ) {
-      DrawMode( CHESS );
-    } else {
-      if( puntos )
-        DrawMode( POINTS );
-      if( lineas )
-        DrawMode( LINES );
-      if( solido )
-        DrawMode( SOLID );
-    }
-
+    DrawMode( SOLID );
   }
 
 }
@@ -574,6 +595,12 @@ void Escena::clickRaton( int boton, int estado, int x, int y ) {
 
     // BOTÓN IZQUIERDO
     case 0:
+      if( estado == GLUT_DOWN ) {
+        dibujaSeleccion();
+      } else {
+        modoDibujado = modoDibujadoAnterior;
+        seleccionNuevoAt( x, y );
+      }
       break;
 
     // BOTÓN DERECHO
@@ -714,16 +741,9 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
         case 'I':
           modoMenu = ILUMINACION;
           break;
-        case 'T':
-          if( texturas )
-            texturas = false;
-          else
-            texturas = true;
-          break;
         default:
           cout << "ERROR - opciones disponibles:\n'L': Línea\n'P': Puntos\n"
-               << "'S': Sólido\n'A': Ajedrez\n'I': Cambiar Iluminación\n"
-               << "'T': Cambiar Utilización de Texturas\n";
+               << "'S': Sólido\n'A': Ajedrez\n'I': Cambiar Iluminación\n";
           break;
       }
 
@@ -1154,4 +1174,56 @@ void Escena::change_observer()
 {
    // posicion del observador
    camaras[camaraActiva].setObservador();
+}
+
+void Escena::dibujaSeleccion() {
+
+  glDisable( GL_DITHER );
+  glDisable( GL_LIGHTING );
+  glDisable( GL_TEXTURE_2D );
+
+  modoDibujado = SELECCION;
+
+}
+
+void Escena::seleccionNuevoAt( int x, int y ) {
+
+  Tupla3f colorPixel;
+  GLint viewport[4];
+
+  glGetIntegerv( GL_VIEWPORT, viewport );
+
+  glReadPixels( x, viewport[3] - y, 1, 1, GL_RGB, GL_FLOAT, (void*)colorPixel );
+
+  Tupla3f nuevo_at = Tupla3f( 0, 0, 0 );
+
+  std::cout << "Pixel leído [" << colorPixel(0) << "," << colorPixel(1) << "," << colorPixel(2) << "]\n";
+
+  if( colorPixel(0) == coloresSeleccion[1](0) and
+      colorPixel(1) == coloresSeleccion[1](1) and
+      colorPixel(2) == coloresSeleccion[1](2) ) {
+    // PINO SELECCIONADO
+    nuevo_at = pinos[1].objeto->getCentro();
+    nuevo_at = nuevo_at + pinos[1].posicion;
+
+  } else if( colorPixel(0) == coloresSeleccion[2](0) and
+             colorPixel(1) == coloresSeleccion[2](1) and
+             colorPixel(2) == coloresSeleccion[2](2) ) {
+    // TRACTOR SELECCIONADO
+    nuevo_at = tractor->getCentro();
+
+  } else if( colorPixel(0) == coloresSeleccion[3](0) and
+             colorPixel(1) == coloresSeleccion[3](1) and
+             colorPixel(2) == coloresSeleccion[3](2) ) {
+    // LATA SELECCIONADA
+    nuevo_at = objetosEscenaConTapas[0].objeto->getCentro();
+    nuevo_at = nuevo_at + objetosEscenaConTapas[0].posicion;
+  }
+
+  camaras[camaraActiva].setAt( nuevo_at );
+
+  glEnable( GL_DITHER );
+  glEnable( GL_LIGHTING );
+  glEnable( GL_TEXTURE_2D );
+
 }

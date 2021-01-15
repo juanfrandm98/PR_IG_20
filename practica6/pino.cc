@@ -20,3 +20,14 @@ void Pino::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) {
   glPopMatrix();
 
 }
+
+void Pino::setColorSeleccion( Tupla3f color ) {
+  tronco->setColorSeleccion(color);
+  copa->setColorSeleccion(color);
+}
+
+Tupla3f Pino::getCentro() {
+
+  return Tupla3f( 0, 50, 0 );
+
+}

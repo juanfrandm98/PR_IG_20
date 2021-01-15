@@ -32,3 +32,8 @@ void Asiento::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) {
   glPopMatrix();
 
 }
+
+void Asiento::setColorSeleccion( Tupla3f color ) {
+  cojin->setColorSeleccion(color);
+  espalda->setColorSeleccion(color);
+}

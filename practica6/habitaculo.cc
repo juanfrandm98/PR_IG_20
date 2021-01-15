@@ -42,3 +42,9 @@ void Habitaculo::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) 
   glPopMatrix();
 
 }
+
+void Habitaculo::setColorSeleccion( Tupla3f color ) {
+  ladoIzquierdo->setColorSeleccion(color);
+  ladoDerecho->setColorSeleccion(color);
+  ladoAtras->setColorSeleccion(color);
+}

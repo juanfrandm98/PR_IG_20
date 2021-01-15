@@ -22,3 +22,7 @@ void RuedaDelantera::draw( dibujado tipoDibujado, visualizacion tipoVisualizacio
   glPopMatrix();
 
 }
+
+void RuedaDelantera::setColorSeleccion( Tupla3f color ) {
+  rueda->setColorSeleccion(color);
+}

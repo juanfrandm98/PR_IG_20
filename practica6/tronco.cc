@@ -35,3 +35,8 @@ void Tronco::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) {
   glPopMatrix();
 
 }
+
+void Tronco::setColorSeleccion( Tupla3f color ) {
+  tronco->setColorSeleccion(color);
+  rama->setColorSeleccion(color);
+}

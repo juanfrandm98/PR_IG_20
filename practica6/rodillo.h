@@ -26,6 +26,7 @@ public:
   void rotarRodillo( float angulo );
   void trasladarRodillo( float cantidad );
   bool rodilloTrasladadoAlTope();
+  void setColorSeleccion( Tupla3f color );
 
 };
 

@@ -71,3 +71,9 @@ bool Rodillo::rodilloTrasladadoAlTope() {
            ( desplazamientoRodillo == maxDesplazamientoRodillo ) );
 
 }
+
+void Rodillo::setColorSeleccion( Tupla3f color ) {
+  rodillo->setColorSeleccion(color);
+  sujeccionCentral->setColorSeleccion(color);
+  sujeccionSuperior->setColorSeleccion(color);
+}

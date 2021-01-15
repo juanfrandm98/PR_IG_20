@@ -40,8 +40,8 @@ struct ModeloTapas {
   Tupla3f escalado;
 };
 
-struct Jerarquico {
-  ModeloJerarquico * objeto;
+struct PinoColocado {
+  Pino * objeto;
   bool dibujar;
   Tupla3f posicion;
   Tupla3f orientacion;
@@ -84,7 +84,8 @@ class Escena
   void ajustarCamaras( float width, float height );
   void cambiarCamara( int numCamara );
 
-
+  void dibujaSeleccion();
+  void seleccionNuevoAt( int x, int y );
 
    void clear_window();
 
@@ -93,7 +94,7 @@ class Escena
    Ejes ejes;
    std::vector<Modelo> objetosEscena;
    std::vector<ModeloTapas> objetosEscenaConTapas;
-   std::vector<Jerarquico> modelosJerarquicos;
+   std::vector<PinoColocado> pinos;
    TractorRemolque * tractor = nullptr;
    Cubo * suelo = nullptr;
 
@@ -103,6 +104,7 @@ class Escena
    bool solido;
    bool ajedrez;
    dibujado modoDibujado;
+   dibujado modoDibujadoAnterior;
    bool tapa_superior;
    bool tapa_inferior;
    iluminacion modoIluminacion;
@@ -117,7 +119,6 @@ class Escena
    bool sumandoInclinacion;
    float timerInclinacionRemolque;
    bool sumandoMovimientoRodillo;
-   bool texturas;
 
    // Luces
    LuzPosicional * luzPos1 = nullptr;
@@ -132,6 +133,7 @@ class Escena
    bool botonDerechoPulsado;
    int xactiva;
    int yactiva;
+   std::vector<Tupla3f> coloresSeleccion;
 
    public:
 

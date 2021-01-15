@@ -26,6 +26,7 @@ public:
   void cambiarAnguloGiro( float angulo );
   void rotarRuedas( float angulo );
   bool ruedasAlTope();
+  void setColorSeleccion( Tupla3f color );
 
 };
 

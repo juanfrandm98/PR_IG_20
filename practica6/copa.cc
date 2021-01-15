@@ -23,3 +23,7 @@ void Copa::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) {
   glPopMatrix();
 
 }
+
+void Copa::setColorSeleccion( Tupla3f color ) {
+  cono->setColorSeleccion(color);
+}

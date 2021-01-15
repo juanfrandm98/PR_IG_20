@@ -44,3 +44,9 @@ void Techo::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) {
   glPopMatrix();
 
 }
+
+void Techo::setColorSeleccion( Tupla3f color ) {
+  techo->setColorSeleccion(color);
+  tuboDerecho->setColorSeleccion(color);
+  tuboIzquierdo->setColorSeleccion(color);
+}

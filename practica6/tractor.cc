@@ -51,3 +51,10 @@ bool Tractor::ruedasAlTope() {
   return chasis->ruedasAlTope();
 
 }
+
+void Tractor::setColorSeleccion( Tupla3f color ) {
+  chasis->setColorSeleccion(color);
+  habitaculo->setColorSeleccion(color);
+  techo->setColorSeleccion(color);
+  asiento->setColorSeleccion(color);
+}

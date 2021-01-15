@@ -14,6 +14,8 @@
 void Malla3D::draw_ModoInmediato( visualizacion tipoVisualizacion )
 {
 
+  bool reactivarTextura = false;
+
   glEnableClientState( GL_VERTEX_ARRAY );
   glVertexPointer( 3, GL_FLOAT, 0, v.data() );
 
@@ -25,16 +27,18 @@ void Malla3D::draw_ModoInmediato( visualizacion tipoVisualizacion )
     glEnableClientState( GL_COLOR_ARRAY );
   }
 
-
-  if( textura != nullptr and ct.size() != 0 ) {
-    textura->activar();
-    glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-    glTexCoordPointer( 2, GL_FLOAT, 0, ct.data() );
-    glDisableClientState( GL_COLOR_ARRAY );
-  } else {
-    glDisable( GL_TEXTURE_2D );
-    glDisable( GL_TEXTURE_COORD_ARRAY );
-    glEnableClientState( GL_COLOR_ARRAY );
+  if( glIsEnabled( GL_TEXTURE_2D ) ) {
+    if( textura != nullptr and ct.size() != 0 ) {
+      textura->activar();
+      glEnableClientState( GL_TEXTURE_COORD_ARRAY );
+      glTexCoordPointer( 2, GL_FLOAT, 0, ct.data() );
+      glDisableClientState( GL_COLOR_ARRAY );
+    } else {
+      glDisable( GL_TEXTURE_2D );
+      glDisable( GL_TEXTURE_COORD_ARRAY );
+      reactivarTextura = true;
+      glEnableClientState( GL_COLOR_ARRAY );
+    }
   }
 
 
@@ -70,6 +74,9 @@ void Malla3D::draw_ModoInmediato( visualizacion tipoVisualizacion )
       break;
 
   }
+
+  if( reactivarTextura )
+    glEnable( GL_TEXTURE_2D );
 
 }
 // -----------------------------------------------------------------------------
@@ -232,6 +239,19 @@ void Malla3D::draw_ModoDiferido( visualizacion tipoVisualizacion )
   glDisableClientState( GL_TEXTURE_COORD_ARRAY );
 
 }
+
+void Malla3D::draw_ModoSeleccion() {
+
+  glEnableClientState( GL_VERTEX_ARRAY );
+  glVertexPointer( 3, GL_FLOAT, 0, v.data() );
+  glEnableClientState( GL_COLOR_ARRAY );
+
+  glColorPointer( 3, GL_FLOAT, 0, c_seleccion.data() );
+  glPolygonMode( GL_FRONT, GL_FILL );
+  glDrawElements( GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, f.data() );
+
+}
+
 // -----------------------------------------------------------------------------
 // Función de visualización de la malla,
 // puede llamar a  draw_ModoInmediato o bien a draw_ModoDiferido
@@ -245,6 +265,10 @@ void Malla3D::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion )
       break;
     case DIFERIDO:
       draw_ModoDiferido( tipoVisualizacion );
+      break;
+    case SELECCION:
+      if( c_seleccion.size() > 0 )
+        draw_ModoSeleccion();
       break;
   }
 
@@ -341,6 +365,14 @@ void Malla3D::setColorSolido( Tupla3f nuevoColor ) {
     c_solid.push_back( nuevoColor );
 }
 
+void Malla3D::setColorSeleccion( Tupla3f nuevoColor ) {
+  while( !c_seleccion.empty() )
+    c_seleccion.pop_back();
+
+  for( int i = 0; i < v.size(); i++ )
+    c_seleccion.push_back( nuevoColor );
+}
+
 void Malla3D::setTextura( Textura tex ) {
 
   textura = new Textura( tex );
@@ -412,5 +444,41 @@ void Malla3D::invertirCaras() {
   }
 
   Calcular_normales( CalcularNormalesCaras() );
+
+}
+
+Tupla3f Malla3D::getCentro() {
+
+  Tupla3f centro;
+
+  float xmin = v[0](0);
+  float xmax = v[0](0);
+  float ymin = v[0](1);
+  float ymax = v[0](1);
+  float zmin = v[0](2);
+  float zmax = v[0](2);
+
+  for( int i = 1; i < v.size(); i++ ) {
+    if( v[i](0) < xmin )
+      xmin = v[i](0);
+    if( v[i](0) > xmax )
+      xmax = v[i](0);
+
+    if( v[i](1) < ymin )
+      ymin = v[i](1);
+    if( v[i](1) > ymax )
+      ymax = v[i](1);
+
+    if( v[i](2) < zmin )
+      zmin = v[i](2);
+    if( v[i](2) > zmax )
+      zmax = v[i](2);
+  }
+
+  centro(0) = ( xmin + xmax ) / 2;
+  centro(1) = ( ymin + ymax ) / 2;
+  centro(2) = ( zmin + zmax ) / 2;
+
+  return centro;
 
 }

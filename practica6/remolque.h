@@ -33,6 +33,7 @@ public:
   bool remolqueGiradoAlTope();
   void trasladarRodillo( float cantidad );
   bool rodilloTrasladadoAlTope();
+  void setColorSeleccion( Tupla3f color );
 
 };
 

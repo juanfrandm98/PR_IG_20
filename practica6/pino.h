@@ -10,6 +10,8 @@ class Pino : public ModeloJerarquico {
 public:
   Pino();
   void draw( dibujado tipoDibujado, visualizacion tipoVisualizacion );
+  void setColorSeleccion( Tupla3f color );
+  Tupla3f getCentro();
 
 private:
   Tronco * tronco = nullptr;

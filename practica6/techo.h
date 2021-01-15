@@ -17,6 +17,7 @@ private:
 public:
   Techo();
   void draw( dibujado tipoDibujado, visualizacion tipoVisualizacion );
+  void setColorSeleccion( Tupla3f color );
 
 };
 
