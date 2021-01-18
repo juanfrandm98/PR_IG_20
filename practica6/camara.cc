@@ -8,6 +8,7 @@ Camara::Camara( Tupla3f e, Tupla3f a, Tupla3f u, tipoCamara ti, float l,
   up  = u;
 
   tipo = ti;
+  objetoSeleccionado = false;
 
   left   = l;
   right  = r;
@@ -236,21 +237,103 @@ void Camara::rotarZExaminar( float angle ) {
 
 void Camara::rotarXFirstPerson( float angle ) {
 
+  Tupla3f nuevo_at = at - eye;
+  angle *= FACTOR_GRAD_RAD;
+
+  float z = nuevo_at(2);
+  float y = nuevo_at(1);
+
+  nuevo_at(2) = z * cos(angle) + y * sin(angle);
+  nuevo_at(1) = -z * sin(angle) + y * cos(angle);
+
+  at = nuevo_at + eye;
+
 }
 
 void Camara::rotarYFirstPerson( float angle ) {
+
+  Tupla3f nuevo_at = at - eye;
+  angle *= FACTOR_GRAD_RAD;
+
+  float x = nuevo_at(0);
+  float z = nuevo_at(2);
+
+  nuevo_at(0) = x * cos(angle) + z * sin(angle);
+  nuevo_at(2) = -x * sin(angle) + z * cos(angle);
+
+  at = nuevo_at + eye;
 
 }
 
 void Camara::rotarZFirstPerson( float angle ) {
 
+  Tupla3f nuevo_at = at - eye;
+  angle *= FACTOR_GRAD_RAD;
+
+  float x = nuevo_at(0);
+  float y = nuevo_at(1);
+
+  nuevo_at(0) = x * cos(angle) + -y * sin(angle);
+  nuevo_at(1) = x * sin(angle) + y * cos(angle);
+
+  at = nuevo_at + eye;
+
 }
 
-void Camara::mover( float x, float y, float z ) {
+void Camara::mover( direccionMovimiento dir ) {
 
-  eye(0) += x;
-  eye(1) += y;
-  eye(2) += z;
+  if( !objetoSeleccionado ) {
+
+    Tupla3f movimiento = Tupla3f( 0, 0, 0 );
+    Tupla3f direccion  = Tupla3f( 0, 0, 0 );
+
+    switch( dir ) {
+
+      case ARRIBA:
+        movimiento(1) = 1;
+        break;
+
+      case ABAJO:
+        movimiento(1) = -1;
+        break;
+
+      case ALANTE:
+        direccion = calcularDireccion();
+        movimiento(0) += direccion(0);
+        movimiento(2) += direccion(2);
+        break;
+
+      case ATRAS:
+        direccion = calcularDireccion();
+        movimiento(0) -= direccion(0);
+        movimiento(2) -= direccion(2);
+        break;
+
+      case IZDA:
+        direccion = calcularDireccion();
+        direccion = rotarDireccion( direccion, -90 );
+        movimiento(0) -= direccion(0);
+        movimiento(2) -= direccion(2);
+        break;
+
+      case DCHA:
+        direccion = calcularDireccion();
+        direccion = rotarDireccion( direccion, 90 );
+        movimiento(0) -= direccion(0);
+        movimiento(2) -= direccion(2);
+        break;
+
+    }
+
+    eye(0) += movimiento(0);
+    eye(1) += movimiento(1);
+    eye(2) += movimiento(2);
+
+    at(0) += movimiento(0);
+    at(1) += movimiento(1);
+    at(2) += movimiento(2);
+
+  }
 
 }
 
@@ -302,9 +385,86 @@ void Camara::setProyeccion() {
 
 }
 
+void Camara::setObjetoSeleccionado( bool seleccionado ) {
+
+  objetoSeleccionado = seleccionado;
+
+}
+
+void Camara::rotarCamara( ejeRotacion eje, float angle ) {
+
+  if( !objetoSeleccionado ) {
+
+    switch(eje) {
+      case ROTX:
+        rotarXFirstPerson(angle);
+        break;
+
+      case ROTY:
+        rotarYFirstPerson(angle);
+        break;
+
+      case ROTZ:
+        rotarZFirstPerson(angle);
+        break;
+    }
+
+  } else {
+
+    switch(eje) {
+      case ROTX:
+        rotarXExaminar(-angle);
+        break;
+
+      case ROTY:
+        rotarYExaminar(-angle);
+        break;
+
+      case ROTZ:
+        rotarZExaminar(-angle);
+        break;
+    }
+
+  }
+
+}
+
 void Camara::girar( int x, int y ) {
 
-  rotarYExaminar( x * FACTOR_GRAD_RAD );
-  rotarXExaminar( y * FACTOR_GRAD_RAD );
+  if( objetoSeleccionado ) {
+    rotarYExaminar(x);
+    rotarXExaminar(y);
+  } else {
+    rotarYFirstPerson(-x);
+    rotarXFirstPerson(-y);
+  }
+
+}
+
+Tupla3f Camara::calcularDireccion() {
+
+  Tupla3f direccion = at - eye;
+
+  if( direccion(0) != 0 or direccion(1) != 0 or direccion(2) != 0 )
+    return direccion.normalized();
+  else
+    return direccion;
+
+}
+
+Tupla3f Camara::rotarDireccion( Tupla3f direccionOrignial, float angulo ) {
+
+  Tupla3f direccionRotada;
+  angulo *= FACTOR_GRAD_RAD;
+
+  float x = direccionOrignial(0);
+  float y = direccionOrignial(1);
+  float z = direccionOrignial(2);
+
+  direccionRotada(0) = x * cos(angulo) + z * sin(angulo);
+  direccionRotada(1) = y;
+  direccionRotada(2) = -x * sin(angulo) + z * cos(angulo);
+
+  return direccionRotada;
 
 }

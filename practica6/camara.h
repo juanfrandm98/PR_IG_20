@@ -4,6 +4,8 @@
 #include "aux.h"
 
 typedef enum {PERSPECTIVA, ORTOGONAL} tipoCamara;
+typedef enum {ROTX,ROTY,ROTZ} ejeRotacion;
+typedef enum {ALANTE,ATRAS,IZDA,DCHA,ARRIBA,ABAJO} direccionMovimiento;
 #define FACTOR_GRAD_RAD 0.0174533
 
 class Camara {
@@ -17,6 +19,7 @@ private:
 
   // Parámetros intrínsecos
   tipoCamara tipo;     // Tipo de proyección (ortogonal o perspectiva)
+  bool objetoSeleccionado;  // Si la cámara tiene un objeto seleccionado o no
   float left;   // Distancia del centro del primer plano a la izquierda del mismo
   float right;  // Distancia del centro del primer plano a la derecha del mismo
   float top;    // Distancia del centro del primer plano a la parte superior del mismo
@@ -33,6 +36,17 @@ private:
   float angulo( Tupla2f a, Tupla2f b );
   void zoom( float factor );
 
+  Tupla3f calcularDireccion();
+  Tupla3f rotarDireccion( Tupla3f direccionOrignial, float angulo );
+
+  void rotarXExaminar( float angle );
+  void rotarYExaminar( float angle );
+  void rotarZExaminar( float angle );
+
+  void rotarXFirstPerson( float angle );
+  void rotarYFirstPerson( float angle );
+  void rotarZFirstPerson( float angle );
+
 public:
 
   Camara( Tupla3f e, Tupla3f a, Tupla3f u, tipoCamara ti, float l, float r,
@@ -43,16 +57,11 @@ public:
   void setRight( float nright );
   void setTop( float ntop );
   void setBottom( float nbottom );
+  void setObjetoSeleccionado( bool seleccionado );
 
-  void rotarXExaminar( float angle );
-  void rotarYExaminar( float angle );
-  void rotarZExaminar( float angle );
+  void rotarCamara( ejeRotacion eje, float angle );
 
-  void rotarXFirstPerson( float angle );
-  void rotarYFirstPerson( float angle );
-  void rotarZFirstPerson( float angle );
-
-  void mover( float x, float y, float z );
+  void mover( direccionMovimiento dir );
   void girar( int x, int y );
 
   void zoomIn();

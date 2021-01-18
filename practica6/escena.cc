@@ -232,7 +232,8 @@ Escena::Escena()
     Camara c1( eye, at, up, ORTOGONAL, 5, 5, 2, 2, 50, 2000 );
     camaras.push_back(c1);
 
-    eye = Tupla3f( 150, 100, 150 );
+    eye = Tupla3f( 50, 50, 0 );
+    at  = Tupla3f( -200, 0, 0 );
     Camara c2( eye, at, up, PERSPECTIVA, 5, 5, 2, 2, 50, 2000 );
     camaras.push_back(c2);
 
@@ -633,7 +634,7 @@ void Escena::clickRaton( int boton, int estado, int x, int y ) {
 void Escena::ratonMovido( int x, int y ) {
 
   if( botonDerechoPulsado ) {
-    camaras[camaraActiva].girar( 2 *( x - xactiva ), 2 * ( y - yactiva ) );
+    camaras[camaraActiva].girar( x - xactiva, y - yactiva );
     xactiva = x;
     yactiva = y;
     change_projection();
@@ -1077,13 +1078,39 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           cambiarCamara(2);
           break;
 
+        case 'W':
+          camaras[camaraActiva].mover( ALANTE );
+          break;
+
+        case 'S':
+          camaras[camaraActiva].mover( ATRAS );
+          break;
+
+        case 'A':
+          camaras[camaraActiva].mover( IZDA );
+          break;
+
+        case 'D':
+          camaras[camaraActiva].mover( DCHA );
+          break;
+
+        case 'R':
+          camaras[camaraActiva].mover( ARRIBA );
+          break;
+
+        case 'F':
+          camaras[camaraActiva].mover( ABAJO );
+          break;
+
         case 'Q':
           modoMenu = NADA;
           break;
 
         default:
           cout << "ERROR - opciones disponibles:\n'0': Cámara 0\n"
-               << "'1': Cámara 1\n'Q': Salir\n";
+               << "'1': Cámara 1\n'W': Mover alante\n'S': Mover detrás\n"
+               << "'A': Mover izquierda\n'D': Mover derecha\n"
+               << "'R': Mover arriba\n'F': Mover abajo\n'Q': Salir\n";
 
       }
 
@@ -1118,16 +1145,16 @@ void Escena::teclaEspecial( int Tecla1, int x, int y )
    switch ( Tecla1 )
    {
 	   case GLUT_KEY_LEFT:
-         camaras[camaraActiva].rotarYExaminar(-1);
+         camaras[camaraActiva].rotarCamara( ROTY, 1 );
          break;
 	   case GLUT_KEY_RIGHT:
-         camaras[camaraActiva].rotarYExaminar(1);
+         camaras[camaraActiva].rotarCamara( ROTY, -1 );
          break;
 	   case GLUT_KEY_UP:
-         camaras[camaraActiva].rotarXExaminar(-1);;
+         camaras[camaraActiva].rotarCamara( ROTX, 1 );
          break;
 	   case GLUT_KEY_DOWN:
-         camaras[camaraActiva].rotarXExaminar(1);;
+         camaras[camaraActiva].rotarCamara( ROTX, -1 );
          break;
 	   case GLUT_KEY_F1:
          camaras[camaraActiva].zoomIn();
@@ -1196,6 +1223,7 @@ void Escena::seleccionNuevoAt( int x, int y ) {
   glReadPixels( x, viewport[3] - y, 1, 1, GL_RGB, GL_FLOAT, (void*)colorPixel );
 
   Tupla3f nuevo_at = Tupla3f( 0, 0, 0 );
+  bool objetoSeleccionado = false;
 
   std::cout << "Pixel leído [" << colorPixel(0) << "," << colorPixel(1) << "," << colorPixel(2) << "]\n";
 
@@ -1205,12 +1233,14 @@ void Escena::seleccionNuevoAt( int x, int y ) {
     // PINO SELECCIONADO
     nuevo_at = pinos[1].objeto->getCentro();
     nuevo_at = nuevo_at + pinos[1].posicion;
+    objetoSeleccionado = true;
 
   } else if( colorPixel(0) == coloresSeleccion[2](0) and
              colorPixel(1) == coloresSeleccion[2](1) and
              colorPixel(2) == coloresSeleccion[2](2) ) {
     // TRACTOR SELECCIONADO
     nuevo_at = tractor->getCentro();
+    objetoSeleccionado = true;
 
   } else if( colorPixel(0) == coloresSeleccion[3](0) and
              colorPixel(1) == coloresSeleccion[3](1) and
@@ -1218,9 +1248,13 @@ void Escena::seleccionNuevoAt( int x, int y ) {
     // LATA SELECCIONADA
     nuevo_at = objetosEscenaConTapas[0].objeto->getCentro();
     nuevo_at = nuevo_at + objetosEscenaConTapas[0].posicion;
+    objetoSeleccionado = true;
   }
 
-  camaras[camaraActiva].setAt( nuevo_at );
+  if( objetoSeleccionado )
+    camaras[camaraActiva].setAt( nuevo_at );
+
+  camaras[camaraActiva].setObjetoSeleccionado( objetoSeleccionado );
 
   glEnable( GL_DITHER );
   glEnable( GL_LIGHTING );
