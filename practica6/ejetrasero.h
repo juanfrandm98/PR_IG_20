@@ -17,6 +17,7 @@ public:
   void draw( dibujado tipoDibujado, visualizacion tipoVisualizacion );
   void rotarRuedas( float angulo );
   void setColorSeleccion( Tupla3f color );
+  void setMaterialSeleccion( Material mat );
 
 };
 

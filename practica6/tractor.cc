@@ -58,3 +58,10 @@ void Tractor::setColorSeleccion( Tupla3f color ) {
   techo->setColorSeleccion(color);
   asiento->setColorSeleccion(color);
 }
+
+void Tractor::setMaterialSeleccion( Material mat ) {
+  chasis->setMaterialSeleccion(mat);
+  habitaculo->setMaterialSeleccion(mat);
+  techo->setMaterialSeleccion(mat);
+  asiento->setMaterialSeleccion(mat);
+}

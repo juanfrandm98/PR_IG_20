@@ -34,6 +34,7 @@ public:
   void trasladarRodillo( float cantidad );
   bool rodilloTrasladadoAlTope();
   void setColorSeleccion( Tupla3f color );
+  void setMaterialSeleccion( Material mat );
 
 };
 

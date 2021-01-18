@@ -77,3 +77,9 @@ void Rodillo::setColorSeleccion( Tupla3f color ) {
   sujeccionCentral->setColorSeleccion(color);
   sujeccionSuperior->setColorSeleccion(color);
 }
+
+void Rodillo::setMaterialSeleccion( Material mat ) {
+  rodillo->setMaterialSeleccion(mat);
+  sujeccionCentral->setMaterialSeleccion(mat);
+  sujeccionSuperior->setMaterialSeleccion(mat);
+}

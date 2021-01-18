@@ -50,3 +50,9 @@ void Techo::setColorSeleccion( Tupla3f color ) {
   tuboDerecho->setColorSeleccion(color);
   tuboIzquierdo->setColorSeleccion(color);
 }
+
+void Techo::setMaterialSeleccion( Material mat ) {
+  techo->setMaterialSeleccion(mat);
+  tuboDerecho->setMaterialSeleccion(mat);
+  tuboIzquierdo->setMaterialSeleccion(mat);
+}

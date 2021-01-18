@@ -53,6 +53,11 @@ Escena::Escena()
     coloresSeleccion.push_back( colorVerde );
     coloresSeleccion.push_back( colorAzul );
 
+    materialesSeleccion.push_back( obsidiana );
+    materialesSeleccion.push_back( oro );
+    materialesSeleccion.push_back( hierba );
+    materialesSeleccion.push_back( predefinido );
+
     // Creación de las luces
     // Luz direccional inicial
     luzDir = new LuzDireccional( Tupla2f( 0.0, 0.0 ), GL_LIGHT1, Tupla4f( 0.9, 0.9, 0.9, 1 ),
@@ -76,6 +81,7 @@ Escena::Escena()
     objeto0.objeto->setTextura( caja );
     objeto0.objeto->setColorSolido( Tupla3f( 1, 1, 1 ) );
     objeto0.objeto->setColorSeleccion( coloresSeleccion[0] );
+    objeto0.objeto->setMaterialSeleccion( materialesSeleccion[0] );
     objetosEscena.push_back( objeto0 );
 
     // Valla1=objetosEscena(1)
@@ -89,6 +95,7 @@ Escena::Escena()
     valla1.objeto->setTextura( caja );
     valla1.objeto->setColorSolido( colorAmarilloOscuro );
     valla1.objeto->setColorSeleccion( coloresSeleccion[0] );
+    valla1.objeto->setMaterialSeleccion( materialesSeleccion[0] );
     objetosEscena.push_back( valla1 );
 
     // Valla2=objetosEscena(2)
@@ -102,6 +109,7 @@ Escena::Escena()
     valla2.objeto->setTextura( caja );
     valla2.objeto->setColorSolido( colorAmarilloOscuro );
     valla2.objeto->setColorSeleccion( coloresSeleccion[0] );
+    valla2.objeto->setMaterialSeleccion( materialesSeleccion[0] );
     objetosEscena.push_back( valla2 );
 
     // Valla3=objetosEscena(3)
@@ -115,6 +123,7 @@ Escena::Escena()
     valla3.objeto->setTextura( caja );
     valla3.objeto->setColorSolido( colorAmarilloOscuro );
     valla3.objeto->setColorSeleccion( coloresSeleccion[0] );
+    valla3.objeto->setMaterialSeleccion( materialesSeleccion[0] );
     objetosEscena.push_back( valla3 );
 
     suelo = new Cubo( 600 );
@@ -133,6 +142,7 @@ Escena::Escena()
     mt0.objeto->setMaterial( yeso );
     mt0.objeto->setColorSolido( colorBlanco );
     mt0.objeto->setColorSeleccion( coloresSeleccion[3] );
+    mt0.objeto->setMaterialSeleccion( materialesSeleccion[3] );
     mt0.objeto->setTextura( lata );
     objetosEscenaConTapas.push_back( mt0 );
 
@@ -159,6 +169,7 @@ Escena::Escena()
     heno1.objeto->setMaterial( oro );
     heno1.objeto->setColorSolido( colorAmarilloOscuro );
     heno1.objeto->setColorSeleccion( coloresSeleccion[0] );
+    heno1.objeto->setMaterialSeleccion( materialesSeleccion[0] );
     heno1.objeto->setTextura( heno );
     objetosEscenaConTapas.push_back( heno1 );
 
@@ -172,6 +183,7 @@ Escena::Escena()
     heno2.objeto->setMaterial( oro );
     heno2.objeto->setColorSolido( colorAmarilloOscuro );
     heno2.objeto->setColorSeleccion( coloresSeleccion[0] );
+    heno2.objeto->setMaterialSeleccion( materialesSeleccion[0] );
     heno2.objeto->setTextura( heno );
     objetosEscenaConTapas.push_back( heno2 );
 
@@ -185,6 +197,7 @@ Escena::Escena()
     heno3.objeto->setMaterial( oro );
     heno3.objeto->setColorSolido( colorAmarilloOscuro );
     heno3.objeto->setColorSeleccion( coloresSeleccion[0] );
+    heno3.objeto->setMaterialSeleccion( materialesSeleccion[0] );
     heno3.objeto->setTextura( heno );
     objetosEscenaConTapas.push_back( heno3 );
 
@@ -196,6 +209,7 @@ Escena::Escena()
     j1.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
     j1.escalado = Tupla3f( 1.0, 1.0, 1.0 );
     j1.objeto->setColorSeleccion( coloresSeleccion[0] );
+    j1.objeto->setMaterialSeleccion( materialesSeleccion[0] );
     pinos.push_back( j1 );
 
     // Pino2=modelosJerarquicos(1)
@@ -206,6 +220,7 @@ Escena::Escena()
     j2.orientacion = Tupla3f( 0.0, 45.0, 0.0 );
     j2.escalado = Tupla3f( 1.0, 1.0, 1.0 );
     j2.objeto->setColorSeleccion( coloresSeleccion[1] );
+    j2.objeto->setMaterialSeleccion( materialesSeleccion[1] );
     pinos.push_back( j2 );
 
     // Pino3=modelosJerarquicos(2)
@@ -216,10 +231,12 @@ Escena::Escena()
     j3.orientacion = Tupla3f( 0.0, -32.0, 0.0 );
     j3.escalado = Tupla3f( 1.0, 1.0, 1.0 );
     j3.objeto->setColorSeleccion( coloresSeleccion[0] );
+    j3.objeto->setMaterialSeleccion( materialesSeleccion[0] );
     pinos.push_back( j3 );
 
     tractor = new TractorRemolque();
     tractor->setColorSeleccion( coloresSeleccion[2] );
+    tractor->setMaterialSeleccion( materialesSeleccion[2] );
 
     // Cámaras
     Tupla3f eye = Tupla3f( -150, 100, 150 );
@@ -1206,7 +1223,7 @@ void Escena::change_observer()
 void Escena::dibujaSeleccion() {
 
   glDisable( GL_DITHER );
-  glDisable( GL_LIGHTING );
+  //glDisable( GL_LIGHTING );
   glDisable( GL_TEXTURE_2D );
 
   modoDibujado = SELECCION;

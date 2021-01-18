@@ -51,6 +51,9 @@ class Malla3D
    // Función para asignar un material
    void setMaterial( Material mat );
 
+   // Función para asignar un maetrial de selección
+   void setMaterialSeleccion( Material mat );
+
    // Función para cambiar el color sólido de un objeto
    void setColorSolido( Tupla3f nuevoColor );
 
@@ -100,6 +103,7 @@ class Malla3D
    GLuint id_vbo_ct = 0;
 
    Material * m = nullptr;  // Material
+   Material * m_seleccion = nullptr; // Material para la selección
    Textura * textura = nullptr; // Textura
 
    // Función que devuelve la tabla de normales de las caras, que se utilizará

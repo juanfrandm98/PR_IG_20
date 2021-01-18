@@ -40,3 +40,8 @@ void Tronco::setColorSeleccion( Tupla3f color ) {
   tronco->setColorSeleccion(color);
   rama->setColorSeleccion(color);
 }
+
+void Tronco::setMaterialSeleccion( Material mat ) {
+  tronco->setMaterialSeleccion(mat);
+  rama->setMaterialSeleccion(mat);
+}

@@ -63,8 +63,15 @@ bool EjeDelantero::ruedasAlTope() {
   return ( ( anguloGiro == minAngulo ) || ( anguloGiro == maxAngulo ) );
 
 }
+
 void EjeDelantero::setColorSeleccion( Tupla3f color ) {
   eje->setColorSeleccion(color);
   ruedaIzquierda->setColorSeleccion(color);
   ruedaDerecha->setColorSeleccion(color);
+}
+
+void EjeDelantero::setMaterialSeleccion( Material mat ) {
+  eje->setMaterialSeleccion(mat);
+  ruedaIzquierda->setMaterialSeleccion(mat);
+  ruedaDerecha->setMaterialSeleccion(mat);
 }

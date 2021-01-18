@@ -81,6 +81,11 @@ void TractorRemolque::setColorSeleccion( Tupla3f color ) {
   remolque->setColorSeleccion(color);
 }
 
+void TractorRemolque::setMaterialSeleccion( Material mat ) {
+  tractor->setMaterialSeleccion(mat);
+  remolque->setMaterialSeleccion(mat);
+}
+
 Tupla3f TractorRemolque::getCentro() {
   return Tupla3f( 0, 40, 0 );
 }

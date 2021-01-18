@@ -37,3 +37,8 @@ void Asiento::setColorSeleccion( Tupla3f color ) {
   cojin->setColorSeleccion(color);
   espalda->setColorSeleccion(color);
 }
+
+void Asiento::setMaterialSeleccion( Material mat ) {
+  cojin->setMaterialSeleccion(mat);
+  espalda->setMaterialSeleccion(mat);
+}

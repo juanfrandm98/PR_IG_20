@@ -27,3 +27,7 @@ void Copa::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion ) {
 void Copa::setColorSeleccion( Tupla3f color ) {
   cono->setColorSeleccion(color);
 }
+
+void Copa::setMaterialSeleccion( Material mat ) {
+  cono->setMaterialSeleccion(mat);
+}

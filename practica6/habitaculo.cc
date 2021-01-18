@@ -48,3 +48,9 @@ void Habitaculo::setColorSeleccion( Tupla3f color ) {
   ladoDerecho->setColorSeleccion(color);
   ladoAtras->setColorSeleccion(color);
 }
+
+void Habitaculo::setMaterialSeleccion( Material mat ) {
+  ladoIzquierdo->setMaterialSeleccion(mat);
+  ladoDerecho->setMaterialSeleccion(mat);
+  ladoAtras->setMaterialSeleccion(mat);
+}

@@ -75,10 +75,19 @@ bool Chasis::ruedasAlTope() {
   return ejeDelantero->ruedasAlTope();
 
 }
+
 void Chasis::setColorSeleccion( Tupla3f color ) {
   chasisDelantero->setColorSeleccion(color);
   chasisTrasero->setColorSeleccion(color);
   munionDelantero->setColorSeleccion(color);
   ejeDelantero->setColorSeleccion(color);
   ejeTrasero->setColorSeleccion(color);
+}
+
+void Chasis::setMaterialSeleccion( Material mat ) {
+  chasisDelantero->setMaterialSeleccion(mat);
+  chasisTrasero->setMaterialSeleccion(mat);
+  munionDelantero->setMaterialSeleccion(mat);
+  ejeDelantero->setMaterialSeleccion(mat);
+  ejeTrasero->setMaterialSeleccion(mat);
 }

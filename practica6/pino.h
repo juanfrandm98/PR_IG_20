@@ -11,6 +11,7 @@ public:
   Pino();
   void draw( dibujado tipoDibujado, visualizacion tipoVisualizacion );
   void setColorSeleccion( Tupla3f color );
+  void setMaterialSeleccion( Material mat );
   Tupla3f getCentro();
 
 private:

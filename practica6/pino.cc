@@ -26,6 +26,11 @@ void Pino::setColorSeleccion( Tupla3f color ) {
   copa->setColorSeleccion(color);
 }
 
+void Pino::setMaterialSeleccion( Material mat ) {
+  tronco->setMaterialSeleccion(mat);
+  copa->setMaterialSeleccion(mat);
+}
+
 Tupla3f Pino::getCentro() {
 
   return Tupla3f( 0, 50, 0 );

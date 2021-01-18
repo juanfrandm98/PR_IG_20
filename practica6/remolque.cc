@@ -105,3 +105,9 @@ void Remolque::setColorSeleccion( Tupla3f color ) {
   extensor->setColorSeleccion(color);
   enganche->setColorSeleccion(color);
 }
+
+void Remolque::setMaterialSeleccion( Material mat ) {
+  rodillo->setMaterialSeleccion(mat);
+  extensor->setMaterialSeleccion(mat);
+  enganche->setMaterialSeleccion(mat);
+}

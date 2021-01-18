@@ -134,6 +134,7 @@ class Escena
    int xactiva;
    int yactiva;
    std::vector<Tupla3f> coloresSeleccion;
+   std::vector<Material> materialesSeleccion;
 
    public:
 

@@ -26,3 +26,7 @@ void RuedaTrasera::draw( dibujado tipoDibujado, visualizacion tipoVisualizacion 
 void RuedaTrasera::setColorSeleccion( Tupla3f color ) {
   rueda->setColorSeleccion(color);
 }
+
+void RuedaTrasera::setMaterialSeleccion( Material mat ) {
+  rueda->setMaterialSeleccion(mat);
+}

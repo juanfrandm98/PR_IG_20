@@ -16,6 +16,7 @@ public:
   Tronco();
   void draw( dibujado tipoDibujado, visualizacion tipoVisualizacion );
   void setColorSeleccion( Tupla3f color );
+  void setMaterialSeleccion( Material mat );
 
 };
 

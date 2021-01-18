@@ -27,6 +27,7 @@ public:
   void rotarRuedas( float angulo );
   bool ruedasAlTope();
   void setColorSeleccion( Tupla3f color );
+  void setMaterialSeleccion( Material mat );
 
 };
 

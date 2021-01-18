@@ -35,3 +35,8 @@ void EjeTrasero::setColorSeleccion( Tupla3f color ) {
   ruedaDerecha->setColorSeleccion(color);
   ruedaIzquierda->setColorSeleccion(color);
 }
+
+void EjeTrasero::setMaterialSeleccion( Material mat ) {
+  ruedaDerecha->setMaterialSeleccion(mat);
+  ruedaIzquierda->setMaterialSeleccion(mat);
+}

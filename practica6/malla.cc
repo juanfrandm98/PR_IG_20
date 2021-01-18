@@ -246,6 +246,12 @@ void Malla3D::draw_ModoSeleccion() {
   glVertexPointer( 3, GL_FLOAT, 0, v.data() );
   glEnableClientState( GL_COLOR_ARRAY );
 
+  if( ( glIsEnabled( GL_LIGHTING ) ) and ( m_seleccion != nullptr ) ) {
+    glEnableClientState( GL_NORMAL_ARRAY );
+    glNormalPointer( GL_FLOAT, 0, nv.data() );
+    m_seleccion->aplicar();
+  }
+
   glColorPointer( 3, GL_FLOAT, 0, c_seleccion.data() );
   glPolygonMode( GL_FRONT, GL_FILL );
   glDrawElements( GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, f.data() );
@@ -342,6 +348,10 @@ std::vector<Tupla3f> Malla3D::CalcularNormalesCaras() {
 
 void Malla3D::setMaterial( Material mat ) {
   m = new Material( mat );
+}
+
+void Malla3D::setMaterialSeleccion( Material mat ) {
+  m_seleccion = new Material( mat );
 }
 
 void Malla3D::drawLight() {
