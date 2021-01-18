@@ -298,29 +298,24 @@ void Camara::mover( direccionMovimiento dir ) {
         break;
 
       case ALANTE:
-        direccion = calcularDireccion();
-        movimiento(0) += direccion(0);
-        movimiento(2) += direccion(2);
+        movimiento = calcularDireccion();
         break;
 
       case ATRAS:
-        direccion = calcularDireccion();
-        movimiento(0) -= direccion(0);
-        movimiento(2) -= direccion(2);
+        movimiento = calcularDireccion();
+        movimiento(0) *= -1;
+        movimiento(1) *= -1;
+        movimiento(2) *= -1;
         break;
 
       case IZDA:
-        direccion = calcularDireccion();
-        direccion = rotarDireccion( direccion, -90 );
-        movimiento(0) -= direccion(0);
-        movimiento(2) -= direccion(2);
+        movimiento = calcularDireccion();
+        movimiento = rotarDireccion( movimiento, -90 );
         break;
 
       case DCHA:
-        direccion = calcularDireccion();
-        direccion = rotarDireccion( direccion, 90 );
-        movimiento(0) -= direccion(0);
-        movimiento(2) -= direccion(2);
+        movimiento = calcularDireccion();
+        movimiento = rotarDireccion( movimiento, 90 );
         break;
 
     }

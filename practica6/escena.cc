@@ -232,8 +232,8 @@ Escena::Escena()
     Camara c1( eye, at, up, ORTOGONAL, 5, 5, 2, 2, 50, 2000 );
     camaras.push_back(c1);
 
-    eye = Tupla3f( 50, 50, 0 );
-    at  = Tupla3f( -200, 0, 0 );
+    eye = Tupla3f( 200, 300, 100 );
+    at  = Tupla3f( 0, 1, 0 );
     Camara c2( eye, at, up, PERSPECTIVA, 5, 5, 2, 2, 50, 2000 );
     camaras.push_back(c2);
 
