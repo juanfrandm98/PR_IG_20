@@ -400,7 +400,6 @@ void Escena::DrawMode( visualizacion tipo ) {
   glPushMatrix();
     glTranslatef( 0.0, 0.5, 0.0 );
     glScalef( 1, 0.002, 1 );
-    std::cout << "Seleccionando: " << seleccionando << ", suelo->getSeleccionable(): " << suelo->getSeleccionable() << "\n";
     if( seleccionando and suelo->getSeleccionable() )
       suelo->draw( SELECCION, tipo );
     else
@@ -1252,8 +1251,6 @@ void Escena::seleccionNuevoAt( int x, int y ) {
 
   Tupla3f nuevo_at = Tupla3f( 0, 0, 0 );
   bool objetoSeleccionado = false;
-
-  std::cout << "Pixel leído [" << colorPixel(0) << "," << colorPixel(1) << "," << colorPixel(2) << "]\n";
 
   if( colorPixel(0) == coloresSeleccion[1](0) and
       colorPixel(1) == coloresSeleccion[1](1) and
