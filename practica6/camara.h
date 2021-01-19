@@ -31,9 +31,6 @@ private:
   const float factorZoomIn  = 0.9;
   const float factorZoomOut = 1.1;
 
-  std::vector<Tupla3f> colocarEjes( float & alpha, float & beta, float & gamma );
-  std::vector<Tupla3f> deshacerEjes( std::vector<Tupla3f> ejes, float alpha, float beta, float gamma );
-  float angulo( Tupla2f a, Tupla2f b );
   void zoom( float factor );
 
   Tupla3f calcularDireccion();
