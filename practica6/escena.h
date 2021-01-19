@@ -104,7 +104,6 @@ class Escena
    bool solido;
    bool ajedrez;
    dibujado modoDibujado;
-   dibujado modoDibujadoAnterior;
    bool tapa_superior;
    bool tapa_inferior;
    iluminacion modoIluminacion;
@@ -135,6 +134,7 @@ class Escena
    int yactiva;
    std::vector<Tupla3f> coloresSeleccion;
    std::vector<Material> materialesSeleccion;
+   bool seleccionando;
 
    public:
 

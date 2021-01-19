@@ -54,9 +54,9 @@ Escena::Escena()
     coloresSeleccion.push_back( colorAzul );
 
     materialesSeleccion.push_back( obsidiana );
-    materialesSeleccion.push_back( oro );
-    materialesSeleccion.push_back( hierba );
-    materialesSeleccion.push_back( predefinido );
+    materialesSeleccion.push_back( Material( Tupla4f(1,0,0,1), Tupla4f(1,0,0,1), Tupla4f(1,0,0,1), 1 ) );
+    materialesSeleccion.push_back( Material( Tupla4f(0,1,0,1), Tupla4f(0,1,0,1), Tupla4f(0,1,0,1), 1 ) );
+    materialesSeleccion.push_back( Material( Tupla4f(0,0,1,1), Tupla4f(0,0,1,1), Tupla4f(0,0,1,1), 1 ) );
 
     // Creación de las luces
     // Luz direccional inicial
@@ -143,6 +143,7 @@ Escena::Escena()
     mt0.objeto->setColorSolido( colorBlanco );
     mt0.objeto->setColorSeleccion( coloresSeleccion[3] );
     mt0.objeto->setMaterialSeleccion( materialesSeleccion[3] );
+    mt0.objeto->setSeleccionable(true);
     mt0.objeto->setTextura( lata );
     objetosEscenaConTapas.push_back( mt0 );
 
@@ -221,6 +222,7 @@ Escena::Escena()
     j2.escalado = Tupla3f( 1.0, 1.0, 1.0 );
     j2.objeto->setColorSeleccion( coloresSeleccion[1] );
     j2.objeto->setMaterialSeleccion( materialesSeleccion[1] );
+    j2.objeto->setSeleccionable(true);
     pinos.push_back( j2 );
 
     // Pino3=modelosJerarquicos(2)
@@ -237,6 +239,7 @@ Escena::Escena()
     tractor = new TractorRemolque();
     tractor->setColorSeleccion( coloresSeleccion[2] );
     tractor->setMaterialSeleccion( materialesSeleccion[2] );
+    tractor->setSeleccionable(true);
 
     // Cámaras
     Tupla3f eye = Tupla3f( -150, 100, 150 );
@@ -286,6 +289,7 @@ Escena::Escena()
     sumandoMovimientoRodillo = true;
 
     botonDerechoPulsado = false;
+    seleccionando = false;
 
 }
 
@@ -340,7 +344,10 @@ void Escena::DrawMode( visualizacion tipo ) {
         glRotatef( objetosEscena[i].orientacion(1), 0, 1, 0 );
         glRotatef( objetosEscena[i].orientacion(2), 0, 0, 1 );
         glScalef( objetosEscena[i].escalado(0), objetosEscena[i].escalado(1), objetosEscena[i].escalado(2) );
-        objetosEscena[i].objeto->draw( modoDibujado, tipo );
+        if( seleccionando and objetosEscena[i].objeto->getSeleccionable() )
+          objetosEscena[i].objeto->draw( SELECCION, tipo );
+        else
+          objetosEscena[i].objeto->draw( modoDibujado, tipo );
       glPopMatrix();
     }
   }
@@ -353,7 +360,9 @@ void Escena::DrawMode( visualizacion tipo ) {
         glRotatef( objetosEscenaConTapas[i].orientacion(1), 0, 1, 0 );
         glRotatef( objetosEscenaConTapas[i].orientacion(2), 0, 0, 1 );
         glScalef( objetosEscenaConTapas[i].escalado(0), objetosEscenaConTapas[i].escalado(1), objetosEscenaConTapas[i].escalado(2) );
-        if( tapa_superior and tapa_inferior )
+        if( seleccionando and objetosEscenaConTapas[i].objeto->getSeleccionable() )
+          objetosEscenaConTapas[i].objeto->draw( SELECCION, tipo );
+        else if( tapa_superior and tapa_inferior )
           objetosEscenaConTapas[i].objeto->draw( modoDibujado, tipo );
         else {
           objetosEscenaConTapas[i].objeto->draw_cuerpo( modoDibujado, tipo );
@@ -371,7 +380,10 @@ void Escena::DrawMode( visualizacion tipo ) {
         glRotatef( pinos[i].orientacion(1), 0, 1, 0 );
         glRotatef( pinos[i].orientacion(2), 0, 0, 1 );
         glScalef( pinos[i].escalado(0), pinos[i].escalado(1), pinos[i].escalado(2) );
-        pinos[i].objeto->draw( modoDibujado, tipo );
+        if( seleccionando and pinos[i].objeto->getSeleccionable() )
+          pinos[i].objeto->draw( SELECCION, tipo );
+        else
+          pinos[i].objeto->draw( modoDibujado, tipo );
       glPopMatrix();
     }
   }
@@ -379,13 +391,20 @@ void Escena::DrawMode( visualizacion tipo ) {
   glPushMatrix();
     glTranslatef( 0, 17.5, 0 );
     glScalef( 0.5, 0.5, 0.5 );
-    tractor->draw( modoDibujado, tipo );
+    if( seleccionando and tractor->getSeleccionable() )
+      tractor->draw( SELECCION, tipo );
+    else
+      tractor->draw( modoDibujado, tipo );
   glPopMatrix();
 
   glPushMatrix();
     glTranslatef( 0.0, 0.5, 0.0 );
     glScalef( 1, 0.002, 1 );
-    suelo->draw( modoDibujado, tipo );
+    std::cout << "Seleccionando: " << seleccionando << ", suelo->getSeleccionable(): " << suelo->getSeleccionable() << "\n";
+    if( seleccionando and suelo->getSeleccionable() )
+      suelo->draw( SELECCION, tipo );
+    else
+      suelo->draw( modoDibujado, tipo );
   glPopMatrix();
 
 }
@@ -403,54 +422,49 @@ void Escena::dibujar()
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
 	change_observer();
 
-  if( modoDibujado != SELECCION ) {
-    ejes.draw();
+  ejes.draw();
 
-    if( modoIluminacion != BASICA ) {
-      // Activamos la iluminación
-      glEnable( GL_LIGHTING );
+  if( modoIluminacion != BASICA ) {
+    // Activamos la iluminación
+    glEnable( GL_LIGHTING );
 
-      // Seleccionamos el modo de iluminación
-      if( modoIluminacion == PLANA )
-        glShadeModel( GL_FLAT );
-      else
-        glShadeModel( GL_SMOOTH );
+    // Seleccionamos el modo de iluminación
+    if( modoIluminacion == PLANA )
+      glShadeModel( GL_FLAT );
+    else
+      glShadeModel( GL_SMOOTH );
 
-      // Si la luz direccional está activada, la aplicamos y dibujamos la esfera
-      // para ayudar a ver la dirección
-      if( glIsEnabled( GL_LIGHT1 ) ) {
-        //objetosEscenaConTapas[5].posicion = luzDir->getPosicion();
-        luzDir->aplicar();
-      }
-
-      // Comprobamos si necesitamos aplicar el resto de luces
-      if( glIsEnabled( GL_LIGHT2 ) )
-        luzPos1->aplicar();
-      if( glIsEnabled( GL_LIGHT3 ) )
-        luzPos2->aplicar();
-
-      // Dibujamos los objetos
-      DrawMode( SOLID );
-
-    } else {
-
-      glDisable( GL_LIGHTING );
-
-      if( ajedrez ) {
-        DrawMode( CHESS );
-      } else {
-        if( puntos )
-          DrawMode( POINTS );
-        if( lineas )
-          DrawMode( LINES );
-        if( solido )
-          DrawMode( SOLID );
-      }
-
+    // Si la luz direccional está activada, la aplicamos y dibujamos la esfera
+    // para ayudar a ver la dirección
+    if( glIsEnabled( GL_LIGHT1 ) ) {
+      //objetosEscenaConTapas[5].posicion = luzDir->getPosicion();
+      luzDir->aplicar();
     }
 
-  } else {
+    // Comprobamos si necesitamos aplicar el resto de luces
+    if( glIsEnabled( GL_LIGHT2 ) )
+      luzPos1->aplicar();
+    if( glIsEnabled( GL_LIGHT3 ) )
+      luzPos2->aplicar();
+
+    // Dibujamos los objetos
     DrawMode( SOLID );
+
+  } else {
+
+    glDisable( GL_LIGHTING );
+
+    if( ajedrez ) {
+      DrawMode( CHESS );
+    } else {
+      if( puntos )
+        DrawMode( POINTS );
+      if( lineas )
+        DrawMode( LINES );
+      if( solido )
+        DrawMode( SOLID );
+    }
+
   }
 
 }
@@ -616,7 +630,6 @@ void Escena::clickRaton( int boton, int estado, int x, int y ) {
       if( estado == GLUT_DOWN ) {
         dibujaSeleccion();
       } else {
-        modoDibujado = modoDibujadoAnterior;
         seleccionNuevoAt( x, y );
       }
       break;
@@ -1223,10 +1236,8 @@ void Escena::change_observer()
 void Escena::dibujaSeleccion() {
 
   glDisable( GL_DITHER );
-  //glDisable( GL_LIGHTING );
-  glDisable( GL_TEXTURE_2D );
 
-  modoDibujado = SELECCION;
+  seleccionando = true;
 
 }
 
@@ -1274,7 +1285,6 @@ void Escena::seleccionNuevoAt( int x, int y ) {
   camaras[camaraActiva].setObjetoSeleccionado( objetoSeleccionado );
 
   glEnable( GL_DITHER );
-  glEnable( GL_LIGHTING );
-  glEnable( GL_TEXTURE_2D );
+  seleccionando = false;
 
 }

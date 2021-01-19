@@ -242,19 +242,21 @@ void Malla3D::draw_ModoDiferido( visualizacion tipoVisualizacion )
 
 void Malla3D::draw_ModoSeleccion() {
 
+  bool reactivarTextura = glIsEnabled( GL_TEXTURE_2D );
+  bool reactivarLuz = glIsEnabled( GL_LIGHTING );
+  glDisable( GL_TEXTURE_2D );
+  glDisable( GL_LIGHTING );
+
   glEnableClientState( GL_VERTEX_ARRAY );
   glVertexPointer( 3, GL_FLOAT, 0, v.data() );
   glEnableClientState( GL_COLOR_ARRAY );
 
-  if( ( glIsEnabled( GL_LIGHTING ) ) and ( m_seleccion != nullptr ) ) {
-    glEnableClientState( GL_NORMAL_ARRAY );
-    glNormalPointer( GL_FLOAT, 0, nv.data() );
-    m_seleccion->aplicar();
-  }
-
   glColorPointer( 3, GL_FLOAT, 0, c_seleccion.data() );
   glPolygonMode( GL_FRONT, GL_FILL );
   glDrawElements( GL_TRIANGLES, 3 * f.size(), GL_UNSIGNED_INT, f.data() );
+
+  if( reactivarTextura ) glEnable( GL_TEXTURE_2D );
+  if( reactivarLuz ) glEnable( GL_LIGHTING );
 
 }
 
@@ -381,6 +383,7 @@ void Malla3D::setColorSeleccion( Tupla3f nuevoColor ) {
 
   for( int i = 0; i < v.size(); i++ )
     c_seleccion.push_back( nuevoColor );
+
 }
 
 void Malla3D::setTextura( Textura tex ) {
@@ -491,4 +494,12 @@ Tupla3f Malla3D::getCentro() {
 
   return centro;
 
+}
+
+void Malla3D::setSeleccionable( bool s ) {
+  seleccionable = s;
+}
+
+bool Malla3D::getSeleccionable() {
+  return seleccionable;
 }

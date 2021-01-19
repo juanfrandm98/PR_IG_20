@@ -66,6 +66,8 @@ class Malla3D
    void invertirCaras();
 
    Tupla3f getCentro();
+   void setSeleccionable( bool s );
+   bool getSeleccionable();
 
    protected:
 
@@ -105,6 +107,8 @@ class Malla3D
    Material * m = nullptr;  // Material
    Material * m_seleccion = nullptr; // Material para la selección
    Textura * textura = nullptr; // Textura
+
+   bool seleccionable = false;
 
    // Función que devuelve la tabla de normales de las caras, que se utilizará
    // para el cálculo de las normales de los vértices
