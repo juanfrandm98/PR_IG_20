@@ -3,8 +3,14 @@
 
 TractorRemolque::TractorRemolque() {
 
+  Material oro = Material(Tupla4f(0.75164,0.60648,0.22648,1),Tupla4f(0.628281,0.555802,0.366065,1),Tupla4f(0.24725,0.1995,0.0745,1),0.4);
+
   tractor  = new Tractor();
   remolque = new Remolque();
+
+  marcador = new ObjRevolucion( "./plys/letra_d", 20, true, true, 220 );
+  marcador->setColorSolido( Tupla3f( 1, 1, 0 ) );
+  marcador->setMaterial( oro );
 
 }
 
@@ -17,6 +23,12 @@ void TractorRemolque::draw( dibujado tipoDibujado, visualizacion tipoVisualizaci
   glPushMatrix();
     glTranslatef( 65, 0, 0);
     remolque->draw( tipoDibujado, tipoVisualizacion );
+  glPopMatrix();
+
+  glPushMatrix();
+    glTranslatef( 0, 120, 0 );
+    glScalef( 2.5, 2.5, 2.5 );
+    marcador->draw( tipoDibujado, tipoVisualizacion );
   glPopMatrix();
 
 }
@@ -87,5 +99,16 @@ void TractorRemolque::setMaterialSeleccion( Material mat ) {
 }
 
 Tupla3f TractorRemolque::getCentro() {
-  return Tupla3f( 0, 40, 0 );
+  Tupla3f centro = Tupla3f( 0, 40, 0 );
+  centro = centro + pos;
+
+  return pos;
+}
+
+Tupla3f TractorRemolque::getPos() {
+  return pos;
+}
+
+void TractorRemolque::retrocederX( float cantidad ) {
+  pos(0) -= cantidad;
 }

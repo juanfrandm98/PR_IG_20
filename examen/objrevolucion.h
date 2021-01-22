@@ -29,8 +29,8 @@ class ObjRevolucion : public Malla3D
 {
    public:
      ObjRevolucion();
-     ObjRevolucion(const std::string & archivo, int num_instancias, bool tapa_sup=true, bool tapa_inf=true) ;
-     ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapa_sup=true, bool tapa_inf=true) ;
+     ObjRevolucion(const std::string & archivo, int num_instancias, bool tapa_sup=true, bool tapa_inf=true, float maxgrados = 360 ) ;
+     ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapa_sup=true, bool tapa_inf=true, float maxgrados = 360 ) ;
 
      // Funciones para cambiar el dibujado de las tapas en tiempo de ejecución
      void draw_cuerpo( dibujado tipoDibujado, visualizacion tipoVisualizacion );
@@ -44,10 +44,10 @@ class ObjRevolucion : public Malla3D
      void draw_tapas_diferido( visualizacion tipoVisualizacion, bool superior, bool inferior );
      void calcularCoordenadasDeTextura( int num_puntos_perfil, int num_perfiles, std::vector<float> distancias );
      std::vector<float> calcularVectorDistancias( std::vector<Tupla3f> vector_original );
-     void crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias, bool ordenAscendente);
+     void crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias, bool ordenAscendente, float maxgrados );
      bool detectarOrdenAscendente( std::vector<Tupla3f> perfil_original );
      void crearTapa( bool superior, bool hayTapaInf, Tupla3f centro, int num_instancias, int perfil_size, bool ordenAscendente );
-     void introducirVertice( int i, Tupla3f punto, int num_instancias );
+     void introducirVertice( int i, Tupla3f punto, int num_instancias, float maxgrados );
 
      // Variables para cambiar el dibujado de las tapas en tiempo de ejecución
      bool tiene_tapa_sup;
@@ -76,7 +76,7 @@ class ObjRevolucion : public Malla3D
 
    protected:
       void CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_instancias,
-                        bool tapa_sup, bool tapa_inf );
+                        bool tapa_sup, bool tapa_inf, float maxgrados );
 } ;
 
 

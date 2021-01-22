@@ -46,6 +46,7 @@ Escena::Escena()
     Tupla3f colorVerde = Tupla3f( 0, 1, 0 );
     Tupla3f colorAzul = Tupla3f( 0, 0, 1 );
     Tupla3f colorAmarilloOscuro = Tupla3f( 229/255, 190/255, 1/255 );
+    Tupla3f colorAmarillo = Tupla3f( 1, 1, 0 );
     Tupla3f colorGrisOscuro = Tupla3f( 155/255, 155/255, 155/255 );
 
     coloresSeleccion.push_back( colorGrisOscuro );
@@ -202,6 +203,19 @@ Escena::Escena()
     heno3.objeto->setTextura( heno );
     objetosEscenaConTapas.push_back( heno3 );
 
+    ModeloTapas marcador;
+    marcador.objeto = new ObjRevolucion( "./plys/letra_d", 20, true, true, 220 );
+    marcador.dibujar = true;
+    marcador.posicion = Tupla3f( 200, 50, 100 );
+    marcador.orientacion = Tupla3f( 0.0, 0.0, 0.0 );
+    marcador.escalado = Tupla3f( 5.0, 5.0, 5.0 );
+    marcador.objeto->setMaterial( oro );
+    marcador.objeto->setColorSolido( colorAmarillo );
+    marcador.objeto->setColorSeleccion( coloresSeleccion[0] );
+    marcador.objeto->setMaterialSeleccion( materialesSeleccion[0] );
+    objetosEscenaConTapas.push_back( marcador );
+
+
     // Pino1=modelosJerarquicos(0)
     PinoColocado j1;
     j1.objeto = new Pino();
@@ -257,7 +271,12 @@ Escena::Escena()
     Camara c2( eye, at, up, PERSPECTIVA, 5, 5, 2, 2, 50, 2000 );
     camaras.push_back(c2);
 
-    camaraActiva = 0;
+    eye = Tupla3f( 350, 100, 0 );
+    at = tractor->getCentro();
+    Camara c3( eye, at, up, ORTOGONAL, 5, 5, 2, 2, 10, 200 );
+    camaras.push_back(c3);
+
+    camaraActiva = 3;
 
 
     // Inicialización de los flags
@@ -270,7 +289,7 @@ Escena::Escena()
     tapa_superior = true;
     modoIluminacion = BASICA;
     variacionLuz = VARALPHA;
-    animacionAutomatica = false;
+    animacionAutomatica = true;
     gradoSeleccionado = ROTARRUEDAS;
 
     // Las velocidades de los grados de libertad por separado, de esta forma:
@@ -388,8 +407,10 @@ void Escena::DrawMode( visualizacion tipo ) {
     }
   }
 
+  Tupla3f posTractor = tractor->getPos();
+
   glPushMatrix();
-    glTranslatef( 0, 17.5, 0 );
+    glTranslatef( posTractor(0), posTractor(1), posTractor(2) );
     glScalef( 0.5, 0.5, 0.5 );
     if( seleccionando and tractor->getSeleccionable() )
       tractor->draw( SELECCION, tipo );
@@ -498,6 +519,11 @@ void Escena::animarGradoTractor( gradosTractor gradoSeleccionado, float sentido 
       tractor->trasladarRodillo(sentido);
       break;
 
+    case AVANZARTRACTOR:
+      tractor->retrocederX(sentido);
+      camaras[3].moveAtandEyeX(-sentido);
+      break;
+
     default:
       std::cout << "Grado seleccionado no manejado\n";
       break;
@@ -511,6 +537,7 @@ void Escena::animarModeloJerarquico() {
   if( animacionAutomatica ) {
 
     animarGradoTractor( ROTARRUEDAS, velocidades[0] );
+    animarGradoTractor( AVANZARTRACTOR, 0.01 );
 
     if( sumandoGiroRuedas ) {
       animarGradoTractor( GIRARRUEDASDEL, velocidades[1] );

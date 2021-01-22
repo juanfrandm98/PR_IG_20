@@ -16,12 +16,22 @@
 ObjRevolucion::ObjRevolucion() {}
 
 void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_instancias,
-                                 bool tapa_sup, bool tapa_inf ) {
+                                 bool tapa_sup, bool tapa_inf, float maxgrados ) {
    // Almacenamiento (si fuera necesario) de los puntos tapa
    Tupla3f punto, puntoSup, puntoInf;
    int contador;
    const float EPSILON = 0.001;
+   const float vueltacompleta = 2 * M_PI;
+   const float factor_grados_a_radianes = 0.0174533;
    bool ordenAscendente = detectarOrdenAscendente( perfilOriginal );
+
+   if ( maxgrados >= 360 )
+      maxgrados = vueltacompleta;
+   else if( maxgrados <= 180 )
+      maxgrados = vueltacompleta / 2;
+   else
+      maxgrados *= factor_grados_a_radianes;
+
 
    // Almacenamos si el objeto de revolución tiene las tapas
    tiene_tapa_sup = tapa_sup;
@@ -60,7 +70,7 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
    }
 
    // Ahora creamos las tablas de vértices y triángulos
-   crearMalla( perfilOriginal, num_instancias, ordenAscendente );
+   crearMalla( perfilOriginal, num_instancias, ordenAscendente, maxgrados );
 
    // Como hemos duplicado una instancia para utilizar bien texturas, aumentamos
    // el contador de las mismas
@@ -120,14 +130,14 @@ void ObjRevolucion::CrearObjeto( std::vector<Tupla3f> perfilOriginal, int num_in
   setMaterial( predefinido );
 }
 
-ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bool tapa_sup, bool tapa_inf) {
+ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bool tapa_sup, bool tapa_inf, float maxgrados ) {
    // completar ......(práctica 2)
 
    // En primer lugar, cargamos en perfilOriginal los vértices leídos del archivo argumento
    std::vector<Tupla3f> perfilOriginal;
    ply::read_vertices( archivo, perfilOriginal );
 
-   CrearObjeto( perfilOriginal, num_instancias, tapa_sup, tapa_inf );
+   CrearObjeto( perfilOriginal, num_instancias, tapa_sup, tapa_inf, maxgrados );
 
 }
 
@@ -135,30 +145,30 @@ ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bo
 // objeto de revolución obtenido a partir de un perfil (en un vector de puntos)
 
 
-ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapa_sup, bool tapa_inf) {
+ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapa_sup, bool tapa_inf, float maxgrados ) {
 
-  CrearObjeto( archivo, num_instancias, tapa_sup, tapa_inf );
+  CrearObjeto( archivo, num_instancias, tapa_sup, tapa_inf, maxgrados );
 
 }
 
-void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias, bool ordenAscendente) {
+void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias, bool ordenAscendente, float maxgrados ) {
 
   // Rellenamos la tabla de vértices
   for( int i = 0; i < num_instancias; i++ )
     if( ordenAscendente )
       for( int j = 0; j < perfil_original.size(); j++ )
-        introducirVertice( i, perfil_original[j], num_instancias );
+        introducirVertice( i, perfil_original[j], num_instancias, maxgrados );
     else
       for( int j = perfil_original.size() - 1; j >= 0; j-- )
-        introducirVertice( i, perfil_original[j], num_instancias );
+        introducirVertice( i, perfil_original[j], num_instancias, maxgrados );
 
   // Duplicamos el primer perfil
   if( ordenAscendente )
     for( int j = 0; j < perfil_original.size(); j++ )
-      introducirVertice( 0, perfil_original[j], num_instancias );
+      introducirVertice( 0, perfil_original[j], num_instancias, maxgrados );
   else
     for( int j = perfil_original.size() - 1; j >= 0; j-- )
-      introducirVertice( 0, perfil_original[j], num_instancias );
+      introducirVertice( 0, perfil_original[j], num_instancias, maxgrados );
   num_instancias++;
 
   int contador = 0;
@@ -736,14 +746,14 @@ void ObjRevolucion::crearTapa( bool superior, bool hayTapaInf, Tupla3f centro, i
 
 }
 
-void ObjRevolucion::introducirVertice( int i, Tupla3f punto, int num_instancias ) {
+void ObjRevolucion::introducirVertice( int i, Tupla3f punto, int num_instancias, float maxgrados ) {
 
   float x, y, z;
   float radio = sqrt( punto(0) * punto(0) + punto(2) * punto(2) );
 
-  x = cos( 2 * M_PI * i / num_instancias ) * radio;
+  x = cos( maxgrados * i / num_instancias ) * radio;
   y = punto(1);
-  z = -( sin( 2 * M_PI * i / num_instancias ) * radio );
+  z = -( sin( maxgrados * i / num_instancias ) * radio );
 
   v.push_back( Tupla3f( x, y, z ) );
 

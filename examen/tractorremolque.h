@@ -4,12 +4,16 @@
 #include "modelojerarquico.h"
 #include "tractor.h"
 #include "remolque.h"
+#include "objrevolucion.h"
 
 class TractorRemolque : public ModeloJerarquico {
 
 private:
   Tractor * tractor   = nullptr;
   Remolque * remolque = nullptr;
+  ObjRevolucion * marcador = nullptr;
+
+  Tupla3f pos = Tupla3f( 300, 17.5, 0 );
 
 public:
   TractorRemolque();
@@ -27,6 +31,8 @@ public:
   void setColorSeleccion( Tupla3f color );
   void setMaterialSeleccion( Material mat );
   Tupla3f getCentro();
+  Tupla3f getPos();
+  void retrocederX( float cantidad );
 
 };
 

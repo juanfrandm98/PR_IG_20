@@ -13,6 +13,6 @@ Cilindro::Cilindro( const int numVertPerfil, const int numInstanciasPerf,
   for( int i = 0; i < numVertPerfil; i++ )
     perfilOriginal.push_back( Tupla3f( radio, alturaInicial + i * alturaPorPunto, 0 ) );
 
-  CrearObjeto( perfilOriginal, numInstanciasPerf, true, true );
+  CrearObjeto( perfilOriginal, numInstanciasPerf, true, true, 360 );
 
 }

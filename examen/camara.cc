@@ -314,3 +314,8 @@ Tupla3f Camara::rotarDireccion( Tupla3f direccionOrignial, float angulo ) {
   return direccionRotada;
 
 }
+
+void Camara::moveAtandEyeX( float cantidad ) {
+  eye(0) += cantidad;
+  at(0) += cantidad;
+}

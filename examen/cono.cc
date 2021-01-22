@@ -27,6 +27,6 @@ Cono::Cono( const int numVertPerfil, const int numInstanciasPerf,
 
   }
 
-  CrearObjeto( perfilOriginal, numInstanciasPerf, true, true );
+  CrearObjeto( perfilOriginal, numInstanciasPerf, true, true, 360 );
 
 }

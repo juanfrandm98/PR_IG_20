@@ -67,6 +67,8 @@ public:
   void setObservador();
   void setProyeccion();
 
+  void moveAtandEyeX( float cantidad );
+
 };
 
 #endif

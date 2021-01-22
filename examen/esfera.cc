@@ -26,6 +26,6 @@ Esfera::Esfera( const int numVertPerfil, const int numInstanciasPerf,
     anguloAcumulado += anguloPorVert;
   }
 
-  CrearObjeto( perfilOriginal, numInstanciasPerf, true, true );
+  CrearObjeto( perfilOriginal, numInstanciasPerf, true, true, 360 );
 
 }
